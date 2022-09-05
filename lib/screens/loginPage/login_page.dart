@@ -3,11 +3,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 import 'componentes/carousel.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -25,6 +25,55 @@ class _LoginPageState extends State<LoginPage> {
     SchedulerBinding.instance
         .addPostFrameCallback((_) => _recuperarDadosUsuario());
   }
+  Future _realizarLoginGoogle() async {
+    setState(() {
+      carrega = true;
+    });
+    try{
+
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+    }catch(e){
+      print(e);
+      setState(() {
+        carrega = false;
+      });
+    }
+    setState(() {
+      carrega = false;
+    });
+
+
+  }
+  Future _realizarLoginFacebook() async {
+    setState(() {
+      carrega = true;
+    });
+    try{
+
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      await FacebookAuth.instance.getUserData();
+    }
+    catch(e){
+      print(e);
+      setState(() {
+        carrega = false;
+      });
+    }
+    setState(() {
+      carrega = false;
+    });
+  }
+
 
   Future _recuperarDadosUsuario() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -109,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: 1000.w,
                         margin: EdgeInsets.only(top: 50.h),
                         child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: _realizarLoginGoogle,
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               side: const BorderSide(
@@ -119,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                               height: 120.h,
                               decoration: BoxDecoration(
                                 color: Cores.kWhiteColor,
-                                borderRadius: BorderRadius.circular(50.r),
+                                borderRadius: BorderRadius.circular(30.r),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),
@@ -162,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: 1000.w,
                         margin: EdgeInsets.only(top: 50.h),
                         child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: _realizarLoginFacebook,
                             style: OutlinedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               side: const BorderSide(
@@ -172,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                               height: 120.h,
                               decoration: BoxDecoration(
                                 color: Cores.kWhiteColor,
-                                borderRadius: BorderRadius.circular(50.r),
+                                borderRadius: BorderRadius.circular(30.r),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),
