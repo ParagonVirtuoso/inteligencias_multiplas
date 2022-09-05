@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
@@ -75,13 +75,13 @@ class _LoginPageState extends State<LoginPage> {
                           alignment: Alignment.topLeft,
                         ),
                         gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Cores.kTertiaryColor,
-                        Cores.kSecondaryColor,
-                      ],
-                    )),
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Cores.kTertiaryColor,
+                            Cores.kSecondaryColor,
+                          ],
+                        )),
                     child: const Carousel()),
                 Container(
                   width: 1080.w,
@@ -91,6 +91,128 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(70.r),
                         topRight: Radius.circular(70.r)),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        Strings.conecteTelaLogin,
+                        style: TextStyle(
+                            color: Cores.kTertiaryColor,
+                            fontSize: 95.sp,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Roboto'),
+                        textAlign: TextAlign.center,
+                      ),
+                      Container(
+                        width: 1000.w,
+                        margin: EdgeInsets.only(top: 50.h),
+                        child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              side: const BorderSide(
+                                  width: 0, color: Colors.transparent),
+                            ),
+                            child: Container(
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                color: Cores.kWhiteColor,
+                                borderRadius: BorderRadius.circular(50.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      alignment: Alignment.centerLeft,
+                                      width: 200.w,
+                                      height: 100.h,
+                                      padding: EdgeInsets.only(left: 40.w),
+                                      child: Image.asset(
+                                        Strings.googleIconAsset,
+                                        fit: BoxFit.cover,
+                                      )),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: 700.w,
+                                    margin: EdgeInsets.only(left: 10.w),
+                                    child: Text(
+                                        Strings.entrarComGoogleTelaLogin,
+                                        style: TextStyle(
+                                            color: Cores.kTertiaryColor,
+                                            fontSize: 50.sp,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: 'Roboto')),
+                                  )
+                                ],
+                              ),
+                            )),
+                      ),
+                      Container(
+                        width: 1000.w,
+                        margin: EdgeInsets.only(top: 50.h),
+                        child: OutlinedButton(
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              side: const BorderSide(
+                                  width: 0, color: Colors.transparent),
+                            ),
+                            child: Container(
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                color: Cores.kWhiteColor,
+                                borderRadius: BorderRadius.circular(50.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 3,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      alignment: Alignment.centerLeft,
+                                      width: 200.w,
+                                      height: 80.h,
+                                      padding: EdgeInsets.only(left: 50.w),
+                                      child: Image.asset(
+                                        Strings.facebookIconAsset,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.center,
+                                      )),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: 700.w,
+                                    margin: EdgeInsets.only(left: 10.w),
+                                    child: Text(
+                                        Strings.entrarComFacebookTelaLogin,
+                                        style: TextStyle(
+                                            color: Cores.kTertiaryColor,
+                                            fontSize: 50.sp,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: 'Roboto')),
+                                  )
+                                ],
+                              ),
+                            )),
+                      ),
+                    ],
                   ),
                 )
               ],

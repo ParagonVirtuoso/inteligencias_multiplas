@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
             routes: Rotas.routes,
             theme: ThemeData(
                 primaryColor: Cores.kPrimaryColor,
-                primarySwatch: Colors.green
+                primarySwatch: Colors.lightBlue
             ),
           );
         });

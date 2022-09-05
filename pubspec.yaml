@@ -67,6 +67,8 @@ flutter:
     - assets/icons/logo.png
     - assets/icons/logoFull.png
     - assets/icons/brain_login.png
+    - assets/icons/google_icon.png
+    - assets/icons/facebook_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
