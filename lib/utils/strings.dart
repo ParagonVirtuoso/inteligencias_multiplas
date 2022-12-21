@@ -10,6 +10,9 @@ class Strings {
   static const conecteTelaLogin = "Conecte-se";
   static const entrarComGoogleTelaLogin = "Entrar Com o Google";
   static const entrarComFacebookTelaLogin = "Entrar Com o Facebook";
+  static const ouTelaLogin = "Ou";
+  static const aceitoTermosTelaLogin = "Aceitar termos";
+  static const erroAceiteTermosTelaLogin = 'Aceite os termos de uso para continuar';
 
 //assets
   static const logoAsset = 'assets/icons/logo.png';
