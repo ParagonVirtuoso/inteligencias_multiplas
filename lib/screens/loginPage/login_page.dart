@@ -254,8 +254,9 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      Container(
                         width: 1000.w,
+                        margin: EdgeInsets.only(bottom: 20.h),
                         child: OutlinedButton(
                             onPressed: _realizarLoginFacebook,
                             style: OutlinedButton.styleFrom(
@@ -307,29 +308,36 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             )),
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: _checkBoxValue,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _checkBoxValue = value!;
-                                });
-                              },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.r),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _checkBoxValue = !_checkBoxValue;
+                          });
+                        },
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                value: _checkBoxValue,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _checkBoxValue = value!;
+                                  });
+                                },
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                ),
                               ),
-                            ),
-                            Text(Strings.aceitoTermosTelaLogin,
-                                style: TextStyle(
-                                    color: Cores.kTertiaryColor,
-                                    fontSize: 50.sp,
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.underline,
-                                    fontFamily: 'Roboto')),
-                          ])
+                              Text(Strings.aceitoTermosTelaLogin,
+                                  style: TextStyle(
+                                      color: Cores.kTertiaryColor,
+                                      fontSize: 50.sp,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'Roboto')),
+                            ]),
+                      )
                     ],
                   ),
                 )
