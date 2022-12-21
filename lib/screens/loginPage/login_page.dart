@@ -27,30 +27,34 @@ class _LoginPageState extends State<LoginPage> {
     SchedulerBinding.instance
         .addPostFrameCallback((_) => _recuperarDadosUsuario());
   }
+
   Future _realizarLoginGoogle() async {
-    if(_checkBoxValue == false){
+    if (_checkBoxValue == false) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(Strings.erroAceiteTermosTelaLogin),
           backgroundColor: Cores.kErroColor,
         ),
       );
-
-  }else{
-
+    } else {
       setState(() {
         carrega = true;
       });
-      try{
-
+      try {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
-        await FirebaseAuth.instance.signInWithCredential(credential);
-      }catch(e){
+        UserCredential result =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        User? user = result.user;
+        if (user != null) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } catch (e) {
         print(e);
         setState(() {
           carrega = false;
@@ -61,20 +65,20 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+
   Future _realizarLoginFacebook() async {
     setState(() {
       carrega = true;
     });
-    try{
-
+    try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
-      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
       FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
       await FacebookAuth.instance.getUserData();
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       setState(() {
         carrega = false;
@@ -84,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
       carrega = false;
     });
   }
-
 
   Future _recuperarDadosUsuario() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -305,30 +308,28 @@ class _LoginPageState extends State<LoginPage> {
                             )),
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children:[
-                          Checkbox(
-                            value: _checkBoxValue,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _checkBoxValue = value!;
-                              });
-                            },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.r),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Checkbox(
+                              value: _checkBoxValue,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _checkBoxValue = value!;
+                                });
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.r),
+                              ),
                             ),
-
-                          ),
-                          Text(Strings.aceitoTermosTelaLogin,
-                              style: TextStyle(
-                                  color: Cores.kTertiaryColor,
-                                  fontSize: 50.sp,
-                                  fontWeight: FontWeight.w500,
-                                  decoration: TextDecoration.underline,
-                                  fontFamily: 'Roboto')),
-                        ]
-                      )
+                            Text(Strings.aceitoTermosTelaLogin,
+                                style: TextStyle(
+                                    color: Cores.kTertiaryColor,
+                                    fontSize: 50.sp,
+                                    fontWeight: FontWeight.w500,
+                                    decoration: TextDecoration.underline,
+                                    fontFamily: 'Roboto')),
+                          ])
                     ],
                   ),
                 )
