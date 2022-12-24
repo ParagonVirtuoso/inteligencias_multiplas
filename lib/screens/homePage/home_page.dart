@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inteligencias_multiplas/screens/homePage/componentes/card_tutorial.dart';
+import 'package:inteligencias_multiplas/screens/homePage/componentes/drawer_custom.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
@@ -51,66 +53,8 @@ class _HomePageState extends State<HomePage> {
           },
           drawer: Drawer(
             width: 650.w,
-            child: Column(
-              children: [
-                Container(
-                  height: 600.h,
-                  decoration: const BoxDecoration(
-                    color: Cores.kBorderColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: 170.w,
-                        height: 150.h,
-                        margin: EdgeInsets.only(bottom: 20.h),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            _profilePic,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 150.h,
-                        margin: EdgeInsets.only(bottom: 20.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(_user,
-                                style: TextStyle(
-                                    fontSize: 45.sp,
-                                    color: Cores.kBlackColor,
-                                    fontWeight: FontWeight.w700)),
-                            SizedBox(
-                                width: 400.w,
-                                child: Text(_email,
-                                    style: TextStyle(
-                                        fontSize: 30.sp,
-                                        color: Cores.kDeepGreyColor,
-                                        fontWeight: FontWeight.w500))),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                ListTile(
-                  title: Text('Item 1'),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title: Text('Item 2'),
-                  onTap: () {},
-                ),
-              ],
-            ),
+            child: DrawerCustom(
+                profilePic: _profilePic, user: _user, email: _email),
           ),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -128,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Container(
                         width: 200.w,
-                        height: 350.h,
+                        height: 200.h,
                         margin: EdgeInsets.only(left: 50.w, right: 50.w),
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(
@@ -159,6 +103,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 height: 1338.h,
                 width: 1080.w,
+                padding: EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -166,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                     topRight: Radius.circular(50),
                   ),
                 ),
-                child: Column(),
+                child: const CardTutorial(),
               ),
             ],
           )),
