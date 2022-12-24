@@ -13,6 +13,7 @@ class Strings {
   static const ouTelaLogin = "Ou";
   static const aceitoTermosTelaLogin = "Aceitar termos";
   static const erroAceiteTermosTelaLogin = 'Aceite os termos de uso para continuar';
+  static const bemVindoTelaHome = 'Bem Vindo,';
 
 //assets
   static const logoAsset = 'assets/icons/logo.png';
