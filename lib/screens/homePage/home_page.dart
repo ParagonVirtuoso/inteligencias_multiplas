@@ -17,12 +17,14 @@ class _HomePageState extends State<HomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var _user = '';
   var _profilePic = '';
+  var _email = '';
 
   @override
   initState() {
     super.initState();
     _user = _auth.currentUser?.displayName ?? '';
     _profilePic = _auth.currentUser?.photoURL ?? '';
+    _email = _auth.currentUser?.email ?? '';
   }
 
   @override
@@ -51,6 +53,54 @@ class _HomePageState extends State<HomePage> {
             width: 650.w,
             child: Column(
               children: [
+                Container(
+                  height: 600.h,
+                  decoration: const BoxDecoration(
+                    color: Cores.kBorderColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        width: 170.w,
+                        height: 150.h,
+                        margin: EdgeInsets.only(bottom: 20.h),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            _profilePic,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 150.h,
+                        margin: EdgeInsets.only(bottom: 20.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(_user,
+                                style: TextStyle(
+                                    fontSize: 45.sp,
+                                    color: Cores.kBlackColor,
+                                    fontWeight: FontWeight.w700)),
+                            SizedBox(
+                                width: 400.w,
+                                child: Text(_email,
+                                    style: TextStyle(
+                                        fontSize: 30.sp,
+                                        color: Cores.kDeepGreyColor,
+                                        fontWeight: FontWeight.w500))),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 ListTile(
                   title: Text('Item 1'),
                   onTap: () {},

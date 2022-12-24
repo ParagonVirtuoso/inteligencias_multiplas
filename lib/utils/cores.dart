@@ -14,6 +14,7 @@ class Cores {
   static const kGreyColor = Color(0xFFEEEEEE);
   static const kBlackColor = Color(0xFF000000);
   static const kDarkGreyColor = Color(0xFF9E9E9E);
+  static const kDeepGreyColor = Color(0xFF6F6F6F);
   static const kBorderColor = Color(0xFFEFEFEF);
   static const kWhiteColor = Color(0xFFFFFFFF);
   static const kcinzaColor = Color(0xFFD1D2D1);
