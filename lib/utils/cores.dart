@@ -8,6 +8,8 @@ class Cores {
   static const kQuaternaryColor = Color(0xff1e1e1e);
   static const kErroColor = Color(0xfff10e0e);
   static const kAlertaColor = Color(0xfff57d37);
+  static const kAzulGradientUpColor = Color(0xff0053be);
+  static const kAzulGradientDownColor = Color(0xff006fff);
 
   static const kGreyColor = Color(0xFFEEEEEE);
   static const kBlackColor = Color(0xFF000000);
