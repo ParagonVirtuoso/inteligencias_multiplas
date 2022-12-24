@@ -10,11 +10,20 @@ class Strings {
   static const conecteTelaLogin = "Conecte-se";
   static const entrarComGoogleTelaLogin = "Entrar Com o Google";
   static const entrarComFacebookTelaLogin = "Entrar Com o Facebook";
-
+  static const ouTelaLogin = "Ou";
+  static const aceitoTermosTelaLogin = "Aceitar termos";
+  static const erroAceiteTermosTelaLogin = 'Aceite os termos de uso para continuar';
+  static const bemVindoTelaHome = 'Bem Vindo,';
+  static const comoFunciona = 'Como funciona o teste?';
+  static const avalieCadaQuestao = 'Avalie cada questão com estrelas de acordo com sua identificação . Determine o seu nível de intimidade classificando-as com estrela de 1 a 7.';
+  static const naoExisteRespostaCerta = 'Lembre-se, não existe resposta errada, cada um de nós temos nossas próprias escolhas.';
+  static const iniciarTeste = 'Iniciar Teste';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
   static const fundoBrainAsset = 'assets/icons/brain_login.png';
   static const googleIconAsset = 'assets/icons/google_icon.png';
   static const facebookIconAsset = 'assets/icons/facebook_icon.png';
+  static const playIconAsset = 'assets/icons/play.png';
+  static const starIconAsset = 'assets/icons/star.png';
 }
