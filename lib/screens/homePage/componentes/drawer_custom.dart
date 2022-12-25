@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inteligencias_multiplas/screens/homePage/componentes/button_drawer.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 
 class DrawerCustom extends StatefulWidget {
@@ -71,14 +72,81 @@ class _DrawerCustomState extends State<DrawerCustom> {
             ],
           ),
         ),
-        ListTile(
-          title: Text('Item 1'),
-          onTap: () {},
-        ),
-        ListTile(
-          title: Text('Item 2'),
-          onTap: () {},
-        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 50.h,
+            ),
+            ButtonDrawer(
+              icon: Icons.home,
+              text: 'Teste',
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ButtonDrawer(
+              icon: Icons.home,
+              text: 'Desenvolvedores',
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+
+            ButtonDrawer(
+              icon: Icons.home,
+              text: 'Central de Ajuda',
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ButtonDrawer(
+              icon: Icons.home,
+              text: 'Termos de Uso',
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ButtonDrawer(
+              icon: Icons.home,
+              text: 'Sobre o App',
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(height: 420.h),
+            ButtonDrawer(
+              icon: Icons.home,
+              text: 'Sair',
+              corFundo: Cores.kBorderColor,
+              corTexto: Cores.kDeepGreyColor,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20.h),
+              child: Text(
+                'Versão 1.0.0',
+                style: TextStyle(
+                    fontSize: 30.sp,
+                    color: Cores.kDeepGreyColor,
+                    fontWeight: FontWeight.w500),
+              ),
+            )
+          ],
+        )
       ],
     );
   }
