@@ -19,51 +19,66 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool carrega = true;
 
+  var _checkBoxValue = false;
+
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance
         .addPostFrameCallback((_) => _recuperarDadosUsuario());
   }
-  Future _realizarLoginGoogle() async {
-    setState(() {
-      carrega = true;
-    });
-    try{
 
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+  Future _realizarLoginGoogle() async {
+    if (_checkBoxValue == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.erroAceiteTermosTelaLogin),
+          backgroundColor: Cores.kErroColor,
+        ),
       );
-      await FirebaseAuth.instance.signInWithCredential(credential);
-    }catch(e){
-      print(e);
+    } else {
+      setState(() {
+        carrega = true;
+      });
+      try {
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+        UserCredential result =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        User? user = result.user;
+        if (user != null) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } catch (e) {
+        print(e);
+        setState(() {
+          carrega = false;
+        });
+      }
       setState(() {
         carrega = false;
       });
     }
-    setState(() {
-      carrega = false;
-    });
-
-
   }
+
   Future _realizarLoginFacebook() async {
     setState(() {
       carrega = true;
     });
-    try{
-
+    try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
-      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
       FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
       await FacebookAuth.instance.getUserData();
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       setState(() {
         carrega = false;
@@ -73,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
       carrega = false;
     });
   }
-
 
   Future _recuperarDadosUsuario() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -165,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 0, color: Colors.transparent),
                             ),
                             child: Container(
-                              height: 120.h,
+                              height: 135.h,
                               decoration: BoxDecoration(
                                 color: Cores.kWhiteColor,
                                 borderRadius: BorderRadius.circular(30.r),
@@ -209,7 +223,40 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Container(
                         width: 1000.w,
-                        margin: EdgeInsets.only(top: 50.h),
+                        height: 90.h,
+                        alignment: Alignment.center,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              width: 300.w,
+                              height: 20.h,
+                              child: const Divider(
+                                color: Colors.black,
+                                thickness: 1.3,
+                              ),
+                            ),
+                            Text(Strings.ouTelaLogin,
+                                style: TextStyle(
+                                    color: Cores.kTertiaryColor,
+                                    fontSize: 50.sp,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Roboto')),
+                            SizedBox(
+                              width: 300.w,
+                              height: 20.h,
+                              child: const Divider(
+                                color: Colors.black,
+                                thickness: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 1000.w,
+                        margin: EdgeInsets.only(bottom: 20.h),
                         child: OutlinedButton(
                             onPressed: _realizarLoginFacebook,
                             style: OutlinedButton.styleFrom(
@@ -218,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 0, color: Colors.transparent),
                             ),
                             child: Container(
-                              height: 120.h,
+                              height: 135.h,
                               decoration: BoxDecoration(
                                 color: Cores.kWhiteColor,
                                 borderRadius: BorderRadius.circular(30.r),
@@ -261,6 +308,36 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             )),
                       ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _checkBoxValue = !_checkBoxValue;
+                          });
+                        },
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                value: _checkBoxValue,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _checkBoxValue = value!;
+                                  });
+                                },
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.r),
+                                ),
+                              ),
+                              Text(Strings.aceitoTermosTelaLogin,
+                                  style: TextStyle(
+                                      color: Cores.kTertiaryColor,
+                                      fontSize: 50.sp,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.underline,
+                                      fontFamily: 'Roboto')),
+                            ]),
+                      )
                     ],
                   ),
                 )
