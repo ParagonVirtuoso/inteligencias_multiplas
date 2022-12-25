@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 
 class ButtonDrawer extends StatelessWidget {
-  final IconData icon;
+  final String icon;
   final String text;
   final Null Function() onTap;
   final Color corFundo;
@@ -31,12 +31,11 @@ class ButtonDrawer extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.only(left: 20.w, right: 20.w),
-            child: Icon(
-              icon,
-              color: corTexto,
-              size: 50.sp,
-            ),
-          ),
+            child: Image(
+              image: AssetImage(
+                icon,
+              ),
+          )),
           Text(text,
               style: TextStyle(
                   fontSize: 45.sp,

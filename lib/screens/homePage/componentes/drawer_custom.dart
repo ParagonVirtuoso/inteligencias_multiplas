@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/button_drawer.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
+import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class DrawerCustom extends StatefulWidget {
   final String profilePic;
@@ -80,7 +81,16 @@ class _DrawerCustomState extends State<DrawerCustom> {
               height: 50.h,
             ),
             ButtonDrawer(
-              icon: Icons.home,
+              icon: Strings.refazerIconAsset,
+              text: Strings.refazer,
+              corFundo: Cores.kAzulBotaoItemColor,
+              corTexto: Cores.kWhiteColor,
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ButtonDrawer(
+              icon: Strings.starIconAsset,
               text: 'Teste',
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
@@ -89,7 +99,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
               },
             ),
             ButtonDrawer(
-              icon: Icons.home,
+              icon: Strings.desenvolvedoresIconAsset,
               text: 'Desenvolvedores',
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
@@ -99,7 +109,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
             ),
 
             ButtonDrawer(
-              icon: Icons.home,
+              icon: Strings.centralAjudaIconAsset,
               text: 'Central de Ajuda',
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
@@ -108,7 +118,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
               },
             ),
             ButtonDrawer(
-              icon: Icons.home,
+              icon: Strings.termosUsoAppIconAsset,
               text: 'Termos de Uso',
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
@@ -117,7 +127,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
               },
             ),
             ButtonDrawer(
-              icon: Icons.home,
+              icon: Strings.sobreAppIconAsset,
               text: 'Sobre o App',
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
@@ -125,9 +135,9 @@ class _DrawerCustomState extends State<DrawerCustom> {
                 Navigator.pop(context);
               },
             ),
-            SizedBox(height: 420.h),
+            SizedBox(height: 290.h),
             ButtonDrawer(
-              icon: Icons.home,
+              icon: Strings.sairAppIconAsset,
               text: 'Sair',
               corFundo: Cores.kBorderColor,
               corTexto: Cores.kDeepGreyColor,

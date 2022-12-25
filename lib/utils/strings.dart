@@ -18,6 +18,7 @@ class Strings {
   static const avalieCadaQuestao = 'Avalie cada questão com estrelas de acordo com sua identificação . Determine o seu nível de intimidade classificando-as com estrela de 1 a 7.';
   static const naoExisteRespostaCerta = 'Lembre-se, não existe resposta errada, cada um de nós temos nossas próprias escolhas.';
   static const iniciarTeste = 'Iniciar Teste';
+  static const refazer = 'Refazer';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
@@ -26,4 +27,10 @@ class Strings {
   static const facebookIconAsset = 'assets/icons/facebook_icon.png';
   static const playIconAsset = 'assets/icons/play.png';
   static const starIconAsset = 'assets/icons/star.png';
+  static const centralAjudaIconAsset = 'assets/icons/centralAjuda.png';
+  static const desenvolvedoresIconAsset = 'assets/icons/desenvolvedores.png';
+  static const sobreAppIconAsset = 'assets/icons/sobreApp.png';
+  static const termosUsoAppIconAsset = 'assets/icons/termosUso.png';
+  static const sairAppIconAsset = 'assets/icons/sair.png';
+  static const refazerIconAsset = 'assets/icons/refazer.png';
 }
