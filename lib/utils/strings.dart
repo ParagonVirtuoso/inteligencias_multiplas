@@ -33,4 +33,5 @@ class Strings {
   static const termosUsoAppIconAsset = 'assets/icons/termosUso.png';
   static const sairAppIconAsset = 'assets/icons/sair.png';
   static const refazerIconAsset = 'assets/icons/refazer.png';
+  static const pergunta1Asset = 'assets/etapas/etapa-1/pergunta-1.png';
 }

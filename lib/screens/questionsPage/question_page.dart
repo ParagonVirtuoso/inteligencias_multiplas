@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
+import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class QuestionsPage extends StatefulWidget {
   const QuestionsPage({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class QuestionsPage extends StatefulWidget {
 }
 
 class _QuestionsPageState extends State<QuestionsPage> {
+  var progressoTotal = 0.05;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +62,45 @@ class _QuestionsPageState extends State<QuestionsPage> {
                 Text(
                   'Etapa 1',
                   style: TextStyle(
-                      fontSize: 45.sp,
+                      fontSize: 40.sp,
                       fontFamily: 'Roboto-Regular',
                       fontWeight: FontWeight.w500),
                 ),
+                Container(
+                  margin: EdgeInsets.only(top: 50.h),
+                  child: Text(
+                    'Coisas que mais gosto de fazer',
+                    style: TextStyle(
+                        fontSize: 55.sp,
+                        fontFamily: 'Roboto-Regular',
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 50.h),
+                  child: Image.asset(
+                    Strings.pergunta1Asset,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 50.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Cores.kTertiaryColor, width: 4.w),
+                    borderRadius: BorderRadius.circular(13.r),
+                  ),
+                  child: LinearProgressIndicator(
+                    value: progressoTotal,
+                    backgroundColor: Cores.kWhiteColor,
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Cores.kTertiaryColor),
+                  ),
+                ),
+                Text('5% completo',
+                    style: TextStyle(
+                        fontSize: 33.sp,
+                        fontFamily: 'Roboto-Regular',
+                        fontWeight: FontWeight.w500,
+                        color: Cores.kTertiaryColor)),
               ],
             ),
           )
