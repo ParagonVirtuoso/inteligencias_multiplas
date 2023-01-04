@@ -64,7 +64,7 @@ class CardTutorial extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            print('navgar');
+            Navigator.pushNamed(context, '/questions');
           },
           child: Container(
             height: 130.h,

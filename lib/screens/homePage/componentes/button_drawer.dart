@@ -40,7 +40,7 @@ class ButtonDrawer extends StatelessWidget {
               style: TextStyle(
                   fontSize: 45.sp,
                   fontWeight: FontWeight.w500,
-                  fontFamily: 'Roboto',
+                  fontFamily: 'Roboto-Regular',
                   color: corTexto))
         ],
       )
