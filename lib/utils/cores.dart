@@ -12,6 +12,7 @@ class Cores {
   static const kAzulGradientDownColor = Color(0xff006fff);
   static const kAzulDrawerItemColor = Color(0xffe0f3ff);
   static const kAzulBotaoItemColor = Color(0xff1877f2);
+  static const kAzulBotaoDisableItemColor = Color(0x801877f2);
 
   static const kGreyColor = Color(0xFFEEEEEE);
   static const kBlackColor = Color(0xFF000000);

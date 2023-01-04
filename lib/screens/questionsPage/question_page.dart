@@ -71,7 +71,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                   child: Text(
                     'Coisas que mais gosto de fazer',
                     style: TextStyle(
-                        fontSize: 55.sp,
+                        fontSize: 60.sp,
                         fontFamily: 'Roboto-Regular',
                         fontWeight: FontWeight.w500),
                   ),
@@ -101,6 +101,80 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         fontFamily: 'Roboto-Regular',
                         fontWeight: FontWeight.w500,
                         color: Cores.kTertiaryColor)),
+                Container(
+                  margin: EdgeInsets.only(top: 50.h),
+                  child: Text(
+                    'Praticar Esportes',
+                    style: TextStyle(
+                        fontSize: 60.sp,
+                        fontFamily: 'Roboto-Regular',
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 50.h),
+                  child: Text(
+                    'Avalie, a quantidade de estrelas significa o quanto você gosta.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 45.sp,
+                        fontFamily: 'Roboto-Regular'
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 150.h,
+                  margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.r),
+                    color: Cores.kBorderColor,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      Image(image: AssetImage(Strings.starIconAsset)),
+                      Image(image: AssetImage(Strings.starIconAsset)),
+                      Image(image: AssetImage(Strings.starIconAsset)),
+                      Image(image: AssetImage(Strings.starIconAsset)),
+                      Image(image: AssetImage(Strings.starIconAsset)),
+                      Image(image: AssetImage(Strings.starIconAsset)),
+                      Image(image: AssetImage(Strings.starIconAsset)),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/questions');
+                  },
+                  child: Container(
+                    height: 130.h,
+                    width: 350.w,
+                    margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.r),
+                      color: Cores.kAzulBotaoDisableItemColor,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Image(image: AssetImage(Strings.proximoIconAsset)),
+                        SizedBox(
+                          width: 20.w,
+                        ),
+                        Text(
+                          Strings.proximo,
+                          style: TextStyle(
+                            fontSize: 45.sp,
+                            color: Cores.kWhiteColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           )

@@ -19,6 +19,7 @@ class Strings {
   static const naoExisteRespostaCerta = 'Lembre-se, não existe resposta errada, cada um de nós temos nossas próprias escolhas.';
   static const iniciarTeste = 'Iniciar Teste';
   static const refazer = 'Refazer';
+  static const proximo = 'Próximo';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
@@ -34,4 +35,5 @@ class Strings {
   static const sairAppIconAsset = 'assets/icons/sair.png';
   static const refazerIconAsset = 'assets/icons/refazer.png';
   static const pergunta1Asset = 'assets/etapas/etapa-1/pergunta-1.png';
+  static const proximoIconAsset = 'assets/icons/proximo.png';
 }
