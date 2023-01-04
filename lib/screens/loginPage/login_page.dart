@@ -165,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: Cores.kTertiaryColor,
                             fontSize: 95.sp,
                             fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto'),
+                            fontFamily: 'Roboto-Regular'),
                         textAlign: TextAlign.center,
                       ),
                       Container(
@@ -215,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                                             color: Cores.kTertiaryColor,
                                             fontSize: 50.sp,
                                             fontWeight: FontWeight.w500,
-                                            fontFamily: 'Roboto')),
+                                            fontFamily: 'Roboto-Regular')),
                                   )
                                 ],
                               ),
@@ -242,7 +242,7 @@ class _LoginPageState extends State<LoginPage> {
                                     color: Cores.kTertiaryColor,
                                     fontSize: 50.sp,
                                     fontWeight: FontWeight.w500,
-                                    fontFamily: 'Roboto')),
+                                    fontFamily: 'Roboto-Regular')),
                             SizedBox(
                               width: 300.w,
                               height: 20.h,
@@ -302,7 +302,7 @@ class _LoginPageState extends State<LoginPage> {
                                             color: Cores.kTertiaryColor,
                                             fontSize: 50.sp,
                                             fontWeight: FontWeight.w500,
-                                            fontFamily: 'Roboto')),
+                                            fontFamily: 'Roboto-Regular')),
                                   )
                                 ],
                               ),
@@ -335,7 +335,7 @@ class _LoginPageState extends State<LoginPage> {
                                       fontSize: 50.sp,
                                       fontWeight: FontWeight.w500,
                                       decoration: TextDecoration.underline,
-                                      fontFamily: 'Roboto')),
+                                      fontFamily: 'Roboto-Regular')),
                             ]),
                       )
                     ],

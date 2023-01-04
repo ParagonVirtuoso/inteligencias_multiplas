@@ -67,7 +67,7 @@ class _CarouselState extends State<Carousel> {
                                       color: Cores.kWhiteColor,
                                       fontSize: 45.sp,
                                       fontWeight: FontWeight.w500,
-                                      fontFamily: 'Roboto'),
+                                      fontFamily: 'Roboto-Regular'),
                                 )))
                   ],
                 );
