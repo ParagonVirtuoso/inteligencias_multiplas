@@ -15,7 +15,6 @@ class StarRate extends StatefulWidget {
 class _StarRateState extends State<StarRate> {
   @override
   Widget build(BuildContext context) {
-    print(widget.selectedStar);
     return Container(
       height: 150.h,
       margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
