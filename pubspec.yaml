@@ -73,6 +73,7 @@ flutter:
     - assets/icons/facebook_icon.png
     - assets/icons/play.png
     - assets/icons/star.png
+    - assets/icons/starFull.png
     - assets/icons/centralAjuda.png
     - assets/icons/desenvolvedores.png
     - assets/icons/sobreApp.png

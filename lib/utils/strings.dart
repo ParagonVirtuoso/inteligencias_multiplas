@@ -28,6 +28,7 @@ class Strings {
   static const facebookIconAsset = 'assets/icons/facebook_icon.png';
   static const playIconAsset = 'assets/icons/play.png';
   static const starIconAsset = 'assets/icons/star.png';
+  static const starFullIconAsset = 'assets/icons/starFull.png';
   static const centralAjudaIconAsset = 'assets/icons/centralAjuda.png';
   static const desenvolvedoresIconAsset = 'assets/icons/desenvolvedores.png';
   static const sobreAppIconAsset = 'assets/icons/sobreApp.png';

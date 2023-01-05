@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inteligencias_multiplas/screens/questionsPage/componentes/star_rate.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
@@ -13,6 +14,7 @@ class QuestionsPage extends StatefulWidget {
 
 class _QuestionsPageState extends State<QuestionsPage> {
   var progressoTotal = 0.05;
+  var selectedStar = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +93,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                   child: LinearProgressIndicator(
                     value: progressoTotal,
                     backgroundColor: Cores.kWhiteColor,
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Cores.kTertiaryColor),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        Cores.kTertiaryColor),
                   ),
                 ),
                 Text('5% completo',
@@ -117,31 +119,11 @@ class _QuestionsPageState extends State<QuestionsPage> {
                     'Avalie, a quantidade de estrelas significa o quanto você gosta.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 45.sp,
-                        fontFamily: 'Roboto-Regular'
-                    ),
+                        fontSize: 45.sp, fontFamily: 'Roboto-Regular'),
                   ),
                 ),
-                Container(
-                  height: 150.h,
-                  margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.r),
-                    color: Cores.kBorderColor,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                    ],
-                  ),
+                StarRate(
+                  selectedStar: selectedStar,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -159,7 +141,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Image(image: AssetImage(Strings.proximoIconAsset)),
+                        const Image(
+                            image: AssetImage(Strings.proximoIconAsset)),
                         SizedBox(
                           width: 20.w,
                         ),
