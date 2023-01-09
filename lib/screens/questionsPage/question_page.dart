@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inteligencias_multiplas/screens/questionsPage/componentes/star_rate.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
+import 'package:inteligencias_multiplas/utils/etapas.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class QuestionsPage extends StatefulWidget {
