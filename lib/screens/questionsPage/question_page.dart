@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inteligencias_multiplas/screens/questionsPage/componentes/star_rate.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
+import 'package:inteligencias_multiplas/utils/etapas.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
+import '../../utils/perguntas.dart';
 
 class QuestionsPage extends StatefulWidget {
   const QuestionsPage({Key? key}) : super(key: key);
@@ -12,7 +15,11 @@ class QuestionsPage extends StatefulWidget {
 }
 
 class _QuestionsPageState extends State<QuestionsPage> {
-  var progressoTotal = 0.05;
+  var progressoTotal = 0.0;
+  var selectedStar = 0;
+  int currentStep = 0;
+  int currentQuestion = 0;
+  Color corBotaoNext = Cores.kAzulBotaoDisableItemColor;
 
   @override
   Widget build(BuildContext context) {
@@ -60,16 +67,18 @@ class _QuestionsPageState extends State<QuestionsPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Etapa 1',
+                  '${Strings.etapa} ${currentStep + 1}',
                   style: TextStyle(
                       fontSize: 40.sp,
                       fontFamily: 'Roboto-Regular',
                       fontWeight: FontWeight.w500),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 50.h),
+                  margin: EdgeInsets.only(top: 30.h),
+                  height: 130.h,
+                  alignment: Alignment.center,
                   child: Text(
-                    'Coisas que mais gosto de fazer',
+                    etapas[currentStep],
                     style: TextStyle(
                         fontSize: 60.sp,
                         fontFamily: 'Roboto-Regular',
@@ -77,13 +86,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 50.h),
+                  margin: EdgeInsets.only(top: 30.h),
                   child: Image.asset(
                     Strings.pergunta1Asset,
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 50.h),
+                  margin: EdgeInsets.only(top: 30.h),
                   decoration: BoxDecoration(
                     border: Border.all(color: Cores.kTertiaryColor, width: 4.w),
                     borderRadius: BorderRadius.circular(13.r),
@@ -91,20 +100,22 @@ class _QuestionsPageState extends State<QuestionsPage> {
                   child: LinearProgressIndicator(
                     value: progressoTotal,
                     backgroundColor: Cores.kWhiteColor,
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Cores.kTertiaryColor),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        Cores.kTertiaryColor),
                   ),
                 ),
-                Text('5% completo',
+                Text('${progressoTotal.toStringAsFixed(2)}% completo',
                     style: TextStyle(
                         fontSize: 33.sp,
                         fontFamily: 'Roboto-Regular',
                         fontWeight: FontWeight.w500,
                         color: Cores.kTertiaryColor)),
                 Container(
-                  margin: EdgeInsets.only(top: 50.h),
+                  margin: EdgeInsets.only(top: 30.h),
+                  height: 130.h,
+                  alignment: Alignment.center,
                   child: Text(
-                    'Praticar Esportes',
+                    perguntas[currentStep][currentQuestion],
                     style: TextStyle(
                         fontSize: 60.sp,
                         fontFamily: 'Roboto-Regular',
@@ -112,54 +123,35 @@ class _QuestionsPageState extends State<QuestionsPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 50.h),
+                  margin: EdgeInsets.only(top: 30.h),
                   child: Text(
-                    'Avalie, a quantidade de estrelas significa o quanto você gosta.',
+                    Strings.quantEstrelaGosta,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 45.sp,
-                        fontFamily: 'Roboto-Regular'
-                    ),
+                        fontSize: 45.sp, fontFamily: 'Roboto-Regular'),
                   ),
                 ),
-                Container(
-                  height: 150.h,
-                  margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.r),
-                    color: Cores.kBorderColor,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                      Image(image: AssetImage(Strings.starIconAsset)),
-                    ],
-                  ),
+                StarRate(
+                  selectedStar: selectedStar,
+                  selecionarEstrela: selecionarEstrela,
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/questions');
+                    registrarResposta();
                   },
                   child: Container(
                     height: 130.h,
                     width: 350.w,
-                    margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
+                    margin: EdgeInsets.only(top: 5.h, bottom: 5.h),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.r),
-                      color: Cores.kAzulBotaoDisableItemColor,
-                    ),
+                        borderRadius: BorderRadius.circular(30.r),
+                        color: corBotaoNext),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Image(image: AssetImage(Strings.proximoIconAsset)),
+                        const Image(
+                            image: AssetImage(Strings.proximoIconAsset)),
                         SizedBox(
                           width: 20.w,
                         ),
@@ -181,5 +173,40 @@ class _QuestionsPageState extends State<QuestionsPage> {
         ],
       ),
     );
+  }
+
+  void registrarResposta() {
+    if (selectedStar != 0) {
+      if (currentQuestion < 6) {
+        setState(() {
+          progressoTotal += 0.0142;
+          selectedStar = 0;
+          corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+          currentQuestion += 1;
+        });
+      } else {
+        setState(() {
+          progressoTotal += 0.0142;
+          selectedStar = 0;
+          corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+          currentQuestion = 0;
+          currentStep += 1;
+        });
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.selecioneEstrela),
+          backgroundColor: Cores.kAlertaColor,
+        ),
+      );
+    }
+  }
+
+  void selecionarEstrela(int index) {
+    setState(() {
+      selectedStar = index;
+      corBotaoNext = Cores.kAzulBotaoItemColor;
+    });
   }
 }

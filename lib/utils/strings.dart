@@ -20,6 +20,18 @@ class Strings {
   static const iniciarTeste = 'Iniciar Teste';
   static const refazer = 'Refazer';
   static const proximo = 'Próximo';
+  static const sair = 'Sair';
+  static const sim = 'Sim';
+  static const nao = 'Não';
+  static const desejaSair = 'Deseja realmente sair?';
+  static const sobreApp = 'Sobre o App';
+  static const termosUso = 'Termos de Uso';
+  static const centralAjuda = 'Central de Ajuda';
+  static const desenvolvedores = 'Desenvolvedores';
+  static const teste = 'Teste';
+  static const etapa = 'Etapa';
+  static const selecioneEstrela = 'Selecione uma estrela de acordo com sua afinidade';
+  static const quantEstrelaGosta = 'Avalie, a quantidade de estrelas significa o quanto você gosta.';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
@@ -28,6 +40,7 @@ class Strings {
   static const facebookIconAsset = 'assets/icons/facebook_icon.png';
   static const playIconAsset = 'assets/icons/play.png';
   static const starIconAsset = 'assets/icons/star.png';
+  static const starFullIconAsset = 'assets/icons/starFull.png';
   static const centralAjudaIconAsset = 'assets/icons/centralAjuda.png';
   static const desenvolvedoresIconAsset = 'assets/icons/desenvolvedores.png';
   static const sobreAppIconAsset = 'assets/icons/sobreApp.png';

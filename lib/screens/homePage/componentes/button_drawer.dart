@@ -5,14 +5,12 @@ import 'package:inteligencias_multiplas/utils/cores.dart';
 class ButtonDrawer extends StatelessWidget {
   final String icon;
   final String text;
-  final Null Function() onTap;
   final Color corFundo;
   final Color corTexto;
   const ButtonDrawer(
       {Key? key,
       required this.icon,
       required this.text,
-      required this.onTap,
       required this.corFundo,
       required this.corTexto})
       : super(key: key);
