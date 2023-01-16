@@ -9,13 +9,13 @@ const List perguntas = [
     'Cantar'
   ],
   [
-    "Aprender novos esportes?"
-        "Executar tarefas delicadas?"
-        "Trabalhar em equipe"
-        "Analisar meus sentimentos"
-        "Contar histórias e fatos"
-        "Construir e organizar planilhas"
-        "Tocar instrumentos"
+    "Aprender novos esportes?",
+    "Executar tarefas delicadas?",
+    "Trabalhar em equipe",
+    "Analisar meus sentimentos",
+    "Contar histórias e fatos",
+    "Construir e organizar planilhas",
+    "Tocar instrumentos",
   ],
   [
     "Levantar e andar periodicamente",

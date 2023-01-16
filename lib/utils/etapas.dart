@@ -1,6 +1,6 @@
 const List etapas = [
   'Coisas que mais gosto de fazer',
-  'Tenho facilidade em'
+  'Tenho facilidade em',
   'Quando estou no trabalho ou na escola prefiro?',
   'O tipo de pergunta que mais faço é?',
   'No tempo livre gosto mais de:',
