@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inteligencias_multiplas/controller/homeController/home_controller.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/button_drawer.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
@@ -80,69 +81,95 @@ class _DrawerCustomState extends State<DrawerCustom> {
             SizedBox(
               height: 50.h,
             ),
-            ButtonDrawer(
-              icon: Strings.refazerIconAsset,
-              text: Strings.refazer,
-              corFundo: Cores.kAzulBotaoItemColor,
-              corTexto: Cores.kWhiteColor,
+            GestureDetector(
+              child: const ButtonDrawer(
+                icon: Strings.refazerIconAsset,
+                text: Strings.refazer,
+                corFundo: Cores.kAzulBotaoItemColor,
+                corTexto: Cores.kWhiteColor,
+              ),
+              onTap: () {},
+            ),
+            GestureDetector(
+              child: const ButtonDrawer(
+                icon: Strings.starIconAsset,
+                text: Strings.teste,
+                corFundo: Cores.kAzulDrawerItemColor,
+                corTexto: Cores.kTertiaryColor,
+              ),
               onTap: () {
-                Navigator.pop(context);
+                HomeController().navTeste(context);
               },
             ),
-            ButtonDrawer(
-              icon: Strings.starIconAsset,
-              text: 'Teste',
-              corFundo: Cores.kAzulDrawerItemColor,
-              corTexto: Cores.kTertiaryColor,
-              onTap: () {
-                Navigator.pop(context);
-              },
+            GestureDetector(
+              child: const ButtonDrawer(
+                icon: Strings.desenvolvedoresIconAsset,
+                text: Strings.desenvolvedores,
+                corFundo: Cores.kAzulDrawerItemColor,
+                corTexto: Cores.kTertiaryColor,
+              ),
+              onTap: () {},
             ),
-            ButtonDrawer(
-              icon: Strings.desenvolvedoresIconAsset,
-              text: 'Desenvolvedores',
-              corFundo: Cores.kAzulDrawerItemColor,
-              corTexto: Cores.kTertiaryColor,
-              onTap: () {
-                Navigator.pop(context);
-              },
+            GestureDetector(
+              child: const ButtonDrawer(
+                icon: Strings.centralAjudaIconAsset,
+                text: Strings.centralAjuda,
+                corFundo: Cores.kAzulDrawerItemColor,
+                corTexto: Cores.kTertiaryColor,
+              ),
+              onTap: () {},
             ),
-
-            ButtonDrawer(
-              icon: Strings.centralAjudaIconAsset,
-              text: 'Central de Ajuda',
-              corFundo: Cores.kAzulDrawerItemColor,
-              corTexto: Cores.kTertiaryColor,
-              onTap: () {
-                Navigator.pop(context);
-              },
+            GestureDetector(
+              child: const ButtonDrawer(
+                icon: Strings.termosUsoAppIconAsset,
+                text: Strings.termosUso,
+                corFundo: Cores.kAzulDrawerItemColor,
+                corTexto: Cores.kTertiaryColor,
+              ),
+              onTap: () {},
             ),
-            ButtonDrawer(
-              icon: Strings.termosUsoAppIconAsset,
-              text: 'Termos de Uso',
-              corFundo: Cores.kAzulDrawerItemColor,
-              corTexto: Cores.kTertiaryColor,
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ButtonDrawer(
-              icon: Strings.sobreAppIconAsset,
-              text: 'Sobre o App',
-              corFundo: Cores.kAzulDrawerItemColor,
-              corTexto: Cores.kTertiaryColor,
-              onTap: () {
-                Navigator.pop(context);
-              },
+            GestureDetector(
+              child: const ButtonDrawer(
+                icon: Strings.sobreAppIconAsset,
+                text: Strings.sobreApp,
+                corFundo: Cores.kAzulDrawerItemColor,
+                corTexto: Cores.kTertiaryColor,
+              ),
+              onTap: () {},
             ),
             SizedBox(height: 290.h),
-            ButtonDrawer(
-              icon: Strings.sairAppIconAsset,
-              text: 'Sair',
-              corFundo: Cores.kBorderColor,
-              corTexto: Cores.kDeepGreyColor,
+            GestureDetector(
+              child: const ButtonDrawer(
+                icon: Strings.sairAppIconAsset,
+                text: Strings.sair,
+                corFundo: Cores.kBorderColor,
+                corTexto: Cores.kDeepGreyColor,
+              ),
               onTap: () {
-                Navigator.pop(context);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text(Strings.sair),
+                        content: const Text(Strings.desejaSair),
+                        actions: [
+                          TextButton(
+                            child: const Text(Strings.sim),
+                            onPressed: () {
+                              HomeController().signOut();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (Route<dynamic> route) => false);
+                            },
+                          ),
+                          TextButton(
+                            child: const Text(Strings.nao),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    });
               },
             ),
             Container(
