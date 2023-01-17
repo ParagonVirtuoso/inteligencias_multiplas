@@ -21,6 +21,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
   int currentQuestion = 0;
   Color corBotaoNext = Cores.kAzulBotaoDisableItemColor;
 
+  var respostas = List.generate(10, (i) => List.filled(7, 0), growable: true);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,14 +178,29 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   void registrarResposta() {
+    var resposta = selectedStar;
     if (selectedStar != 0) {
       if (currentQuestion < 6) {
-        setState(() {
-          progressoTotal += 0.0142;
-          selectedStar = 0;
-          corBotaoNext = Cores.kAzulBotaoDisableItemColor;
-          currentQuestion += 1;
-        });
+        for (int i = 0; i < 7; i++) {
+          if (respostas[currentStep][i] == selectedStar) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(Strings.voceUsouSelecao),
+                backgroundColor: Cores.kErroColor,
+              ),
+            );
+            resposta = 0;
+          }
+        }
+        if (resposta != 0) {
+          respostas[currentStep][currentQuestion] = selectedStar;
+          setState(() {
+            progressoTotal += 0.0142;
+            selectedStar = 0;
+            corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+            currentQuestion += 1;
+          });
+        }
       } else {
         setState(() {
           progressoTotal += 0.0142;
