@@ -49,28 +49,26 @@ class _DrawerCustomState extends State<DrawerCustom> {
                   ),
                 ),
               ),
-              Container(
-                height: 150.h,
-                margin: EdgeInsets.only(bottom: 20.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(widget.user,
-                        style: TextStyle(
-                            fontSize: 45.sp,
-                            color: Cores.kBlackColor,
-                            fontWeight: FontWeight.w700)),
-                    SizedBox(
-                        width: 400.w,
-                        child: Text(widget.email,
-                            style: TextStyle(
-                                fontSize: 30.sp,
-                                color: Cores.kDeepGreyColor,
-                                fontWeight: FontWeight.w500))),
-                  ],
-                ),
-              )
+              Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(widget.user,
+                          style: TextStyle(
+                              fontSize: 45.sp,
+                              color: Cores.kBlackColor,
+                              fontWeight: FontWeight.w700)),
+                      SizedBox(
+                          width: 400.w,
+                          child: Text(widget.email,
+                              style: TextStyle(
+                                  fontSize: 30.sp,
+                                  color: Cores.kDeepGreyColor,
+                                  fontWeight: FontWeight.w500))),
+                    ],
+                  ))
             ],
           ),
         ),
@@ -156,9 +154,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                           TextButton(
                             child: const Text(Strings.sim),
                             onPressed: () {
-                              HomeController().signOut();
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/', (Route<dynamic> route) => false);
+                              signOutGoogle();
                             },
                           ),
                           TextButton(
@@ -186,5 +182,14 @@ class _DrawerCustomState extends State<DrawerCustom> {
         )
       ],
     );
+  }
+
+  Future<void> signOutGoogle() async {
+    await HomeController().signOut();
+    navigateOut();
+  }
+
+  void navigateOut() {
+    Navigator.pushReplacementNamed(context, '/');
   }
 }

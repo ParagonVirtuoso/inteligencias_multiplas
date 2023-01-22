@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(_user);
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -80,7 +81,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      Column(
+                      Expanded(
+                          child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -97,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700)),
                         ],
-                      ),
+                      ))
                     ],
                   )),
               Container(
