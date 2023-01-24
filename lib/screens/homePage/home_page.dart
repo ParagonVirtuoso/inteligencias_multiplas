@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(_user);
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(

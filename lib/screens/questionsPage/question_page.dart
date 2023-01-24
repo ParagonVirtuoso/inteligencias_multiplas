@@ -37,7 +37,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
           iconTheme: const IconThemeData(color: Colors.white),
         ),
         body: Container(
-          margin: EdgeInsets.only(left: 50.w, right: 50.w, top: 10.h, bottom: 10.h),
+          margin:
+              EdgeInsets.only(left: 50.w, right: 50.w, top: 10.h, bottom: 10.h),
           child: Column(
             children: [
               Row(
@@ -57,7 +58,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         color: Cores.kWhiteColor,
                         borderRadius: BorderRadius.circular(13.r),
                         border:
-                        Border.all(color: Cores.kTertiaryColor, width: 4.w),
+                            Border.all(color: Cores.kTertiaryColor, width: 4.w),
                       ),
                       child: const Icon(
                         Icons.arrow_back_ios_new,
@@ -109,8 +110,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
                       Container(
                         margin: EdgeInsets.only(top: 20.h),
                         decoration: BoxDecoration(
-                          border:
-                          Border.all(color: Cores.kTertiaryColor, width: 4.w),
+                          border: Border.all(
+                              color: Cores.kTertiaryColor, width: 4.w),
                           borderRadius: BorderRadius.circular(13.r),
                         ),
                         child: LinearProgressIndicator(
@@ -201,6 +202,85 @@ class _QuestionsPageState extends State<QuestionsPage> {
                 content: Text(Strings.voceUsouSelecao),
                 backgroundColor: Cores.kErroColor,
               ),
+            );
+            showModalBottomSheet<void>(
+              context: context,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(90.r),
+                  topRight: Radius.circular(90.r),
+                ),
+              ),
+              builder: (BuildContext context) {
+                return Container(
+                  height: 900.h,
+                  padding: EdgeInsets.only(
+                      left: 50.w, right: 50.w, bottom: 50.h, top: 50.h),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Atenção, outra pergunta já foi avaliada com essa quantidade de estrelas.',
+                        style: TextStyle(
+                            fontSize: 65.sp,
+                            fontFamily: 'Roboto-Regular',
+                            fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'Se você continuar deverá escolher outra classificação para a pergunta atual. Ou você pode editar a classificação da pergunta anterior.',
+                        style: TextStyle(
+                            fontSize: 55.sp,
+                            fontFamily: 'Roboto-Regular',
+                            fontWeight: FontWeight.w400),
+                        textAlign: TextAlign.center,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 320.w,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Cores.kWhiteColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  side: BorderSide(
+                                      color: Cores.kAzulBotaoItemColor,
+                                      width: 4.sp),
+                                ),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                'Editar',
+                                style: TextStyle(
+                                    color: Cores.kAzulBotaoItemColor,
+                                    fontSize: 45.sp),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 320.w,
+                            child: ElevatedButton(
+                              onPressed: () => Navigator.pop(context),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Cores.kAzulBotaoItemColor,
+                              ),
+                              child: Text(
+                                'Continuar',
+                                style: TextStyle(
+                                    color: Cores.kWhiteColor, fontSize: 45.sp),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
             );
             resposta = 0;
           }
