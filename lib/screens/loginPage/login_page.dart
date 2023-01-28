@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
             await FirebaseAuth.instance.signInWithCredential(credential);
         User? user = result.user;
         if (user != null) {
-          Navigator.pushReplacementNamed(context, '/home');
+          _navigateToHome();
         }
       } catch (e) {
         print(e);
@@ -88,6 +88,9 @@ class _LoginPageState extends State<LoginPage> {
       carrega = false;
     });
   }
+  void _navigateToHome() {
+    Navigator.of(context).pushReplacementNamed('/home');
+  }
 
   Future _recuperarDadosUsuario() async {
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -102,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    User? result = FirebaseAuth.instance.currentUser;
 
     if (carrega == true) {
       return Scaffold(

@@ -15,13 +15,13 @@ class QuestionsPage extends StatefulWidget {
 }
 
 class _QuestionsPageState extends State<QuestionsPage> {
-  var progressoTotal = 0.0;
-  var selectedStar = 0;
+  double progressoTotal = 0.0;
+  int selectedStar = 0;
   int currentStep = 0;
   int currentQuestion = 0;
   Color corBotaoNext = Cores.kAzulBotaoDisableItemColor;
 
-  var respostas = List.generate(10, (i) => List.filled(7, 0), growable: true);
+  List<List<int>> respostas = List.generate(10, (i) => List.filled(7, 0), growable: true);
 
   @override
   Widget build(BuildContext context) {
