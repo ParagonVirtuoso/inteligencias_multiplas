@@ -32,6 +32,7 @@ class Strings {
   static const etapa = 'Etapa';
   static const selecioneEstrela = 'Selecione uma estrela de acordo com sua afinidade';
   static const quantEstrelaGosta = 'Avalie, a quantidade de estrelas significa o quanto você gosta.';
+  static const voceUsouSelecao = 'Você já usou essa seleção';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
