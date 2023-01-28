@@ -39,7 +39,7 @@ dependencies:
   firebase_auth: ^4.2.1
   font_awesome_flutter: ^10.1.0
   carousel_slider: ^4.1.1
-  google_sign_in: ^5.4.1
+  google_sign_in: ^5.4.4
   flutter_facebook_auth: ^5.0.6
 
 dev_dependencies:
