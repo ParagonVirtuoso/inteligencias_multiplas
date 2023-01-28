@@ -80,7 +80,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      Column(
+                      Expanded(
+                          child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -97,11 +98,11 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700)),
                         ],
-                      ),
+                      ))
                     ],
                   )),
               Container(
-                height: 1338.h,
+                height: 1325.h,
                 width: 1080.w,
                 padding: EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
                 decoration: const BoxDecoration(
