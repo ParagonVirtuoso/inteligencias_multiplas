@@ -6,6 +6,7 @@ import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/etapas.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 import '../../utils/perguntas.dart';
+import 'componentes/modal_alerta_resposta.dart';
 
 class QuestionsPage extends StatefulWidget {
   const QuestionsPage({Key? key}) : super(key: key);
@@ -21,7 +22,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
   int currentQuestion = 0;
   Color corBotaoNext = Cores.kAzulBotaoDisableItemColor;
 
-  List<List<int>> respostas = List.generate(10, (i) => List.filled(7, 0), growable: true);
+  List<List<int>> respostas =
+      List.generate(10, (i) => List.filled(7, 0), growable: true);
 
   @override
   Widget build(BuildContext context) {
@@ -212,74 +214,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                 ),
               ),
               builder: (BuildContext context) {
-                return Container(
-                  height: 900.h,
-                  padding: EdgeInsets.only(
-                      left: 50.w, right: 50.w, bottom: 50.h, top: 50.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Atenção, outra pergunta já foi avaliada com essa quantidade de estrelas.',
-                        style: TextStyle(
-                            fontSize: 65.sp,
-                            fontFamily: 'Roboto-Regular',
-                            fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        'Se você continuar deverá escolher outra classificação para a pergunta atual. Ou você pode editar a classificação da pergunta anterior.',
-                        style: TextStyle(
-                            fontSize: 55.sp,
-                            fontFamily: 'Roboto-Regular',
-                            fontWeight: FontWeight.w400),
-                        textAlign: TextAlign.center,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 320.w,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Cores.kWhiteColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  side: BorderSide(
-                                      color: Cores.kAzulBotaoItemColor,
-                                      width: 4.sp),
-                                ),
-                              ),
-                              onPressed: () => Navigator.pop(context),
-                              child: Text(
-                                'Editar',
-                                style: TextStyle(
-                                    color: Cores.kAzulBotaoItemColor,
-                                    fontSize: 45.sp),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 320.w,
-                            child: ElevatedButton(
-                              onPressed: () => Navigator.pop(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Cores.kAzulBotaoItemColor,
-                              ),
-                              child: Text(
-                                'Continuar',
-                                style: TextStyle(
-                                    color: Cores.kWhiteColor, fontSize: 45.sp),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                );
+                return ModalAlertaResposta(currentQuestion: currentQuestion, respostaIgual: i );
               },
             );
             resposta = 0;

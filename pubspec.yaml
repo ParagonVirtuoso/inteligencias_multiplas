@@ -81,6 +81,7 @@ flutter:
     - assets/icons/sair.png
     - assets/icons/refazer.png
     - assets/icons/proximo.png
+    - assets/icons/edit.png
     - assets/etapas/etapa-1/pergunta-1.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
