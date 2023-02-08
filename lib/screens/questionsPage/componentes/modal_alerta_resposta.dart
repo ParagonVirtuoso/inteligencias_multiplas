@@ -4,9 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/cores.dart';
 import '../../../utils/strings.dart';
 
-class ModalAlertaResposta extends StatelessWidget {
-  const ModalAlertaResposta({Key? key}) : super(key: key);
+class ModalAlertaResposta extends StatefulWidget {
+  final Function setEditarResposta;
+  ModalAlertaResposta(
+      {Key? key,
+      required currentQuestion,
+      required respostaIgual,
+      required this.setEditarResposta})
+      : super(key: key);
 
+  @override
+  State<ModalAlertaResposta> createState() => _ModalAlertaRespostaState();
+}
+
+class _ModalAlertaRespostaState extends State<ModalAlertaResposta> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,7 +94,8 @@ class ModalAlertaResposta extends StatelessWidget {
                             color: Cores.kAzulBotaoItemColor, width: 6.sp),
                       ),
                     ),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () =>
+                        {widget.setEditarResposta(0), Navigator.pop(context)},
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

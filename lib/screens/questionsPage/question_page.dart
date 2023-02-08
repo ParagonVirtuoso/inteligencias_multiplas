@@ -24,6 +24,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   List<List<int>> respostas =
       List.generate(10, (i) => List.filled(7, 0), growable: true);
+  var listaJaRespondida = [false, false, false, false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +152,9 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         ),
                       ),
                       StarRate(
-                        selectedStar: selectedStar,
-                        selecionarEstrela: selecionarEstrela,
-                      ),
+                          selectedStar: selectedStar,
+                          selecionarEstrela: selecionarEstrela,
+                          listaJaRespondida: listaJaRespondida),
                       GestureDetector(
                         onTap: () {
                           registrarResposta();
@@ -214,7 +215,10 @@ class _QuestionsPageState extends State<QuestionsPage> {
                 ),
               ),
               builder: (BuildContext context) {
-                return ModalAlertaResposta(currentQuestion: currentQuestion, respostaIgual: i );
+                return ModalAlertaResposta(
+                    currentQuestion: currentQuestion,
+                    respostaIgual: i,
+                    setEditarResposta: setEditarResposta);
               },
             );
             resposta = 0;
@@ -224,6 +228,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
           respostas[currentStep][currentQuestion] = selectedStar;
           setState(() {
             progressoTotal += 0.0142;
+            listaJaRespondida[--selectedStar] = true;
             selectedStar = 0;
             corBotaoNext = Cores.kAzulBotaoDisableItemColor;
             currentQuestion += 1;
@@ -232,6 +237,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       } else {
         setState(() {
           progressoTotal += 0.0142;
+          listaJaRespondida = [false, false, false, false, false, false, false];
           selectedStar = 0;
           corBotaoNext = Cores.kAzulBotaoDisableItemColor;
           currentQuestion = 0;
@@ -252,6 +258,12 @@ class _QuestionsPageState extends State<QuestionsPage> {
     setState(() {
       selectedStar = index;
       corBotaoNext = Cores.kAzulBotaoItemColor;
+    });
+  }
+
+  setEditarResposta(i) {
+    setState(() {
+      currentQuestion = i;
     });
   }
 }
