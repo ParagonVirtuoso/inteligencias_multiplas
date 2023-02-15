@@ -6,10 +6,11 @@ import '../../../utils/strings.dart';
 
 class ModalAlertaResposta extends StatefulWidget {
   final Function setEditarResposta;
+  final int respostaIgual;
   ModalAlertaResposta(
       {Key? key,
       required currentQuestion,
-      required respostaIgual,
+      required this.respostaIgual,
       required this.setEditarResposta})
       : super(key: key);
 
@@ -94,8 +95,10 @@ class _ModalAlertaRespostaState extends State<ModalAlertaResposta> {
                             color: Cores.kAzulBotaoItemColor, width: 6.sp),
                       ),
                     ),
-                    onPressed: () =>
-                        {widget.setEditarResposta(0), Navigator.pop(context)},
+                    onPressed: () => {
+                          widget.setEditarResposta(widget.respostaIgual),
+                          Navigator.pop(context)
+                        },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

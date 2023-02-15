@@ -195,13 +195,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   void registrarResposta() {
-    if (selectedStar == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(Strings.selecioneEstrela),
-          backgroundColor: Cores.kAlertaColor,
-        ),
-      );
+    if (!verificarSelecaoEstrela()) {
       return;
     }
 
@@ -215,7 +209,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
         );
         showModalBottomSheet<void>(
           context: context,
-          shape:  RoundedRectangleBorder(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(90.r),
               topRight: Radius.circular(90.r),
@@ -238,10 +232,10 @@ class _QuestionsPageState extends State<QuestionsPage> {
     listaJaRespondida[selectedStar - 1] = true;
     selectedStar = 0;
 
-    if (++currentQuestion > 6) {
-      currentQuestion = 0;
+    currentQuestion = obterProximaPergunta();
+    if (currentQuestion == 0) {
+      currentStep++;
       listaJaRespondida = List.filled(7, false);
-      ++currentStep;
     }
 
     setState(() {
@@ -254,6 +248,28 @@ class _QuestionsPageState extends State<QuestionsPage> {
     });
   }
 
+  bool verificarSelecaoEstrela() {
+    if (selectedStar == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.selecioneEstrela),
+          backgroundColor: Cores.kAlertaColor,
+        ),
+      );
+      return false;
+    }
+    return true;
+  }
+
+  int obterProximaPergunta() {
+    int proximaPergunta = currentQuestion;
+    while (
+        proximaPergunta < 7 && respostas[currentStep][proximaPergunta] != 0) {
+      proximaPergunta++;
+    }
+    return proximaPergunta;
+  }
+
   void selecionarEstrela(int index) {
     setState(() {
       selectedStar = index;
@@ -264,6 +280,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
   setEditarResposta(i) {
     setState(() {
       currentQuestion = i;
+      respostas[currentStep][currentQuestion] = 0;
     });
   }
 }
