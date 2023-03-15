@@ -114,7 +114,7 @@ class _ModalAlertaRespostaState extends State<ModalAlertaResposta> {
                           Strings.editar,
                           style: TextStyle(
                               color: Cores.kAzulBotaoItemColor,
-                              fontSize: 50.sp,
+                              fontSize: 45.sp,
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Roboto-Regular'),
                         ),
@@ -147,7 +147,7 @@ class _ModalAlertaRespostaState extends State<ModalAlertaResposta> {
                         Strings.continuar,
                         style: TextStyle(
                             color: Cores.kWhiteColor,
-                            fontSize: 50.sp,
+                            fontSize: 45.sp,
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Roboto-Regular'),
                       ),

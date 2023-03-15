@@ -233,8 +233,9 @@ class _QuestionsPageState extends State<QuestionsPage> {
     selectedStar = 0;
 
     currentQuestion = obterProximaPergunta();
-    if (currentQuestion == 0) {
+    if (currentQuestion == 7) {
       currentStep++;
+      currentQuestion = 0;
       listaJaRespondida = List.filled(7, false);
     }
 
