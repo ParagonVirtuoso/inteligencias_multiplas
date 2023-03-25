@@ -31,7 +31,6 @@ class Strings {
   static const desejaSair = 'Deseja realmente sair?';
   static const sobreApp = 'Sobre o App';
   static const termosUso = 'Termos de Uso';
-  static const centralAjuda = 'Central de Ajuda';
   static const desenvolvedores = 'Desenvolvedores';
   static const teste = 'Teste';
   static const etapa = 'Etapa';
@@ -60,7 +59,6 @@ class Strings {
   static const playIconAsset = 'assets/icons/play.png';
   static const starIconAsset = 'assets/icons/star.png';
   static const starFullIconAsset = 'assets/icons/starFull.png';
-  static const centralAjudaIconAsset = 'assets/icons/centralAjuda.png';
   static const desenvolvedoresIconAsset = 'assets/icons/desenvolvedores.png';
   static const sobreAppIconAsset = 'assets/icons/sobreApp.png';
   static const termosUsoAppIconAsset = 'assets/icons/termosUso.png';

@@ -110,15 +110,6 @@ class _DrawerCustomState extends State<DrawerCustom> {
             ),
             GestureDetector(
               child: const ButtonDrawer(
-                icon: Strings.centralAjudaIconAsset,
-                text: Strings.centralAjuda,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-              ),
-              onTap: () {},
-            ),
-            GestureDetector(
-              child: const ButtonDrawer(
                 icon: Strings.termosUsoAppIconAsset,
                 text: Strings.termosUso,
                 corFundo: Cores.kAzulDrawerItemColor,

@@ -24,6 +24,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   List<List<int>> respostas =
       List.generate(10, (i) => List.filled(7, 0), growable: true);
+  var listaJaRespondida = [false, false, false, false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +152,9 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         ),
                       ),
                       StarRate(
-                        selectedStar: selectedStar,
-                        selecionarEstrela: selecionarEstrela,
-                      ),
+                          selectedStar: selectedStar,
+                          selecionarEstrela: selecionarEstrela,
+                          listaJaRespondida: listaJaRespondida),
                       GestureDetector(
                         onTap: () {
                           registrarResposta();
@@ -194,64 +195,93 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   void registrarResposta() {
-    var resposta = selectedStar;
-    if (selectedStar != 0) {
-      if (currentQuestion < 6) {
-        for (int i = 0; i < 7; i++) {
-          if (respostas[currentStep][i] == selectedStar) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(Strings.voceUsouSelecao),
-                backgroundColor: Cores.kErroColor,
-              ),
-            );
-            showModalBottomSheet<void>(
-              context: context,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(90.r),
-                  topRight: Radius.circular(90.r),
-                ),
-              ),
-              builder: (BuildContext context) {
-                return ModalAlertaResposta(currentQuestion: currentQuestion, respostaIgual: i );
-              },
-            );
-            resposta = 0;
-          }
-        }
-        if (resposta != 0) {
-          respostas[currentStep][currentQuestion] = selectedStar;
-          setState(() {
-            progressoTotal += 0.0142;
-            selectedStar = 0;
-            corBotaoNext = Cores.kAzulBotaoDisableItemColor;
-            currentQuestion += 1;
-          });
-        }
-      } else {
-        setState(() {
-          progressoTotal += 0.0142;
-          selectedStar = 0;
-          corBotaoNext = Cores.kAzulBotaoDisableItemColor;
-          currentQuestion = 0;
-          currentStep += 1;
-        });
+    if (!verificarSelecaoEstrela()) {
+      return;
+    }
+
+    for (int i = 0; i < 7; i++) {
+      if (respostas[currentStep][i] == selectedStar) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(Strings.voceUsouSelecao),
+            backgroundColor: Cores.kErroColor,
+          ),
+        );
+        showModalBottomSheet<void>(
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(90.r),
+              topRight: Radius.circular(90.r),
+            ),
+          ),
+          builder: (BuildContext context) {
+            return ModalAlertaResposta(
+                currentQuestion: currentQuestion,
+                respostaIgual: i,
+                setEditarResposta: setEditarResposta);
+          },
+        );
+        selectedStar = 0;
+        return;
       }
-    } else {
+    }
+
+    respostas[currentStep][currentQuestion] = selectedStar;
+    progressoTotal += 0.0142;
+    listaJaRespondida[selectedStar - 1] = true;
+    selectedStar = 0;
+
+    currentQuestion = obterProximaPergunta();
+    if (currentQuestion == 7) {
+      currentStep++;
+      currentQuestion = 0;
+      listaJaRespondida = List.filled(7, false);
+    }
+
+    setState(() {
+      progressoTotal;
+      selectedStar;
+      corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+      currentQuestion;
+      currentStep;
+      listaJaRespondida;
+    });
+  }
+
+  bool verificarSelecaoEstrela() {
+    if (selectedStar == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(Strings.selecioneEstrela),
           backgroundColor: Cores.kAlertaColor,
         ),
       );
+      return false;
     }
+    return true;
+  }
+
+  int obterProximaPergunta() {
+    int proximaPergunta = currentQuestion;
+    while (
+        proximaPergunta < 7 && respostas[currentStep][proximaPergunta] != 0) {
+      proximaPergunta++;
+    }
+    return proximaPergunta;
   }
 
   void selecionarEstrela(int index) {
     setState(() {
       selectedStar = index;
       corBotaoNext = Cores.kAzulBotaoItemColor;
+    });
+  }
+
+  setEditarResposta(i) {
+    setState(() {
+      currentQuestion = i;
+      respostas[currentStep][currentQuestion] = 0;
     });
   }
 }

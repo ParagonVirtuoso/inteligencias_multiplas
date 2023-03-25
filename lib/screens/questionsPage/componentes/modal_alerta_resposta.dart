@@ -4,9 +4,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/cores.dart';
 import '../../../utils/strings.dart';
 
-class ModalAlertaResposta extends StatelessWidget {
-  const ModalAlertaResposta({Key? key}) : super(key: key);
+class ModalAlertaResposta extends StatefulWidget {
+  final Function setEditarResposta;
+  final int respostaIgual;
+  ModalAlertaResposta(
+      {Key? key,
+      required currentQuestion,
+      required this.respostaIgual,
+      required this.setEditarResposta})
+      : super(key: key);
 
+  @override
+  State<ModalAlertaResposta> createState() => _ModalAlertaRespostaState();
+}
+
+class _ModalAlertaRespostaState extends State<ModalAlertaResposta> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,7 +95,10 @@ class ModalAlertaResposta extends StatelessWidget {
                             color: Cores.kAzulBotaoItemColor, width: 6.sp),
                       ),
                     ),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => {
+                          widget.setEditarResposta(widget.respostaIgual),
+                          Navigator.pop(context)
+                        },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +114,7 @@ class ModalAlertaResposta extends StatelessWidget {
                           Strings.editar,
                           style: TextStyle(
                               color: Cores.kAzulBotaoItemColor,
-                              fontSize: 50.sp,
+                              fontSize: 45.sp,
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Roboto-Regular'),
                         ),
@@ -132,7 +147,7 @@ class ModalAlertaResposta extends StatelessWidget {
                         Strings.continuar,
                         style: TextStyle(
                             color: Cores.kWhiteColor,
-                            fontSize: 50.sp,
+                            fontSize: 45.sp,
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Roboto-Regular'),
                       ),
