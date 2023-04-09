@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   )),
               Container(
-                height: 1325.h,
+                height: 1290.h,
                 width: 1080.w,
                 padding: EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
                 decoration: const BoxDecoration(

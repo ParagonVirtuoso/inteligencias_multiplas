@@ -5,6 +5,7 @@ import 'package:inteligencias_multiplas/screens/questionsPage/componentes/star_r
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/etapas.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
+import '../../controller/finishTestController/finish_test_controller.dart';
 import '../../utils/perguntas.dart';
 import 'componentes/modal_alerta_resposta.dart';
 
@@ -92,7 +93,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 20.h),
+                        margin: EdgeInsets.only(top: 10.h),
                         height: 120.h,
                         alignment: Alignment.center,
                         child: Text(
@@ -104,7 +105,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         ),
                       ),
                       Container(
-                        height: 850.h,
+                        height: 820.h,
                         margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
                         child: Image.asset(
                           Strings.pergunta1Asset,
@@ -263,6 +264,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   int obterProximaPergunta() {
+    FinishResultController().navResult(context);
     int proximaPergunta = currentQuestion;
     while (
         proximaPergunta < 7 && respostas[currentStep][proximaPergunta] != 0) {
