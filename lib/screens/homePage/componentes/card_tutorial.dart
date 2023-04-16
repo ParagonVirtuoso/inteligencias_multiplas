@@ -17,6 +17,7 @@ class CardTutorial extends StatelessWidget {
           style: TextStyle(
             fontSize: 60.sp,
             color: Cores.kTertiaryColor,
+            fontFamily: 'Roboto-Regular',
             fontWeight: FontWeight.w700,
           ),
         ),

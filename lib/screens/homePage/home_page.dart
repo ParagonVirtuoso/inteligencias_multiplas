@@ -89,6 +89,7 @@ class _HomePageState extends State<HomePage> {
                             Strings.bemVindoTelaHome,
                             style: TextStyle(
                                 fontSize: 65.sp,
+                                fontFamily: 'Roboto-Regular',
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -96,6 +97,7 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 75.sp,
                                   color: Colors.white,
+                                  fontFamily: 'Roboto-Regular',
                                   fontWeight: FontWeight.w700)),
                         ],
                       ))

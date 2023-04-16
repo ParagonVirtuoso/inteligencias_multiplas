@@ -49,6 +49,8 @@ class Strings {
   static const editarError = ' editar ';
   static const classifiAnterior = ' a classificação da pergunta anterior.';
   static const continuar = 'Continuar';
+  static const verResultados = 'Ver resultados';
+  static const questionarioConcluido = 'Parabéns, questionário concluído!';
 
 //assets
   static const logoAsset = 'assets/icons/logo.png';
@@ -67,4 +69,5 @@ class Strings {
   static const editIconAsset = 'assets/icons/edit.png';
   static const pergunta1Asset = 'assets/etapas/etapa-1/pergunta-1.png';
   static const proximoIconAsset = 'assets/icons/proximo.png';
+  static const concluidoAsset = 'assets/resultado/concluido.png';
 }

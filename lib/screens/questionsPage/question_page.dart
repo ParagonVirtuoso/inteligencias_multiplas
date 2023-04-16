@@ -264,7 +264,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   int obterProximaPergunta() {
-    FinishResultController().navResult(context);
     int proximaPergunta = currentQuestion;
     while (
         proximaPergunta < 7 && respostas[currentStep][proximaPergunta] != 0) {
