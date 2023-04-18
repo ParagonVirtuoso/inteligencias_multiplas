@@ -51,6 +51,8 @@ class Strings {
   static const continuar = 'Continuar';
   static const verResultados = 'Ver resultados';
   static const questionarioConcluido = 'Parabéns, questionário concluído!';
+  static const deslizeResultados =
+      'Deslize para cima e veja cada um dos seus resultados!';
 
 //assets
   static const logoAsset = 'assets/icons/logo.png';

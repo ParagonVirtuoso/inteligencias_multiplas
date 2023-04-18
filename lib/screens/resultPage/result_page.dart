@@ -29,6 +29,15 @@ class _ResultPageState extends State<ResultPage> {
                 left: 50.w, right: 50.w, top: 10.h, bottom: 10.h),
             child: Column(children: [
               Container(
+                margin: EdgeInsets.only(top: 5.h, bottom: 50.h),
+                child: Text(Strings.deslizeResultados,
+                    style: TextStyle(
+                        fontSize: 50.sp,
+                        color: Cores.kWhiteColor,
+                        fontFamily: 'Roboto-Regular',
+                        fontWeight: FontWeight.w500)),
+              ),
+              Container(
                 height: 380.h,
                 decoration: BoxDecoration(
                     color: Cores.kWhiteColor,
