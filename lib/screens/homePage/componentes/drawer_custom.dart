@@ -106,7 +106,9 @@ class _DrawerCustomState extends State<DrawerCustom> {
                 corFundo: Cores.kAzulDrawerItemColor,
                 corTexto: Cores.kTertiaryColor,
               ),
-              onTap: () {},
+              onTap: () {
+                HomeController().navDevelopers(context);
+              },
             ),
             GestureDetector(
               child: const ButtonDrawer(
