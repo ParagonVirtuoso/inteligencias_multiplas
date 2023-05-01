@@ -10,4 +10,8 @@ class HomeController {
   void navTeste(context) {
     Navigator.of(context).pushNamed('/questions');
   }
+
+  void navDevelopers(context) {
+    Navigator.of(context).pushNamed('/developers');
+  }
 }

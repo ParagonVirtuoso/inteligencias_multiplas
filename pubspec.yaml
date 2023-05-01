@@ -35,8 +35,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_screenutil: ^5.6.1
-  firebase_core: ^2.4.0
-  firebase_auth: ^4.2.1
+  firebase_core: ^2.9.0
+  firebase_auth: ^4.4.0
   font_awesome_flutter: ^10.1.0
   carousel_slider: ^4.1.1
   google_sign_in: ^5.4.4
@@ -82,6 +82,7 @@ flutter:
     - assets/icons/proximo.png
     - assets/icons/edit.png
     - assets/etapas/etapa-1/pergunta-1.png
+    - assets/resultado/concluido.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
