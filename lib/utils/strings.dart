@@ -72,4 +72,7 @@ class Strings {
   static const pergunta1Asset = 'assets/etapas/etapa-1/pergunta-1.png';
   static const proximoIconAsset = 'assets/icons/proximo.png';
   static const concluidoAsset = 'assets/resultado/concluido.png';
+  static const githubIconAsset = 'assets/icons/github.png';
+  static const linkedinIconAsset = 'assets/icons/linkedin.png';
+  static const instagramIconAsset = 'assets/icons/instagram.png';
 }

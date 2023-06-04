@@ -62,7 +62,8 @@ class _HomePageState extends State<HomePage> {
             systemOverlayStyle: _statusBarIcon,
             iconTheme: const IconThemeData(color: Colors.white),
           ),
-          body: Column(
+          body: Flex(
+            direction: Axis.vertical,
             children: [
               Container(
                   height: 370.h,
@@ -103,19 +104,21 @@ class _HomePageState extends State<HomePage> {
                       ))
                     ],
                   )),
-              Container(
-                height: 1290.h,
-                width: 1080.w,
-                padding: EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding:
+                      EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                    ),
                   ),
+                  child: const CardTutorial(),
                 ),
-                child: const CardTutorial(),
-              ),
+              )
             ],
           )),
     );

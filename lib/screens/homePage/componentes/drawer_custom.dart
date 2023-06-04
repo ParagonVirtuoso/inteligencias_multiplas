@@ -27,51 +27,58 @@ class _DrawerCustomState extends State<DrawerCustom> {
     return Column(
       children: [
         Container(
-          height: 600.h,
-          decoration: const BoxDecoration(
-            color: Cores.kBorderColor,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                width: 170.w,
-                height: 150.h,
-                margin: EdgeInsets.only(bottom: 20.h),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    widget.profilePic,
-                  ),
-                ),
+            height: 600.h,
+            decoration: const BoxDecoration(
+              color: Cores.kBorderColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
               ),
-              Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(widget.user,
-                          style: TextStyle(
-                              fontSize: 45.sp,
-                              color: Cores.kBlackColor,
-                              fontWeight: FontWeight.w700)),
-                      SizedBox(
-                          width: 400.w,
-                          child: Text(widget.email,
+            ),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 50.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: 170.w,
+                    height: 150.h,
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        widget.profilePic,
+                      ),
+                    ),
+                  ),
+                  Container(
+                      height: 150.h,
+                      width: 380.w,
+                      padding: EdgeInsets.only(left: 20.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(widget.user,
                               style: TextStyle(
-                                  fontSize: 30.sp,
-                                  color: Cores.kDeepGreyColor,
-                                  fontWeight: FontWeight.w500))),
-                    ],
-                  ))
-            ],
-          ),
-        ),
+                                fontSize: 42.sp,
+                                color: Cores.kBlackColor,
+                                fontWeight: FontWeight.w700,
+                                overflow: TextOverflow.ellipsis,
+                              )),
+                          SizedBox(
+                              width: 400.w,
+                              child: Text(widget.email,
+                                  style: TextStyle(
+                                    fontSize: 30.sp,
+                                    color: Cores.kDeepGreyColor,
+                                    fontWeight: FontWeight.w500,
+                                    overflow: TextOverflow.ellipsis,
+                                  ))),
+                        ],
+                      ))
+                ],
+              ),
+            )),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
