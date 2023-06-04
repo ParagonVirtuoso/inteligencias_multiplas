@@ -39,7 +39,7 @@ dependencies:
   firebase_auth: ^4.4.0
   font_awesome_flutter: ^10.1.0
   carousel_slider: ^4.1.1
-  google_sign_in: ^5.4.4
+  google_sign_in: ^6.1.3
   flutter_facebook_auth: ^5.0.6
 
 dev_dependencies:
@@ -83,6 +83,9 @@ flutter:
     - assets/icons/edit.png
     - assets/etapas/etapa-1/pergunta-1.png
     - assets/resultado/concluido.png
+    - assets/icons/github.png
+    - assets/icons/linkedin.png
+    - assets/icons/instagram.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
