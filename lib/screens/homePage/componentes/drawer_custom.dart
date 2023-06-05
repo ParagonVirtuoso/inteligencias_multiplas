@@ -130,7 +130,9 @@ class _DrawerCustomState extends State<DrawerCustom> {
               text: Strings.sobreApp,
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
-              onTap: () {},
+              onTap: () {
+                HomeController().navAbout(context);
+              },
             ),
             SizedBox(height: 290.h),
             ButtonDrawer(
