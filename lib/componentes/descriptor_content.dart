@@ -72,19 +72,20 @@ class _DesciptorContentState extends State<DesciptorContent> {
                     padding: EdgeInsets.fromLTRB(50.w, 40.h, 50.w, 40.h),
                     child: Image.asset(Strings.logoMarcaAsset),
                   )),
-              Container(
-                height: 1290.h,
-                width: 1080.w,
-                padding: EdgeInsets.only(top: 80.h, left: 100.w, right: 100.w),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+              Expanded(
+                child: Container(
+                  padding:
+                      EdgeInsets.only(top: 80.h, left: 100.w, right: 100.w),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                    ),
                   ),
+                  child: widget.child,
                 ),
-                child: widget.child,
-              ),
+              )
             ],
           )),
     );
