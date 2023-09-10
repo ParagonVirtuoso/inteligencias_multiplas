@@ -2,19 +2,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:inteligencias_multiplas/screens/homePage/componentes/card_tutorial.dart';
-import 'package:inteligencias_multiplas/screens/homePage/componentes/drawer_custom.dart';
-import 'package:inteligencias_multiplas/utils/cores.dart';
-import 'package:inteligencias_multiplas/utils/strings.dart';
+import '../../utils/cores.dart';
+import '../../utils/strings.dart';
+import '../screens/homePage/componentes/drawer_custom.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class DesciptorContent extends StatefulWidget {
+  final Widget? child;
+  const DesciptorContent({super.key, this.child});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<DesciptorContent> createState() => _DesciptorContentState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DesciptorContentState extends State<DesciptorContent> {
   var _statusBarIcon = SystemUiOverlayStyle.light;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   var _user = '';
@@ -62,53 +62,20 @@ class _HomePageState extends State<HomePage> {
             systemOverlayStyle: _statusBarIcon,
             iconTheme: const IconThemeData(color: Colors.white),
           ),
-          body: Flex(
-            direction: Axis.vertical,
+          body: Column(
             children: [
               Container(
                   height: 370.h,
                   width: 1080.w,
                   color: Colors.transparent,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 200.w,
-                        height: 200.h,
-                        margin: EdgeInsets.only(left: 50.w, right: 50.w),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            _profilePic,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            Strings.bemVindoTelaHome,
-                            style: TextStyle(
-                                fontSize: 65.sp,
-                                fontFamily: 'Roboto-Regular',
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Text('$_user.',
-                              style: TextStyle(
-                                  fontSize: 75.sp,
-                                  color: Colors.white,
-                                  fontFamily: 'Roboto-Regular',
-                                  fontWeight: FontWeight.w700)),
-                        ],
-                      ))
-                    ],
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(50.w, 40.h, 50.w, 40.h),
+                    child: Image.asset(Strings.logoMarcaAsset),
                   )),
               Expanded(
-                flex: 1,
                 child: Container(
                   padding:
-                      EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
+                      EdgeInsets.only(top: 80.h, left: 100.w, right: 100.w),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -116,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(50),
                     ),
                   ),
-                  child: const CardTutorial(),
+                  child: widget.child,
                 ),
               )
             ],

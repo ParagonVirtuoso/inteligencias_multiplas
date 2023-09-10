@@ -72,14 +72,13 @@ class _LoginPageState extends State<LoginPage> {
     });
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
-
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
       FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
       await FacebookAuth.instance.getUserData();
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       setState(() {
         carrega = false;
       });
@@ -88,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
       carrega = false;
     });
   }
+
   void _navigateToHome() {
     Navigator.of(context).pushReplacementNamed('/home');
   }
@@ -105,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     if (carrega == true) {
       return Scaffold(
         body: Align(

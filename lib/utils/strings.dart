@@ -30,6 +30,8 @@ class Strings {
   static const nao = 'Não';
   static const desejaSair = 'Deseja realmente sair?';
   static const sobreApp = 'Sobre o App';
+  static const sobreAppDescricao =
+      'Este é um trabalho de conclusão de curso, para universidade Instituto Federal do Tocantins campus Porto Nacional.\nDa turma de Licenciatura em computação do ano de 2016.\nIdealizado e realizado por Denys Fernandes.';
   static const termosUso = 'Termos de Uso';
   static const desenvolvedores = 'Desenvolvedores';
   static const teste = 'Teste';
@@ -53,6 +55,11 @@ class Strings {
   static const questionarioConcluido = 'Parabéns, questionário concluído!';
   static const deslizeResultados =
       'Deslize para cima e veja cada um dos seus resultados!';
+  static const objetivo = 'Objetivo';
+  static const objetivoDescricao =
+      'Com objetivo de realizar um teste para descobrir quais conhecimentos predominam no ser humano.\nA teoria das inteligências múltiplas foi criada pelo psicólogo Howard Gardner na década de 1990, Ele criou essa tese, que se tornou mundialmente conhecida.';
+  static const termosDescricao =
+      'Concordo em fornecer o resultado dos meus testes para fins de levantamentos de dados, para trabalho de conclusão de curso (TCC).';
 
 //assets
   static const logoAsset = 'assets/icons/logo.png';
@@ -72,4 +79,7 @@ class Strings {
   static const pergunta1Asset = 'assets/etapas/etapa-1/pergunta-1.png';
   static const proximoIconAsset = 'assets/icons/proximo.png';
   static const concluidoAsset = 'assets/resultado/concluido.png';
+  static const githubIconAsset = 'assets/icons/github.png';
+  static const linkedinIconAsset = 'assets/icons/linkedin.png';
+  static const instagramIconAsset = 'assets/icons/instagram.png';
 }
