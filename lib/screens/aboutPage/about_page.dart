@@ -22,6 +22,17 @@ class AboutPage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
+        Container(
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.only(bottom: 50.h),
+          child: Text(
+            Strings.sobreAppDescricao,
+            style: TextStyle(
+                fontSize: 55.sp,
+                fontFamily: 'Roboto-Regular',
+                fontWeight: FontWeight.normal),
+          ),
+        ),
       ]),
     );
   }

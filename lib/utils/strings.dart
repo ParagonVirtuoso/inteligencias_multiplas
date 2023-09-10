@@ -30,6 +30,8 @@ class Strings {
   static const nao = 'Não';
   static const desejaSair = 'Deseja realmente sair?';
   static const sobreApp = 'Sobre o App';
+  static const sobreAppDescricao =
+      'Este é um trabalho de conclusão de curso, para universidade Instituto Federal do Tocantins campus Porto Nacional.\nDa turma de Licenciatura em computação do ano de 2016.\nIdealizado e realizado por Denys Fernandes.';
   static const termosUso = 'Termos de Uso';
   static const desenvolvedores = 'Desenvolvedores';
   static const teste = 'Teste';
