@@ -123,7 +123,9 @@ class _DrawerCustomState extends State<DrawerCustom> {
               text: Strings.termosUso,
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
-              onTap: () {},
+              onTap: () {
+                HomeController().navTerms(context);
+              },
             ),
             ButtonDrawer(
               icon: Strings.sobreAppIconAsset,

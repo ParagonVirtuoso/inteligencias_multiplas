@@ -6,6 +6,7 @@ import '../screens/developersPage/developers_page.dart';
 import '../screens/homePage/home_page.dart';
 import '../screens/loginPage/login_page.dart';
 import '../screens/resultPage/result_page.dart';
+import '../screens/termsPage/terms_page.dart';
 
 class Rotas {
   static Map<String, Widget Function(BuildContext)> routes = {
@@ -16,5 +17,6 @@ class Rotas {
     '/result': (context) => const ResultPage(),
     '/developers': (context) => const DevelopersPage(),
     '/about': (context) => const AboutPage(),
+    '/terms': (context) => const TermsPage(),
   };
 }
