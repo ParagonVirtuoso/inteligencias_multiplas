@@ -58,6 +58,8 @@ class Strings {
   static const objetivo = 'Objetivo';
   static const objetivoDescricao =
       'Com objetivo de realizar um teste para descobrir quais conhecimentos predominam no ser humano.\nA teoria das inteligências múltiplas foi criada pelo psicólogo Howard Gardner na década de 1990, Ele criou essa tese, que se tornou mundialmente conhecida.';
+  static const termosDescricao =
+      'Concordo em fornecer o resultado dos meus testes para fins de levantamentos de dados, para trabalho de conclusão de curso (TCC).';
 
 //assets
   static const logoAsset = 'assets/icons/logo.png';

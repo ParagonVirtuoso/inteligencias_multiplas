@@ -14,7 +14,12 @@ class HomeController {
   void navDevelopers(context) {
     Navigator.of(context).pushNamed('/developers');
   }
+
   void navAbout(context) {
     Navigator.of(context).pushNamed('/about');
+  }
+
+  void navTerms(context) {
+    Navigator.of(context).pushNamed('/terms');
   }
 }
