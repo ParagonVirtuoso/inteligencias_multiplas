@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AboutItem extends StatelessWidget {
+class DescriptionTextItem extends StatelessWidget {
   final String sobreTitulo;
   final String sobreDescricao;
 
-  const AboutItem({
+  const DescriptionTextItem({
     Key? key,
     required this.sobreTitulo,
     required this.sobreDescricao,

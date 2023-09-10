@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../componentes/descriptor_content.dart';
 import '../../utils/strings.dart';
-import 'componentes/about_item.dart';
+import '../../componentes/description_text_item.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -14,11 +13,11 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AboutItem(
+            DescriptionTextItem(
               sobreTitulo: Strings.sobreApp,
               sobreDescricao: Strings.sobreAppDescricao,
             ),
-            AboutItem(
+            DescriptionTextItem(
               sobreTitulo: Strings.objetivo,
               sobreDescricao: Strings.objetivoDescricao,
             ),
