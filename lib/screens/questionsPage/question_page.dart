@@ -300,7 +300,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   void tratarDadosFirebase(BuildContext context, dynamic data) {
     if (data['TOTAL'] != null) {
-      FinishResultController().navResult(context);
+      FinishResultController().navResult(context, data['TOTAL']);
       return;
     }
     if (data['ETAPA 1'] != null) {
@@ -410,7 +410,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       respostas[9][4] = data['ETAPA 10']['RESPOSTA5'];
       respostas[9][5] = data['ETAPA 10']['RESPOSTA6'];
       respostas[9][6] = data['ETAPA 10']['RESPOSTA7'];
-      FinishResultController().navFinishTest(context);
+      FinishResultController().navFinishTest(context, respostas);
     }
   }
 }
