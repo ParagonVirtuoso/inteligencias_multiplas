@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(50),
                     ),
                   ),
-                  child: const CardTutorial(),
+                  child: CardTutorial(buscarDadosTeste: buscarDadosTeste),
                 ),
               )
             ],
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> buscarDadosTeste() async {
+  Future<dynamic> buscarDadosTeste() async {
     FirebaseDatabase database = FirebaseDatabase.instance;
     final userProgressDataSnapshot = await database
         .ref()
@@ -140,9 +140,11 @@ class _HomePageState extends State<HomePage> {
         var etapa1 = data!['ETAPA 1'];
         if (etapa1 != null) {
           navigateToQuestions(data);
+          return false;
         }
       }
     }
+    return true;
   }
 
   void navigateToQuestions(dynamic data) {
