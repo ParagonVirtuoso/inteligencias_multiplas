@@ -15,27 +15,30 @@ class _ResultPageState extends State<ResultPage> {
   Object? resultadoTeste;
   List<MapEntry<String, int>>? resultadoOrdenadoMaiorParaMenor;
   var listKeys = {
-    'Linguistica': 'Linguística',
-    'Logico': 'Lógico',
-    'Musical': 'Musical',
-    'Cinestesica': 'Cinestésica',
-    'Interpessoal': 'Interpessoal',
-    'Intrapessoal': 'Intrapessoal',
-    'Espacial': 'Espacial'
+    'Linguistica': Strings.linguistica,
+    'Logico': Strings.logico,
+    'Musical': Strings.musical,
+    'Cinestesica': Strings.cinestesica,
+    'Interpessoal': Strings.interpessoal,
+    'Intrapessoal': Strings.intrapessoal,
+    'Espacial': Strings.espacial,
   };
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    resultadoTeste = ModalRoute.of(context)?.settings.arguments;
-
+  ordenarResultado(resultadoTeste) {
     var keys = (resultadoTeste as Map<Object?, Object?>).keys.toList();
-    var values = (resultadoTeste as Map<Object?, Object?>).values.toList();
+    var values = (resultadoTeste).values.toList();
     resultadoOrdenadoMaiorParaMenor = [];
     for (var i = 0; i < keys.length; i++) {
       resultadoOrdenadoMaiorParaMenor!
           .add(MapEntry(keys[i] as String, values[i] as int));
     }
+    resultadoOrdenadoMaiorParaMenor!.sort((a, b) => b.value.compareTo(a.value));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultadoTeste = ModalRoute.of(context)?.settings.arguments;
+    ordenarResultado(resultadoTeste);
   }
 
   @override
@@ -69,7 +72,6 @@ class _ResultPageState extends State<ResultPage> {
                   itemCount: resultadoOrdenadoMaiorParaMenor!.length,
                   itemBuilder: (context, index) {
                     final item = resultadoOrdenadoMaiorParaMenor![index];
-                    print(item.key);
                     return Container(
                       height: 380.h,
                       margin: EdgeInsets.only(bottom: 40.h),
@@ -101,7 +103,7 @@ class _ResultPageState extends State<ResultPage> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Text(
-                                  '50 pontos',
+                                  '${item.value} ${Strings.pontos}',
                                   style: TextStyle(
                                       fontSize: 45.sp,
                                       color: Cores.kDeepGreyColor,
@@ -124,7 +126,7 @@ class _ResultPageState extends State<ResultPage> {
                                           borderRadius:
                                               BorderRadius.circular(20.r)),
                                       child: Text(
-                                        'Ver mais',
+                                        Strings.verMais,
                                         style: TextStyle(
                                             fontSize: 38.sp,
                                             color: Cores.kWhiteColor,

@@ -60,7 +60,15 @@ class Strings {
       'Com objetivo de realizar um teste para descobrir quais conhecimentos predominam no ser humano.\nA teoria das inteligências múltiplas foi criada pelo psicólogo Howard Gardner na década de 1990, Ele criou essa tese, que se tornou mundialmente conhecida.';
   static const termosDescricao =
       'Concordo em fornecer o resultado dos meus testes para fins de levantamentos de dados, para trabalho de conclusão de curso (TCC).';
-
+  static const linguistica = 'Linguística';
+  static const logico = 'Lógico';
+  static const musical = 'Musical';
+  static const cinestesica = 'Cinestésica';
+  static const interpessoal = 'Interpessoal';
+  static const intrapessoal = 'Intrapessoal';
+  static const espacial = 'Espacial';
+  static const verMais = 'Ver mais';
+  static const pontos = 'Pontos';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
