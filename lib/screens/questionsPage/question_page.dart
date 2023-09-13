@@ -253,7 +253,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
     if (currentQuestion == 7) {
       await salvarListaJaRespondidaFirebase();
       if (currentStep == 9) {
-        FinishResultController().navFinishTest(context, respostas);
+        navegarParaResultados();
         return;
       }
       currentStep++;
@@ -308,7 +308,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   void tratarDadosFirebase(BuildContext context, dynamic data) {
-    for (int i = 1; i <= 10; i++) {
+    for (int i = 1; i <= 9; i++) {
       if (data['ETAPA $i'] != null) {
         setState(() {
           currentStep = i;
@@ -331,6 +331,10 @@ class _QuestionsPageState extends State<QuestionsPage> {
         FinishResultController().navFinishTest(context, respostas);
       });
     }
+  }
+
+  void navegarParaResultados() {
+    FinishResultController().navFinishTest(context, respostas);
   }
 
   Future<void> salvarListaJaRespondidaFirebase() async {
