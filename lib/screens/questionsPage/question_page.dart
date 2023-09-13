@@ -211,7 +211,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
         ));
   }
 
-  void registrarResposta() {
+  Future<void> registrarResposta() async {
     if (!verificarSelecaoEstrela()) {
       return;
     }
@@ -251,7 +251,11 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     currentQuestion = obterProximaPergunta();
     if (currentQuestion == 7) {
-      salvarListaJaRespondidaFirebase();
+      await salvarListaJaRespondidaFirebase();
+      if (currentStep == 9) {
+        FinishResultController().navFinishTest(context, respostas);
+        return;
+      }
       currentStep++;
       currentQuestion = 0;
       listaJaRespondida = List.filled(7, false);
@@ -334,7 +338,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       return;
     }
 
-    database
+    await database
         .ref()
         .child('usuarios')
         .child(_auth.currentUser!.uid)
