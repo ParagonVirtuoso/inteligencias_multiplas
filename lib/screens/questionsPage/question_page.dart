@@ -304,138 +304,26 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   void tratarDadosFirebase(BuildContext context, dynamic data) {
+    for (int i = 1; i <= 10; i++) {
+      if (data['ETAPA $i'] != null) {
+        setState(() {
+          currentStep = i;
+          for (int j = 0; j < 7; j++) {
+            respostas[i - 1][j] = data['ETAPA $i']['RESPOSTA${j + 1}'];
+          }
+          progressoTotal += 0.0142 * 7;
+        });
+      }
+    }
     if (data['TOTAL'] != null) {
       setState(() {
         FinishResultController().navResult(context, data['TOTAL']);
       });
-      return;
-    }
-    if (data['ETAPA 1'] != null) {
+    } else if (data['ETAPA 10'] != null) {
       setState(() {
-        currentStep = 1;
-        respostas[0][0] = data['ETAPA 1']['RESPOSTA1'];
-        respostas[0][1] = data['ETAPA 1']['RESPOSTA2'];
-        respostas[0][2] = data['ETAPA 1']['RESPOSTA3'];
-        respostas[0][3] = data['ETAPA 1']['RESPOSTA4'];
-        respostas[0][4] = data['ETAPA 1']['RESPOSTA5'];
-        respostas[0][5] = data['ETAPA 1']['RESPOSTA6'];
-        respostas[0][6] = data['ETAPA 1']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 2'] != null) {
-      setState(() {
-        currentStep = 2;
-        respostas[1][0] = data['ETAPA 2']['RESPOSTA1'];
-        respostas[1][1] = data['ETAPA 2']['RESPOSTA2'];
-        respostas[1][2] = data['ETAPA 2']['RESPOSTA3'];
-        respostas[1][3] = data['ETAPA 2']['RESPOSTA4'];
-        respostas[1][4] = data['ETAPA 2']['RESPOSTA5'];
-        respostas[1][5] = data['ETAPA 2']['RESPOSTA6'];
-        respostas[1][6] = data['ETAPA 2']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 3'] != null) {
-      setState(() {
-        currentStep = 3;
-        respostas[2][0] = data['ETAPA 3']['RESPOSTA1'];
-        respostas[2][1] = data['ETAPA 3']['RESPOSTA2'];
-        respostas[2][2] = data['ETAPA 3']['RESPOSTA3'];
-        respostas[2][3] = data['ETAPA 3']['RESPOSTA4'];
-        respostas[2][4] = data['ETAPA 3']['RESPOSTA5'];
-        respostas[2][5] = data['ETAPA 3']['RESPOSTA6'];
-        respostas[2][6] = data['ETAPA 3']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 4'] != null) {
-      setState(() {
-        currentStep = 4;
-        respostas[3][0] = data['ETAPA 4']['RESPOSTA1'];
-        respostas[3][1] = data['ETAPA 4']['RESPOSTA2'];
-        respostas[3][2] = data['ETAPA 4']['RESPOSTA3'];
-        respostas[3][3] = data['ETAPA 4']['RESPOSTA4'];
-        respostas[3][4] = data['ETAPA 4']['RESPOSTA5'];
-        respostas[3][5] = data['ETAPA 4']['RESPOSTA6'];
-        respostas[3][6] = data['ETAPA 4']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 5'] != null) {
-      setState(() {
-        currentStep = 5;
-        respostas[4][0] = data['ETAPA 5']['RESPOSTA1'];
-        respostas[4][1] = data['ETAPA 5']['RESPOSTA2'];
-        respostas[4][2] = data['ETAPA 5']['RESPOSTA3'];
-        respostas[4][3] = data['ETAPA 5']['RESPOSTA4'];
-        respostas[4][4] = data['ETAPA 5']['RESPOSTA5'];
-        respostas[4][5] = data['ETAPA 5']['RESPOSTA6'];
-        respostas[4][6] = data['ETAPA 5']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 6'] != null) {
-      setState(() {
-        currentStep = 6;
-        respostas[5][0] = data['ETAPA 6']['RESPOSTA1'];
-        respostas[5][1] = data['ETAPA 6']['RESPOSTA2'];
-        respostas[5][2] = data['ETAPA 6']['RESPOSTA3'];
-        respostas[5][3] = data['ETAPA 6']['RESPOSTA4'];
-        respostas[5][4] = data['ETAPA 6']['RESPOSTA5'];
-        respostas[5][5] = data['ETAPA 6']['RESPOSTA6'];
-        respostas[5][6] = data['ETAPA 6']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 7'] != null) {
-      setState(() {
-        currentStep = 7;
-        respostas[6][0] = data['ETAPA 7']['RESPOSTA1'];
-        respostas[6][1] = data['ETAPA 7']['RESPOSTA2'];
-        respostas[6][2] = data['ETAPA 7']['RESPOSTA3'];
-        respostas[6][3] = data['ETAPA 7']['RESPOSTA4'];
-        respostas[6][4] = data['ETAPA 7']['RESPOSTA5'];
-        respostas[6][5] = data['ETAPA 7']['RESPOSTA6'];
-        respostas[6][6] = data['ETAPA 7']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 8'] != null) {
-      setState(() {
-        currentStep = 8;
-        respostas[7][0] = data['ETAPA 8']['RESPOSTA1'];
-        respostas[7][1] = data['ETAPA 8']['RESPOSTA2'];
-        respostas[7][2] = data['ETAPA 8']['RESPOSTA3'];
-        respostas[7][3] = data['ETAPA 8']['RESPOSTA4'];
-        respostas[7][4] = data['ETAPA 8']['RESPOSTA5'];
-        respostas[7][5] = data['ETAPA 8']['RESPOSTA6'];
-        respostas[7][6] = data['ETAPA 8']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 9'] != null) {
-      setState(() {
-        currentStep = 9;
-        respostas[8][0] = data['ETAPA 9']['RESPOSTA1'];
-        respostas[8][1] = data['ETAPA 9']['RESPOSTA2'];
-        respostas[8][2] = data['ETAPA 9']['RESPOSTA3'];
-        respostas[8][3] = data['ETAPA 9']['RESPOSTA4'];
-        respostas[8][4] = data['ETAPA 9']['RESPOSTA5'];
-        respostas[8][5] = data['ETAPA 9']['RESPOSTA6'];
-        respostas[8][6] = data['ETAPA 9']['RESPOSTA7'];
-        progressoTotal += 0.0142 * 7;
-      });
-    }
-    if (data['ETAPA 10'] != null) {
-      setState(() {
-        respostas[9][0] = data['ETAPA 10']['RESPOSTA1'];
-        respostas[9][1] = data['ETAPA 10']['RESPOSTA2'];
-        respostas[9][2] = data['ETAPA 10']['RESPOSTA3'];
-        respostas[9][3] = data['ETAPA 10']['RESPOSTA4'];
-        respostas[9][4] = data['ETAPA 10']['RESPOSTA5'];
-        respostas[9][5] = data['ETAPA 10']['RESPOSTA6'];
-        respostas[9][6] = data['ETAPA 10']['RESPOSTA7'];
+        for (int j = 0; j < 7; j++) {
+          respostas[9][j] = data['ETAPA 10']['RESPOSTA${j + 1}'];
+        }
         FinishResultController().navFinishTest(context, respostas);
       });
     }
