@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,10 +24,24 @@ class _QuestionsPageState extends State<QuestionsPage> {
   int currentStep = 0;
   int currentQuestion = 0;
   Color corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+  dynamic data;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseDatabase database = FirebaseDatabase.instance;
 
   List<List<int>> respostas =
       List.generate(10, (i) => List.filled(7, 0), growable: true);
   var listaJaRespondida = [false, false, false, false, false, false, false];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    data = ModalRoute.of(context)?.settings.arguments;
+    if (data != null) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        tratarDadosFirebase(context, data);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +211,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
         ));
   }
 
-  void registrarResposta() {
+  Future<void> registrarResposta() async {
     if (!verificarSelecaoEstrela()) {
       return;
     }
@@ -235,6 +251,11 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     currentQuestion = obterProximaPergunta();
     if (currentQuestion == 7) {
+      await salvarListaJaRespondidaFirebase();
+      if (currentStep == 9) {
+        navegarParaResultados();
+        return;
+      }
       currentStep++;
       currentQuestion = 0;
       listaJaRespondida = List.filled(7, false);
@@ -283,6 +304,57 @@ class _QuestionsPageState extends State<QuestionsPage> {
     setState(() {
       currentQuestion = i;
       respostas[currentStep][currentQuestion] = 0;
+    });
+  }
+
+  void tratarDadosFirebase(BuildContext context, dynamic data) {
+    for (int i = 1; i <= 9; i++) {
+      if (data['ETAPA $i'] != null) {
+        setState(() {
+          currentStep = i;
+          for (int j = 0; j < 7; j++) {
+            respostas[i - 1][j] = data['ETAPA $i']['RESPOSTA${j + 1}'];
+          }
+          progressoTotal += 0.0142 * 7;
+        });
+      }
+    }
+    if (data['TOTAL'] != null) {
+      setState(() {
+        FinishResultController().navResult(context, data['TOTAL']);
+      });
+    } else if (data['ETAPA 10'] != null) {
+      setState(() {
+        for (int j = 0; j < 7; j++) {
+          respostas[9][j] = data['ETAPA 10']['RESPOSTA${j + 1}'];
+        }
+        FinishResultController().navFinishTest(context, respostas);
+      });
+    }
+  }
+
+  void navegarParaResultados() {
+    FinishResultController().navFinishTest(context, respostas);
+  }
+
+  Future<void> salvarListaJaRespondidaFirebase() async {
+    if (_auth.currentUser == null) {
+      return;
+    }
+
+    await database
+        .ref()
+        .child('usuarios')
+        .child(_auth.currentUser!.uid)
+        .child('ETAPA ${currentStep + 1}')
+        .set({
+      'RESPOSTA1': respostas[currentStep][0],
+      'RESPOSTA2': respostas[currentStep][1],
+      'RESPOSTA3': respostas[currentStep][2],
+      'RESPOSTA4': respostas[currentStep][3],
+      'RESPOSTA5': respostas[currentStep][4],
+      'RESPOSTA6': respostas[currentStep][5],
+      'RESPOSTA7': respostas[currentStep][6],
     });
   }
 }

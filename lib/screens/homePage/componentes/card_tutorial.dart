@@ -4,7 +4,10 @@ import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class CardTutorial extends StatelessWidget {
-  const CardTutorial({Key? key}) : super(key: key);
+  final Future<dynamic> Function() buscarDadosTeste;
+
+  const CardTutorial({Key? key, required this.buscarDadosTeste})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +67,11 @@ class CardTutorial extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, '/questions');
+          onTap: () async {
+            var dataTest = await buscarDadosTeste();
+            if (dataTest) {
+              Navigator.pushNamed(context, '/questions');
+            }
           },
           child: Container(
             height: 130.h,

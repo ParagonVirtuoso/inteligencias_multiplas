@@ -6,6 +6,7 @@ import 'package:inteligencias_multiplas/screens/homePage/componentes/card_tutori
 import 'package:inteligencias_multiplas/screens/homePage/componentes/drawer_custom.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     _user = _auth.currentUser?.displayName ?? '';
     _profilePic = _auth.currentUser?.photoURL ?? '';
     _email = _auth.currentUser?.email ?? '';
+    buscarDadosTeste();
   }
 
   @override
@@ -116,11 +118,36 @@ class _HomePageState extends State<HomePage> {
                       topRight: Radius.circular(50),
                     ),
                   ),
-                  child: const CardTutorial(),
+                  child: CardTutorial(buscarDadosTeste: buscarDadosTeste),
                 ),
               )
             ],
           )),
     );
+  }
+
+  Future<dynamic> buscarDadosTeste() async {
+    FirebaseDatabase database = FirebaseDatabase.instance;
+    final userProgressDataSnapshot = await database
+        .ref()
+        .child('usuarios')
+        .child(_auth.currentUser!.uid)
+        .get();
+    if (userProgressDataSnapshot.exists) {
+      if (userProgressDataSnapshot.value != null) {
+        Map<Object?, Object?>? data =
+            userProgressDataSnapshot.value as Map<Object?, Object?>?;
+        var etapa1 = data!['ETAPA 1'];
+        if (etapa1 != null) {
+          navigateToQuestions(data);
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  void navigateToQuestions(dynamic data) {
+    Navigator.pushNamed(context, '/questions', arguments: data);
   }
 }
