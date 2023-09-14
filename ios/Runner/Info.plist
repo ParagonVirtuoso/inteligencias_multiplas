@@ -50,13 +50,25 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.821369524921-jfh8vl5go3tp4rtprliill8fakaoivk5</string>
+				<string>fb624202882391075</string>
 			</array>
 		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>624202882391075</string>
+	<key>FacebookClientToken</key>
+	<string>b7dd060d88f88770fb724990e453b78c</string>
+	<key>FacebookDisplayName</key>
+	<string>Inteligências Múltiplas</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+  		<string>fbapi</string>
+  		<string>fb-messenger-api</string>
+  		<string>fbauth2</string>
+  		<string>fbshareextension</string>
 	</array>
 </dict>
 </plist>
