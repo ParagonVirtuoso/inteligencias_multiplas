@@ -43,10 +43,10 @@ class CardTutorial extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.r),
             color: Cores.kBorderColor,
           ),
-          child: Row(
+          child: const Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
+            children: [
               Image(image: AssetImage(Strings.starIconAsset)),
               Image(image: AssetImage(Strings.starIconAsset)),
               Image(image: AssetImage(Strings.starIconAsset)),

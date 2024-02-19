@@ -7,7 +7,7 @@ import '../../../utils/strings.dart';
 class ModalAlertaResposta extends StatefulWidget {
   final Function setEditarResposta;
   final int respostaIgual;
-  ModalAlertaResposta(
+  const ModalAlertaResposta(
       {Key? key,
       required currentQuestion,
       required this.respostaIgual,

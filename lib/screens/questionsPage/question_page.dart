@@ -37,7 +37,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
     super.didChangeDependencies();
     data = ModalRoute.of(context)?.settings.arguments;
     if (data != null) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         tratarDadosFirebase(context, data);
       });
     }

@@ -78,7 +78,7 @@ class DeveloperItem extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 10.h),
-                    Container(
+                    SizedBox(
                       width: 400.w,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,7 +88,7 @@ class DeveloperItem extends StatelessWidget {
                             onTap: () {
                               _launchUrl(githubUrl);
                             },
-                            child: Container(
+                            child: SizedBox(
                               width: 60.w,
                               height: 60.h,
                               child: Image.asset(
@@ -101,7 +101,7 @@ class DeveloperItem extends StatelessWidget {
                             onTap: () {
                               _launchUrl(linkedinUrl);
                             },
-                            child: Container(
+                            child: SizedBox(
                               width: 60.w,
                               height: 60.h,
                               child: Image.asset(
@@ -114,7 +114,7 @@ class DeveloperItem extends StatelessWidget {
                             onTap: () {
                               _launchUrl(instagramUrl);
                             },
-                            child: Container(
+                            child: SizedBox(
                               width: 60.w,
                               height: 60.h,
                               child: Image.asset(
