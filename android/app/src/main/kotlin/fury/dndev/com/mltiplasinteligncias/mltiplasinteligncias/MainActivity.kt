@@ -1,4 +1,4 @@
-package com.github.ParagonVirtuoso.inteligencias_multiplas
+package fury.dndev.com.mltiplasinteligncias
 
 import io.flutter.embedding.android.FlutterActivity
 

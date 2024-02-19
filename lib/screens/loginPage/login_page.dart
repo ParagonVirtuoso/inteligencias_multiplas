@@ -195,20 +195,19 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
                                       alignment: Alignment.centerLeft,
-                                      width: 200.w,
                                       height: 100.h,
-                                      padding: EdgeInsets.only(left: 40.w),
+                                      margin: EdgeInsets.symmetric(horizontal: 30.w),
                                       child: Image.asset(
                                         Strings.googleIconAsset,
                                         fit: BoxFit.cover,
+                                        alignment: Alignment.center,
                                       )),
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    width: 700.w,
                                     margin: EdgeInsets.only(left: 10.w),
                                     child: Text(
                                         Strings.entrarComGoogleTelaLogin,
@@ -281,13 +280,12 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
                                       alignment: Alignment.centerLeft,
-                                      width: 200.w,
-                                      height: 80.h,
-                                      padding: EdgeInsets.only(left: 50.w),
+                                      height: 100.h,
+                                      margin: EdgeInsets.symmetric(horizontal: 30.w),
                                       child: Image.asset(
                                         Strings.facebookIconAsset,
                                         fit: BoxFit.cover,
@@ -295,8 +293,6 @@ class _LoginPageState extends State<LoginPage> {
                                       )),
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    width: 700.w,
-                                    margin: EdgeInsets.only(left: 10.w),
                                     child: Text(
                                         Strings.entrarComFacebookTelaLogin,
                                         style: TextStyle(

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.ParagonVirtuoso.inteligencias_multiplas">
+    package="fury.dndev.com.mltiplasinteligncias">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="inteligencias_multiplas"
