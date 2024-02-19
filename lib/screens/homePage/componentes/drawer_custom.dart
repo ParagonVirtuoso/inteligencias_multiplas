@@ -10,12 +10,12 @@ class DrawerCustom extends StatefulWidget {
   final String user;
   final String email;
 
-  const DrawerCustom(
-      {Key? key,
-      required this.profilePic,
-      required this.user,
-      required this.email})
-      : super(key: key);
+  const DrawerCustom({
+    Key? key,
+    required this.profilePic,
+    required this.user,
+    required this.email,
+  }) : super(key: key);
 
   @override
   State<DrawerCustom> createState() => _DrawerCustomState();
@@ -35,41 +35,55 @@ class _DrawerCustomState extends State<DrawerCustom> {
               bottomRight: Radius.circular(15),
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                width: 170.w,
-                height: 150.h,
-                margin: EdgeInsets.only(bottom: 20.h),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    widget.profilePic,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 50.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 170.w,
+                  height: 150.h,
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      widget.profilePic,
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                  flex: 1,
+                Container(
+                  height: 150.h,
+                  width: 380.w,
+                  padding: EdgeInsets.only(left: 20.w),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(widget.user,
-                          style: TextStyle(
-                              fontSize: 45.sp,
-                              color: Cores.kBlackColor,
-                              fontWeight: FontWeight.w700)),
+                      Text(
+                        widget.user,
+                        style: TextStyle(
+                          fontSize: 42.sp,
+                          color: Cores.kBlackColor,
+                          fontWeight: FontWeight.w700,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                       SizedBox(
-                          width: 400.w,
-                          child: Text(widget.email,
-                              style: TextStyle(
-                                  fontSize: 30.sp,
-                                  color: Cores.kDeepGreyColor,
-                                  fontWeight: FontWeight.w500))),
+                        width: 400.w,
+                        child: Text(
+                          widget.email,
+                          style: TextStyle(
+                            fontSize: 30.sp,
+                            color: Cores.kDeepGreyColor,
+                            fontWeight: FontWeight.w500,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
                     ],
-                  ))
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Column(
@@ -79,93 +93,80 @@ class _DrawerCustomState extends State<DrawerCustom> {
             SizedBox(
               height: 50.h,
             ),
-            GestureDetector(
-              child: const ButtonDrawer(
-                icon: Strings.refazerIconAsset,
-                text: Strings.refazer,
-                corFundo: Cores.kAzulBotaoItemColor,
-                corTexto: Cores.kWhiteColor,
-              ),
+            ButtonDrawer(
+              icon: Strings.refazerIconAsset,
+              text: Strings.refazer,
+              corFundo: Cores.kAzulBotaoItemColor,
+              corTexto: Cores.kWhiteColor,
               onTap: () {},
             ),
-            GestureDetector(
-              child: const ButtonDrawer(
-                icon: Strings.starIconAsset,
-                text: Strings.teste,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-              ),
+            ButtonDrawer(
+              icon: Strings.starIconAsset,
+              text: Strings.teste,
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
               onTap: () {
-                HomeController().navTeste(context);
+                Navigator.of(context).pushReplacementNamed('/home');
               },
             ),
-            GestureDetector(
-              child: const ButtonDrawer(
-                icon: Strings.desenvolvedoresIconAsset,
-                text: Strings.desenvolvedores,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-              ),
-              onTap: () {},
+            ButtonDrawer(
+              icon: Strings.desenvolvedoresIconAsset,
+              text: Strings.desenvolvedores,
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                HomeController().navDevelopers(context);
+              },
             ),
-            GestureDetector(
-              child: const ButtonDrawer(
-                icon: Strings.centralAjudaIconAsset,
-                text: Strings.centralAjuda,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-              ),
-              onTap: () {},
+            ButtonDrawer(
+              icon: Strings.termosUsoAppIconAsset,
+              text: Strings.termosUso,
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                HomeController().navTerms(context);
+              },
             ),
-            GestureDetector(
-              child: const ButtonDrawer(
-                icon: Strings.termosUsoAppIconAsset,
-                text: Strings.termosUso,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-              ),
-              onTap: () {},
-            ),
-            GestureDetector(
-              child: const ButtonDrawer(
-                icon: Strings.sobreAppIconAsset,
-                text: Strings.sobreApp,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-              ),
-              onTap: () {},
+            ButtonDrawer(
+              icon: Strings.sobreAppIconAsset,
+              text: Strings.sobreApp,
+              corFundo: Cores.kAzulDrawerItemColor,
+              corTexto: Cores.kTertiaryColor,
+              onTap: () {
+                HomeController().navAbout(context);
+              },
             ),
             SizedBox(height: 290.h),
-            GestureDetector(
-              child: const ButtonDrawer(
-                icon: Strings.sairAppIconAsset,
-                text: Strings.sair,
-                corFundo: Cores.kBorderColor,
-                corTexto: Cores.kDeepGreyColor,
-              ),
+            ButtonDrawer(
+              icon: Strings.sairAppIconAsset,
+              text: Strings.sair,
+              corFundo: Cores.kBorderColor,
+              corTexto: Cores.kDeepGreyColor,
               onTap: () {
                 showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text(Strings.sair),
-                        content: const Text(Strings.desejaSair),
-                        actions: [
-                          TextButton(
-                            child: const Text(Strings.sim),
-                            onPressed: () {
-                              signOutGoogle();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text(Strings.nao),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      );
-                    });
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text(Strings.sair),
+                      content: const Text(Strings.desejaSair),
+                      actions: [
+                        TextButton(
+                          child: const Text(Strings.sim),
+                          onPressed: () async {
+                            await HomeController().signOut();
+                            _navigateToLoginPage();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text(Strings.nao),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
             Container(
@@ -173,23 +174,19 @@ class _DrawerCustomState extends State<DrawerCustom> {
               child: Text(
                 'Versão 1.0.0',
                 style: TextStyle(
-                    fontSize: 30.sp,
-                    color: Cores.kDeepGreyColor,
-                    fontWeight: FontWeight.w500),
+                  fontSize: 30.sp,
+                  color: Cores.kDeepGreyColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ],
     );
   }
 
-  Future<void> signOutGoogle() async {
-    await HomeController().signOut();
-    navigateOut();
-  }
-
-  void navigateOut() {
+  void _navigateToLoginPage() {
     Navigator.pushReplacementNamed(context, '/');
   }
 }

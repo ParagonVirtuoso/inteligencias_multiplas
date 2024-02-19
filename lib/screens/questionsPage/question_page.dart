@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,7 +7,9 @@ import 'package:inteligencias_multiplas/screens/questionsPage/componentes/star_r
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/etapas.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
+import '../../controller/finishTestController/finish_test_controller.dart';
 import '../../utils/perguntas.dart';
+import 'componentes/modal_alerta_resposta.dart';
 
 class QuestionsPage extends StatefulWidget {
   const QuestionsPage({Key? key}) : super(key: key);
@@ -20,8 +24,24 @@ class _QuestionsPageState extends State<QuestionsPage> {
   int currentStep = 0;
   int currentQuestion = 0;
   Color corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+  dynamic data;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseDatabase database = FirebaseDatabase.instance;
 
-  List<List<int>> respostas = List.generate(10, (i) => List.filled(7, 0), growable: true);
+  List<List<int>> respostas =
+      List.generate(10, (i) => List.filled(7, 0), growable: true);
+  var listaJaRespondida = [false, false, false, false, false, false, false];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    data = ModalRoute.of(context)?.settings.arguments;
+    if (data != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        tratarDadosFirebase(context, data);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +109,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 20.h),
+                        margin: EdgeInsets.only(top: 10.h),
                         height: 120.h,
                         alignment: Alignment.center,
                         child: Text(
@@ -101,7 +121,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         ),
                       ),
                       Container(
-                        height: 850.h,
+                        height: 820.h,
                         margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
                         child: Image.asset(
                           Strings.pergunta1Asset,
@@ -149,9 +169,9 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         ),
                       ),
                       StarRate(
-                        selectedStar: selectedStar,
-                        selecionarEstrela: selecionarEstrela,
-                      ),
+                          selectedStar: selectedStar,
+                          selecionarEstrela: selecionarEstrela,
+                          listaJaRespondida: listaJaRespondida),
                       GestureDetector(
                         onTap: () {
                           registrarResposta();
@@ -191,132 +211,150 @@ class _QuestionsPageState extends State<QuestionsPage> {
         ));
   }
 
-  void registrarResposta() {
-    var resposta = selectedStar;
-    if (selectedStar != 0) {
-      if (currentQuestion < 6) {
-        for (int i = 0; i < 7; i++) {
-          if (respostas[currentStep][i] == selectedStar) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(Strings.voceUsouSelecao),
-                backgroundColor: Cores.kErroColor,
-              ),
-            );
-            showModalBottomSheet<void>(
-              context: context,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(90.r),
-                  topRight: Radius.circular(90.r),
-                ),
-              ),
-              builder: (BuildContext context) {
-                return Container(
-                  height: 900.h,
-                  padding: EdgeInsets.only(
-                      left: 50.w, right: 50.w, bottom: 50.h, top: 50.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Atenção, outra pergunta já foi avaliada com essa quantidade de estrelas.',
-                        style: TextStyle(
-                            fontSize: 65.sp,
-                            fontFamily: 'Roboto-Regular',
-                            fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        'Se você continuar deverá escolher outra classificação para a pergunta atual. Ou você pode editar a classificação da pergunta anterior.',
-                        style: TextStyle(
-                            fontSize: 55.sp,
-                            fontFamily: 'Roboto-Regular',
-                            fontWeight: FontWeight.w400),
-                        textAlign: TextAlign.center,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 320.w,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Cores.kWhiteColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  side: BorderSide(
-                                      color: Cores.kAzulBotaoItemColor,
-                                      width: 4.sp),
-                                ),
-                              ),
-                              onPressed: () => Navigator.pop(context),
-                              child: Text(
-                                'Editar',
-                                style: TextStyle(
-                                    color: Cores.kAzulBotaoItemColor,
-                                    fontSize: 45.sp),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 320.w,
-                            child: ElevatedButton(
-                              onPressed: () => Navigator.pop(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Cores.kAzulBotaoItemColor,
-                              ),
-                              child: Text(
-                                'Continuar',
-                                style: TextStyle(
-                                    color: Cores.kWhiteColor, fontSize: 45.sp),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-            resposta = 0;
-          }
-        }
-        if (resposta != 0) {
-          respostas[currentStep][currentQuestion] = selectedStar;
-          setState(() {
-            progressoTotal += 0.0142;
-            selectedStar = 0;
-            corBotaoNext = Cores.kAzulBotaoDisableItemColor;
-            currentQuestion += 1;
-          });
-        }
-      } else {
-        setState(() {
-          progressoTotal += 0.0142;
-          selectedStar = 0;
-          corBotaoNext = Cores.kAzulBotaoDisableItemColor;
-          currentQuestion = 0;
-          currentStep += 1;
-        });
+  Future<void> registrarResposta() async {
+    if (!verificarSelecaoEstrela()) {
+      return;
+    }
+
+    for (int i = 0; i < 7; i++) {
+      if (respostas[currentStep][i] == selectedStar) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(Strings.voceUsouSelecao),
+            backgroundColor: Cores.kErroColor,
+          ),
+        );
+        showModalBottomSheet<void>(
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(90.r),
+              topRight: Radius.circular(90.r),
+            ),
+          ),
+          builder: (BuildContext context) {
+            return ModalAlertaResposta(
+                currentQuestion: currentQuestion,
+                respostaIgual: i,
+                setEditarResposta: setEditarResposta);
+          },
+        );
+        selectedStar = 0;
+        return;
       }
-    } else {
+    }
+
+    respostas[currentStep][currentQuestion] = selectedStar;
+    progressoTotal += 0.0142;
+    listaJaRespondida[selectedStar - 1] = true;
+    selectedStar = 0;
+
+    currentQuestion = obterProximaPergunta();
+    if (currentQuestion == 7) {
+      await salvarListaJaRespondidaFirebase();
+      if (currentStep == 9) {
+        navegarParaResultados();
+        return;
+      }
+      currentStep++;
+      currentQuestion = 0;
+      listaJaRespondida = List.filled(7, false);
+    }
+
+    setState(() {
+      progressoTotal;
+      selectedStar;
+      corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+      currentQuestion;
+      currentStep;
+      listaJaRespondida;
+    });
+  }
+
+  bool verificarSelecaoEstrela() {
+    if (selectedStar == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(Strings.selecioneEstrela),
           backgroundColor: Cores.kAlertaColor,
         ),
       );
+      return false;
     }
+    return true;
+  }
+
+  int obterProximaPergunta() {
+    int proximaPergunta = currentQuestion;
+    while (
+        proximaPergunta < 7 && respostas[currentStep][proximaPergunta] != 0) {
+      proximaPergunta++;
+    }
+    return proximaPergunta;
   }
 
   void selecionarEstrela(int index) {
     setState(() {
       selectedStar = index;
       corBotaoNext = Cores.kAzulBotaoItemColor;
+    });
+  }
+
+  setEditarResposta(i) {
+    setState(() {
+      currentQuestion = i;
+      respostas[currentStep][currentQuestion] = 0;
+    });
+  }
+
+  void tratarDadosFirebase(BuildContext context, dynamic data) {
+    for (int i = 1; i <= 9; i++) {
+      if (data['ETAPA $i'] != null) {
+        setState(() {
+          currentStep = i;
+          for (int j = 0; j < 7; j++) {
+            respostas[i - 1][j] = data['ETAPA $i']['RESPOSTA${j + 1}'];
+          }
+          progressoTotal += 0.0142 * 7;
+        });
+      }
+    }
+    if (data['TOTAL'] != null) {
+      setState(() {
+        FinishResultController().navResult(context, data['TOTAL']);
+      });
+    } else if (data['ETAPA 10'] != null) {
+      setState(() {
+        for (int j = 0; j < 7; j++) {
+          respostas[9][j] = data['ETAPA 10']['RESPOSTA${j + 1}'];
+        }
+        FinishResultController().navFinishTest(context, respostas);
+      });
+    }
+  }
+
+  void navegarParaResultados() {
+    FinishResultController().navFinishTest(context, respostas);
+  }
+
+  Future<void> salvarListaJaRespondidaFirebase() async {
+    if (_auth.currentUser == null) {
+      return;
+    }
+
+    await database
+        .ref()
+        .child('usuarios')
+        .child(_auth.currentUser!.uid)
+        .child('ETAPA ${currentStep + 1}')
+        .set({
+      'RESPOSTA1': respostas[currentStep][0],
+      'RESPOSTA2': respostas[currentStep][1],
+      'RESPOSTA3': respostas[currentStep][2],
+      'RESPOSTA4': respostas[currentStep][3],
+      'RESPOSTA5': respostas[currentStep][4],
+      'RESPOSTA6': respostas[currentStep][5],
+      'RESPOSTA7': respostas[currentStep][6],
     });
   }
 }

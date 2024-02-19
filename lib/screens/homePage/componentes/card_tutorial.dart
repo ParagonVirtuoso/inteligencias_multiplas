@@ -4,7 +4,10 @@ import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class CardTutorial extends StatelessWidget {
-  const CardTutorial({Key? key}) : super(key: key);
+  final Future<dynamic> Function() buscarDadosTeste;
+
+  const CardTutorial({Key? key, required this.buscarDadosTeste})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +20,7 @@ class CardTutorial extends StatelessWidget {
           style: TextStyle(
             fontSize: 60.sp,
             color: Cores.kTertiaryColor,
+            fontFamily: 'Roboto-Regular',
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -39,10 +43,10 @@ class CardTutorial extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.r),
             color: Cores.kBorderColor,
           ),
-          child: Row(
+          child: const Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
+            children: [
               Image(image: AssetImage(Strings.starIconAsset)),
               Image(image: AssetImage(Strings.starIconAsset)),
               Image(image: AssetImage(Strings.starIconAsset)),
@@ -63,8 +67,11 @@ class CardTutorial extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, '/questions');
+          onTap: () async {
+            var dataTest = await buscarDadosTeste();
+            if (dataTest) {
+              Navigator.pushNamed(context, '/questions');
+            }
           },
           child: Container(
             height: 130.h,

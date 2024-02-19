@@ -6,6 +6,7 @@ import 'package:inteligencias_multiplas/screens/homePage/componentes/card_tutori
 import 'package:inteligencias_multiplas/screens/homePage/componentes/drawer_custom.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     _user = _auth.currentUser?.displayName ?? '';
     _profilePic = _auth.currentUser?.photoURL ?? '';
     _email = _auth.currentUser?.email ?? '';
+    buscarDadosTeste();
   }
 
   @override
@@ -62,7 +64,8 @@ class _HomePageState extends State<HomePage> {
             systemOverlayStyle: _statusBarIcon,
             iconTheme: const IconThemeData(color: Colors.white),
           ),
-          body: Column(
+          body: Flex(
+            direction: Axis.vertical,
             children: [
               Container(
                   height: 370.h,
@@ -89,6 +92,7 @@ class _HomePageState extends State<HomePage> {
                             Strings.bemVindoTelaHome,
                             style: TextStyle(
                                 fontSize: 65.sp,
+                                fontFamily: 'Roboto-Regular',
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -96,26 +100,54 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 75.sp,
                                   color: Colors.white,
+                                  fontFamily: 'Roboto-Regular',
                                   fontWeight: FontWeight.w700)),
                         ],
                       ))
                     ],
                   )),
-              Container(
-                height: 1325.h,
-                width: 1080.w,
-                padding: EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  padding:
+                      EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                    ),
                   ),
+                  child: CardTutorial(buscarDadosTeste: buscarDadosTeste),
                 ),
-                child: const CardTutorial(),
-              ),
+              )
             ],
           )),
     );
+  }
+
+  Future<dynamic> buscarDadosTeste() async {
+    FirebaseDatabase database = FirebaseDatabase.instance;
+    final userProgressDataSnapshot = await database
+        .ref()
+        .child('usuarios')
+        .child(_auth.currentUser!.uid)
+        .get();
+    if (userProgressDataSnapshot.exists) {
+      if (userProgressDataSnapshot.value != null) {
+        Map<Object?, Object?>? data =
+            userProgressDataSnapshot.value as Map<Object?, Object?>?;
+        var etapa1 = data!['ETAPA 1'];
+        if (etapa1 != null) {
+          navigateToQuestions(data);
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  void navigateToQuestions(dynamic data) {
+    Navigator.pushNamed(context, '/questions', arguments: data);
   }
 }
