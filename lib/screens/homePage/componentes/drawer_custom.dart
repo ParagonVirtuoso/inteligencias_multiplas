@@ -106,7 +106,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
               corFundo: Cores.kAzulDrawerItemColor,
               corTexto: Cores.kTertiaryColor,
               onTap: () {
-                HomeController().navTeste(context);
+                Navigator.of(context).pushReplacementNamed('/home');
               },
             ),
             ButtonDrawer(

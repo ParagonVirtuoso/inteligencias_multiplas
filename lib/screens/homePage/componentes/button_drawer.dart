@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:inteligencias_multiplas/utils/cores.dart';
 
 class ButtonDrawer extends StatelessWidget {
   final String icon;
