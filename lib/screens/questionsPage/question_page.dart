@@ -12,7 +12,7 @@ import '../../utils/perguntas.dart';
 import 'componentes/modal_alerta_resposta.dart';
 
 class QuestionsPage extends StatefulWidget {
-  const QuestionsPage({Key? key}) : super(key: key);
+  const QuestionsPage({super.key});
 
   @override
   State<QuestionsPage> createState() => _QuestionsPageState();

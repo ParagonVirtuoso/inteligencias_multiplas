@@ -6,10 +6,10 @@ class DescriptionTextItem extends StatelessWidget {
   final String sobreDescricao;
 
   const DescriptionTextItem({
-    Key? key,
+    super.key,
     required this.sobreTitulo,
     required this.sobreDescricao,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

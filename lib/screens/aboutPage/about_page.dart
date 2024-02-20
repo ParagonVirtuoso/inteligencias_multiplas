@@ -4,7 +4,7 @@ import '../../utils/strings.dart';
 import '../../componentes/description_text_item.dart';
 
 class AboutPage extends StatelessWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({super.key});
 
   @override
   Widget build(BuildContext context) {

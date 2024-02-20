@@ -8,11 +8,10 @@ class ModalAlertaResposta extends StatefulWidget {
   final Function setEditarResposta;
   final int respostaIgual;
   const ModalAlertaResposta(
-      {Key? key,
+      {super.key,
       required currentQuestion,
       required this.respostaIgual,
-      required this.setEditarResposta})
-      : super(key: key);
+      required this.setEditarResposta});
 
   @override
   State<ModalAlertaResposta> createState() => _ModalAlertaRespostaState();
