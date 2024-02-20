@@ -8,13 +8,13 @@ class ButtonDrawer extends StatelessWidget {
   final Color corTexto;
   final VoidCallback onTap;
   const ButtonDrawer({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
     required this.corFundo,
     required this.corTexto,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

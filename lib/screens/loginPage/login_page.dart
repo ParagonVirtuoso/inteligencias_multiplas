@@ -10,7 +10,7 @@ import 'componentes/carousel.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage> {
           _navigateToHome();
         }
       } catch (e) {
-        print(e);
         setState(() {
           carrega = false;
         });

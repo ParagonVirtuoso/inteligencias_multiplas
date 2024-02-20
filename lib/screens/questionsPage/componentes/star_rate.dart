@@ -9,11 +9,10 @@ class StarRate extends StatefulWidget {
   var listaJaRespondida;
 
   StarRate(
-      {Key? key,
+      {super.key,
       required this.selectedStar,
       required this.selecionarEstrela,
-      required this.listaJaRespondida})
-      : super(key: key);
+      required this.listaJaRespondida});
 
   @override
   State<StarRate> createState() => _StarRateState();

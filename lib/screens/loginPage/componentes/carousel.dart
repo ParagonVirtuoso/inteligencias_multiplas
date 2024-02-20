@@ -6,7 +6,7 @@ import '../../../utils/strings.dart';
 import '../../../utils/cores.dart';
 
 class Carousel extends StatefulWidget {
-  const Carousel({Key? key}) : super(key: key);
+  const Carousel({super.key});
 
   @override
   State<Carousel> createState() => _CarouselState();
