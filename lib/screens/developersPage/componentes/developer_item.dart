@@ -14,7 +14,7 @@ class DeveloperItem extends StatelessWidget {
   final String cargo;
 
   const DeveloperItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.email,
     required this.githubUrl,
@@ -22,7 +22,7 @@ class DeveloperItem extends StatelessWidget {
     required this.instagramUrl,
     required this.imageUrl,
     required this.cargo,
-  }) : super(key: key);
+  });
 
   Future<void> _launchUrl(String url) async {
     if (!await launchUrl(Uri.parse(url))) {

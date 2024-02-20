@@ -6,8 +6,7 @@ import 'package:inteligencias_multiplas/utils/strings.dart';
 class CardTutorial extends StatelessWidget {
   final Future<dynamic> Function() buscarDadosTeste;
 
-  const CardTutorial({Key? key, required this.buscarDadosTeste})
-      : super(key: key);
+  const CardTutorial({super.key, required this.buscarDadosTeste});
 
   @override
   Widget build(BuildContext context) {

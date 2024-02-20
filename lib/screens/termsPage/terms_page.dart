@@ -4,7 +4,7 @@ import '../../utils/strings.dart';
 import '../../componentes/description_text_item.dart';
 
 class TermsPage extends StatelessWidget {
-  const TermsPage({Key? key}) : super(key: key);
+  const TermsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

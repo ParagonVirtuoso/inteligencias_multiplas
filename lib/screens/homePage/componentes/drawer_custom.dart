@@ -11,11 +11,11 @@ class DrawerCustom extends StatefulWidget {
   final String email;
 
   const DrawerCustom({
-    Key? key,
+    super.key,
     required this.profilePic,
     required this.user,
     required this.email,
-  }) : super(key: key);
+  });
 
   @override
   State<DrawerCustom> createState() => _DrawerCustomState();
