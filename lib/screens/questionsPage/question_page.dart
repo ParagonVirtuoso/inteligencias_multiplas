@@ -307,18 +307,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
     });
   }
 
-  void tratarDadosFirebase(BuildContext context, dynamic data) {
-    for (int i = 1; i <= 9; i++) {
-      if (data['ETAPA $i'] != null) {
-        setState(() {
-          currentStep = i;
-          for (int j = 0; j < 7; j++) {
-            respostas[i - 1][j] = data['ETAPA $i']['RESPOSTA${j + 1}'];
-          }
-          progressoTotal += 0.0142 * 7;
-        });
-      }
-    }
+  void verificarConclusao(BuildContext context, dynamic data) {
     if (data['TOTAL'] != null) {
       setState(() {
         FinishResultController().navResult(context, data['TOTAL']);
@@ -331,6 +320,21 @@ class _QuestionsPageState extends State<QuestionsPage> {
         FinishResultController().navFinishTest(context, respostas);
       });
     }
+  }
+
+  void tratarDadosFirebase(BuildContext context, dynamic data) {
+    for (int i = 1; i <= 9; i++) {
+      if (data['ETAPA $i'] != null) {
+        setState(() {
+          currentStep = i;
+          for (int j = 0; j < 7; j++) {
+            respostas[i - 1][j] = data['ETAPA $i']['RESPOSTA${j + 1}'];
+          }
+          progressoTotal += 0.0142 * 7;
+        });
+      }
+    }
+    verificarConclusao(context, data);
   }
 
   void navegarParaResultados() {

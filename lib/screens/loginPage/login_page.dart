@@ -29,40 +29,41 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future _realizarLoginGoogle() async {
-    if (_checkBoxValue == false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(Strings.erroAceiteTermosTelaLogin),
-          backgroundColor: Cores.kErroColor,
-        ),
-      );
-    } else {
-      setState(() {
-        carrega = true;
-      });
-      try {
-        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        final GoogleSignInAuthentication? googleAuth =
-            await googleUser?.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
-        );
-        UserCredential result =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-        User? user = result.user;
-        if (user != null) {
-          _navigateToHome();
-        }
-      } catch (e) {
-        setState(() {
-          carrega = false;
-        });
-      }
-      setState(() {
-        carrega = false;
-      });
+    if (!_checkBoxValue) {
+      _showErrorSnackBar();
+      return;
     }
+
+    setState(() => carrega = true);
+
+    try {
+      final googleUser = await GoogleSignIn().signIn();
+      final googleAuth = await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      final result =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = result.user;
+
+      if (user != null) _navigateToHome();
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      setState(() => carrega = false);
+    }
+  }
+
+  void _showErrorSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(Strings.erroAceiteTermosTelaLogin),
+        backgroundColor: Cores.kErroColor,
+      ),
+    );
   }
 
   Future _realizarLoginFacebook() async {
@@ -199,7 +200,8 @@ class _LoginPageState extends State<LoginPage> {
                                   Container(
                                       alignment: Alignment.centerLeft,
                                       height: 100.h,
-                                      margin: EdgeInsets.symmetric(horizontal: 30.w),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 30.w),
                                       child: Image.asset(
                                         Strings.googleIconAsset,
                                         fit: BoxFit.cover,
@@ -284,7 +286,8 @@ class _LoginPageState extends State<LoginPage> {
                                   Container(
                                       alignment: Alignment.centerLeft,
                                       height: 100.h,
-                                      margin: EdgeInsets.symmetric(horizontal: 30.w),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 30.w),
                                       child: Image.asset(
                                         Strings.facebookIconAsset,
                                         fit: BoxFit.cover,
