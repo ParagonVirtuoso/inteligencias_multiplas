@@ -18,52 +18,105 @@ class CardTutorial extends StatelessWidget {
           Strings.comoFunciona,
           style: TextStyle(
             fontSize: 60.sp,
-            color: Cores.kTertiaryColor,
+            color: Cores.kQuaternaryColor,
             fontFamily: 'Roboto-Regular',
             fontWeight: FontWeight.w700,
           ),
+          textScaler: TextScaler.noScaling,
         ),
         SizedBox(
           height: 40.h,
         ),
         Text(
           Strings.avalieCadaQuestao,
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 45.sp,
             color: Cores.kQuaternaryColor,
             fontWeight: FontWeight.w400,
           ),
+          textScaler: TextScaler.noScaling,
         ),
         Container(
-          height: 150.h,
+          height: 130.h,
           margin: EdgeInsets.only(top: 70.h, bottom: 70.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30.r),
-            color: Cores.kBorderColor,
+            color: Cores.kAzulDrawerItemColor,
           ),
           child: const Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image(image: AssetImage(Strings.starIconAsset)),
-              Image(image: AssetImage(Strings.starIconAsset)),
-              Image(image: AssetImage(Strings.starIconAsset)),
-              Image(image: AssetImage(Strings.starIconAsset)),
-              Image(image: AssetImage(Strings.starIconAsset)),
-              Image(image: AssetImage(Strings.starIconAsset)),
-              Image(image: AssetImage(Strings.starIconAsset)),
+              Image(
+                image: AssetImage(Strings.starIconAsset),
+                color: Cores.kQuaternaryColor,
+              ),
+              Image(
+                image: AssetImage(Strings.starIconAsset),
+                color: Cores.kQuaternaryColor,
+              ),
+              Image(
+                image: AssetImage(Strings.starIconAsset),
+                color: Cores.kQuaternaryColor,
+              ),
+              Image(
+                image: AssetImage(Strings.starIconAsset),
+                color: Cores.kQuaternaryColor,
+              ),
+              Image(
+                image: AssetImage(Strings.starIconAsset),
+                color: Cores.kQuaternaryColor,
+              ),
+              Image(
+                image: AssetImage(Strings.starIconAsset),
+                color: Cores.kQuaternaryColor,
+              ),
+              Image(
+                image: AssetImage(Strings.starIconAsset),
+                color: Cores.kQuaternaryColor,
+              ),
             ],
           ),
         ),
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 45.sp,
+              color: Cores.kQuaternaryColor,
+              fontWeight: FontWeight.w400,
+            ),
+            children: <TextSpan>[
+              const TextSpan(
+                text: Strings.voce,
+              ),
+              TextSpan(
+                text: Strings.naoRepetirRespesta,
+                style: TextStyle(
+                  fontSize: 45.sp,
+                  color: Cores.kQuaternaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const TextSpan(
+                text: Strings.naoRepetirRespestaDescricao,
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 40.h,
+        ),
         Text(
           Strings.naoExisteRespostaCerta,
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 45.sp,
             color: Cores.kQuaternaryColor,
             fontWeight: FontWeight.w400,
           ),
+          textScaler: TextScaler.noScaling,
         ),
         GestureDetector(
           onTap: () async {
