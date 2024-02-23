@@ -76,6 +76,7 @@ class Strings {
   static const erroApagarDados = 'Erro ao apagar dados do teste';
   static const dadosTesteVazio = 'O teste não possui progresso para apagar';
   static const dadosTesteApagado = 'Dados do teste apagados com sucesso';
+  static const salveEdicaoAtualAntes = 'Por favor, salve a edição atual antes de editar outra resposta.';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';

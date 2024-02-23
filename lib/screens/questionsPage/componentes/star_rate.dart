@@ -26,7 +26,7 @@ class _StarRateState extends State<StarRate> {
       margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.r),
-        color: Cores.kBorderColor,
+        color: Cores.kAzulDrawerItemColor,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
