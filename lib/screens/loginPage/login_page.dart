@@ -319,6 +319,7 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Checkbox(
                                 value: _checkBoxValue,
+                                activeColor: Cores.kTertiaryColor,
                                 onChanged: (bool? value) {
                                   setState(() {
                                     _checkBoxValue = value!;

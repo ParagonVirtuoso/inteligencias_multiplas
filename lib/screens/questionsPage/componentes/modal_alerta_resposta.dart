@@ -116,6 +116,7 @@ class _ModalAlertaRespostaState extends State<ModalAlertaResposta> {
                               fontSize: 45.sp,
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Roboto-Regular'),
+                            textScaler: TextScaler.noScaling
                         ),
                       ],
                     )),
@@ -149,6 +150,7 @@ class _ModalAlertaRespostaState extends State<ModalAlertaResposta> {
                             fontSize: 45.sp,
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Roboto-Regular'),
+                          textScaler: TextScaler.noScaling
                       ),
                     ],
                   ),

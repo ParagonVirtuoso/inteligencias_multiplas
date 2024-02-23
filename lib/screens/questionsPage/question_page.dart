@@ -23,6 +23,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
   int selectedStar = 0;
   int currentStep = 0;
   int currentQuestion = 0;
+  bool editing = false;
   Color corBotaoNext = Cores.kAzulBotaoDisableItemColor;
   dynamic data;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,14 +34,14 @@ class _QuestionsPageState extends State<QuestionsPage> {
   var listaJaRespondida = [false, false, false, false, false, false, false];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    data = ModalRoute.of(context)?.settings.arguments;
-    if (data != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      data = ModalRoute.of(context)?.settings.arguments;
+      if (data != null) {
         tratarDadosFirebase(context, data);
-      });
-    }
+      }
+    });
   }
 
   @override
@@ -112,13 +113,12 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         margin: EdgeInsets.only(top: 10.h),
                         height: 120.h,
                         alignment: Alignment.center,
-                        child: Text(
-                          etapas[currentStep],
-                          style: TextStyle(
-                              fontSize: 60.sp,
-                              fontFamily: 'Roboto-Regular',
-                              fontWeight: FontWeight.w500),
-                        ),
+                        child: Text(etapas[currentStep],
+                            style: TextStyle(
+                                fontSize: 60.sp,
+                                fontFamily: 'Roboto-Regular',
+                                fontWeight: FontWeight.w500),
+                            textScaler: TextScaler.noScaling),
                       ),
                       Container(
                         height: 820.h,
@@ -151,31 +151,27 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         margin: EdgeInsets.only(top: 20.h),
                         height: 120.h,
                         alignment: Alignment.center,
-                        child: Text(
-                          perguntas[currentStep][currentQuestion],
-                          style: TextStyle(
-                              fontSize: 60.sp,
-                              fontFamily: 'Roboto-Regular',
-                              fontWeight: FontWeight.w500),
-                        ),
+                        child: Text(perguntas[currentStep][currentQuestion],
+                            style: TextStyle(
+                                fontSize: 60.sp,
+                                fontFamily: 'Roboto-Regular',
+                                fontWeight: FontWeight.w500),
+                            textScaler: TextScaler.noScaling),
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 20.h),
-                        child: Text(
-                          Strings.quantEstrelaGosta,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 45.sp, fontFamily: 'Roboto-Regular'),
-                        ),
+                        child: Text(Strings.quantEstrelaGosta,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 45.sp, fontFamily: 'Roboto-Regular'),
+                            textScaler: TextScaler.noScaling),
                       ),
                       StarRate(
                           selectedStar: selectedStar,
                           selecionarEstrela: selecionarEstrela,
                           listaJaRespondida: listaJaRespondida),
                       GestureDetector(
-                        onTap: () {
-                          registrarResposta();
-                        },
+                        onTap: registrarResposta,
                         child: Container(
                           height: 120.h,
                           width: 350.w,
@@ -269,6 +265,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       currentStep;
       listaJaRespondida;
     });
+    editing = false;
   }
 
   bool verificarSelecaoEstrela() {
@@ -300,10 +297,26 @@ class _QuestionsPageState extends State<QuestionsPage> {
     });
   }
 
-  setEditarResposta(i) {
+  setEditarResposta(int questionToEdit) {
+    if (editing) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              Strings.salveEdicaoAtualAntes),
+          backgroundColor: Cores.kAlertaColor,
+        ),
+      );
+      return;
+    }
+
+    editing = true;
     setState(() {
-      currentQuestion = i;
-      respostas[currentStep][currentQuestion] = 0;
+      listaJaRespondida[questionToEdit] = false;
+      corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+      respostas[currentStep][questionToEdit] = 0;
+      selectedStar = 0;
+      currentQuestion = questionToEdit;
+      progressoTotal -= 0.0142;
     });
   }
 
