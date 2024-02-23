@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         width: 200.w,
                         height: 200.h,
-                        margin: EdgeInsets.only(left: 50.w, right: 50.w),
+                        margin: EdgeInsets.only(left: 40.w, right: 40.w),
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(
                             _profilePic,
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                 flex: 1,
                 child: Container(
                   padding:
-                      EdgeInsets.only(top: 50.h, left: 100.w, right: 100.w),
+                      EdgeInsets.only(top: 50.h, left: 90.w, right: 90.w),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(

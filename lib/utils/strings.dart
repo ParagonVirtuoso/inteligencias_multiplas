@@ -22,6 +22,10 @@ class Strings {
       'Avalie cada questão com estrelas de acordo com sua identificação . Determine o seu nível de intimidade classificando-as com estrela de 1 a 7.';
   static const naoExisteRespostaCerta =
       'Lembre-se, não existe resposta errada, cada um de nós temos nossas próprias escolhas.';
+  static const voce = 'Você';
+  static const naoRepetirRespesta = ' não poderá repetir ';
+  static const naoRepetirRespestaDescricao =
+      'a mesma avaliação em diferentes perguntas.';
   static const iniciarTeste = 'Iniciar Teste';
   static const refazer = 'Refazer';
   static const proximo = 'Próximo';
@@ -69,6 +73,10 @@ class Strings {
   static const espacial = 'Espacial';
   static const verMais = 'Ver mais';
   static const pontos = 'Pontos';
+  static const erroApagarDados = 'Erro ao apagar dados do teste';
+  static const dadosTesteVazio = 'O teste não possui progresso para apagar';
+  static const dadosTesteApagado = 'Dados do teste apagados com sucesso';
+  static const salveEdicaoAtualAntes = 'Por favor, salve a edição atual antes de editar outra resposta.';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
