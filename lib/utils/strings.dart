@@ -22,6 +22,10 @@ class Strings {
       'Avalie cada questão com estrelas de acordo com sua identificação . Determine o seu nível de intimidade classificando-as com estrela de 1 a 7.';
   static const naoExisteRespostaCerta =
       'Lembre-se, não existe resposta errada, cada um de nós temos nossas próprias escolhas.';
+  static const voce = 'Você';
+  static const naoRepetirRespesta = ' não poderá repetir ';
+  static const naoRepetirRespestaDescricao =
+      'a mesma avaliação em diferentes perguntas.';
   static const iniciarTeste = 'Iniciar Teste';
   static const refazer = 'Refazer';
   static const proximo = 'Próximo';

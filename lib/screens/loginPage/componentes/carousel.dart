@@ -53,11 +53,6 @@ class _CarouselState extends State<Carousel> {
                                 fit: BoxFit.contain,
                               )
                             : Container(
-                                padding: EdgeInsets.only(
-                                    left: 5.w,
-                                    right: 5.w,
-                                    bottom: 50.h,
-                                    top: 50.h),
                                 alignment: Alignment.center,
                                 margin: EdgeInsets.symmetric(horizontal: 5.w),
                                 child: Text(
