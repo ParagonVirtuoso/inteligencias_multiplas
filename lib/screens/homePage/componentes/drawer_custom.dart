@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inteligencias_multiplas/controller/homeController/home_controller.dart';
@@ -9,13 +11,14 @@ class DrawerCustom extends StatefulWidget {
   final String profilePic;
   final String user;
   final String email;
+  final FirebaseAuth _auth;
 
-  const DrawerCustom({
+  DrawerCustom({
     super.key,
     required this.profilePic,
     required this.user,
     required this.email,
-  });
+  }) : _auth = FirebaseAuth.instance;
 
   @override
   State<DrawerCustom> createState() => _DrawerCustomState();
@@ -98,7 +101,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
               text: Strings.refazer,
               corFundo: Cores.kAzulBotaoItemColor,
               corTexto: Cores.kWhiteColor,
-              onTap: () {},
+              onTap: _resetTest,
             ),
             ButtonDrawer(
               icon: Strings.starIconAsset,
@@ -188,5 +191,35 @@ class _DrawerCustomState extends State<DrawerCustom> {
 
   void _navigateToLoginPage() {
     Navigator.pushReplacementNamed(context, '/');
+  }
+
+  Future<void> _resetTest() async {
+    final databaseRef = FirebaseDatabase.instance
+        .ref()
+        .child('usuarios')
+        .child(widget._auth.currentUser!.uid);
+    final userProgressDataSnapshot = await databaseRef.get();
+
+    if (userProgressDataSnapshot.exists &&
+        userProgressDataSnapshot.value != null) {
+      await databaseRef
+          .remove()
+          .onError((error, stackTrace) =>
+              _showSnackBar(Strings.erroApagarDados, Cores.kErroColor))
+          .then((value) =>
+              _showSnackBar(Strings.dadosTesteApagado, Colors.green));
+    } else {
+      _showSnackBar(Strings.dadosTesteVazio, Cores.kAlertaColor);
+    }
+  }
+
+  void _showSnackBar(String messageError, Color color) {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(messageError),
+        backgroundColor: color,
+      ),
+    );
   }
 }

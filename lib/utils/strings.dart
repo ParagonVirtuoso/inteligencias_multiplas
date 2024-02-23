@@ -73,6 +73,9 @@ class Strings {
   static const espacial = 'Espacial';
   static const verMais = 'Ver mais';
   static const pontos = 'Pontos';
+  static const erroApagarDados = 'Erro ao apagar dados do teste';
+  static const dadosTesteVazio = 'O teste não possui progresso para apagar';
+  static const dadosTesteApagado = 'Dados do teste apagados com sucesso';
 //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
