@@ -95,6 +95,13 @@ class Strings {
   static const pergunta1Asset = 'assets/etapas/etapa-1/pergunta-1.png';
   static const proximoIconAsset = 'assets/icons/proximo.png';
   static const concluidoAsset = 'assets/resultado/concluido.png';
+  static const cinestesicaAsset = 'assets/resultado/cinestesica.png';
+  static const espacialAsset = 'assets/resultado/espacial.png';
+  static const interpessoalAsset = 'assets/resultado/interpessoal.png';
+  static const intrapessoalAsset = 'assets/resultado/intrapessoal.png';
+  static const linguisticoAsset = 'assets/resultado/linguistico.png';
+  static const logicoAsset = 'assets/resultado/logico.png';
+  static const musicalAsset = 'assets/resultado/musical.png';
   static const githubIconAsset = 'assets/icons/github.png';
   static const linkedinIconAsset = 'assets/icons/linkedin.png';
   static const instagramIconAsset = 'assets/icons/instagram.png';
