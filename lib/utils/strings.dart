@@ -77,7 +77,14 @@ class Strings {
   static const dadosTesteVazio = 'O teste não possui progresso para apagar';
   static const dadosTesteApagado = 'Dados do teste apagados com sucesso';
   static const salveEdicaoAtualAntes = 'Por favor, salve a edição atual antes de editar outra resposta.';
-//assets
+  static const linguisticaDescricao = 'A inteligência linguística está relacionada com a capacidade de se comunicar, aprender novas línguas e utilizar a linguagem de forma excepcional, seja na forma escrita ou oral.\nEscritores, jornalistas, linguistas, além de pessoas que têm facilidade para falar idiomas diferentes – os poliglotas – apresentam altos níveis de inteligência linguística.';
+  static const logicoDescricao = 'A inteligência lógico-matemática é a capacidade de resolver problemas matemáticos e lógicos, além de identificar padrões e relações entre objetos e ideias.\nEngenheiros, matemáticos, cientistas e programadores são exemplos de profissionais que possuem alta inteligência lógico-matemática.';
+  static const musicalDescricao = 'A inteligência musical está relacionada com a capacidade de compreender, criar e reproduzir sons, ritmos e melodias.\nMúsicos, compositores, cantores e maestros são exemplos de profissionais que possuem alta inteligência musical.';
+  static const cinestesicaDescricao = 'A inteligência cinestésica está relacionada com a capacidade de controlar os movimentos do corpo, além de perceber e interpretar sensações táteis.\nAtletas, dançarinos, cirurgiões e artistas plásticos são exemplos de profissionais que possuem alta inteligência cinestésica.';
+  static const interpessoalDescricao = 'A inteligência interpessoal está relacionada com a capacidade de compreender e se relacionar com outras pessoas, além de perceber e interpretar emoções e sentimentos.\nPsicólogos, terapeutas, professores e líderes são exemplos de profissionais que possuem alta inteligência interpessoal.';
+  static const intrapessoalDescricao = 'A inteligência intrapessoal está relacionada com a capacidade de compreender e se relacionar consigo mesmo, além de perceber e interpretar emoções e sentimentos.\nFilósofos, psicólogos, terapeutas e líderes espirituais são exemplos de profissionais que possuem alta inteligência intrapessoal.';
+  static const espacialDescricao = 'A inteligência espacial está relacionada com a capacidade de perceber e interpretar imagens, formas e cores, além de compreender o espaço tridimensional.\nArquitetos, designers, artistas plásticos e pilotos são exemplos de profissionais que possuem alta inteligência espacial.';
+  //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';
   static const fundoBrainAsset = 'assets/icons/brain_login.png';
@@ -105,4 +112,5 @@ class Strings {
   static const githubIconAsset = 'assets/icons/github.png';
   static const linkedinIconAsset = 'assets/icons/linkedin.png';
   static const instagramIconAsset = 'assets/icons/instagram.png';
+  static const arrowdetailresult = 'assets/icons/arrowdetailresult.png';
 }

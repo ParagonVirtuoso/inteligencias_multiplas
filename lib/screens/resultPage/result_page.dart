@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/cores.dart';
 import '../../utils/strings.dart';
+import 'componentes/modal_detalhe_inteligencia.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key});
@@ -17,23 +18,39 @@ class _ResultPageState extends State<ResultPage> {
   var resultList = {
     'Linguistica': {
       'key': Strings.linguistica,
-      'asset': Strings.linguisticoAsset
+      'asset': Strings.linguisticoAsset,
+      'descricao': Strings.linguisticaDescricao
     },
-    'Logico': {'key': Strings.logico, 'asset': Strings.logicoAsset},
-    'Musical': {'key': Strings.musical, 'asset': Strings.musicalAsset},
+    'Logico': {
+      'key': Strings.logico,
+      'asset': Strings.logicoAsset,
+      'descricao': Strings.logicoDescricao
+    },
+    'Musical': {
+      'key': Strings.musical,
+      'asset': Strings.musicalAsset,
+      'descricao': Strings.musicalDescricao
+    },
     'Cinestesica': {
       'key': Strings.cinestesica,
-      'asset': Strings.cinestesicaAsset
+      'asset': Strings.cinestesicaAsset,
+      'descricao': Strings.cinestesicaDescricao
     },
     'Interpessoal': {
       'key': Strings.interpessoal,
-      'asset': Strings.interpessoalAsset
+      'asset': Strings.interpessoalAsset,
+      'descricao': Strings.interpessoalDescricao
     },
     'Intrapessoal': {
       'key': Strings.intrapessoal,
-      'asset': Strings.intrapessoalAsset
+      'asset': Strings.intrapessoalAsset,
+      'descricao': Strings.intrapessoalDescricao
     },
-    'Espacial': {'key': Strings.espacial, 'asset': Strings.espacialAsset},
+    'Espacial': {
+      'key': Strings.espacial,
+      'asset': Strings.espacialAsset,
+      'descricao': Strings.espacialDescricao
+    },
   };
   ordenarResultado(resultadoTeste) {
     var keys = (resultadoTeste as Map<Object?, Object?>).keys.toList();
@@ -128,7 +145,11 @@ class _ResultPageState extends State<ResultPage> {
                                       side: const BorderSide(
                                           width: 0, color: Colors.transparent),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      exibirDetalhesInteligencia(
+                                          resultList[item.key]!['key']!,
+                                          resultList[item.key]!['descricao']!);
+                                    },
                                     child: Container(
                                       width: 250.w,
                                       height: 70.h,
@@ -161,5 +182,13 @@ class _ResultPageState extends State<ResultPage> {
                 ),
               )
             ])));
+  }
+
+  void exibirDetalhesInteligencia(title,description) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return ModalDetalheInteligencia(title: title,description: description);
+        });
   }
 }

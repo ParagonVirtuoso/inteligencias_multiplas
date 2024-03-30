@@ -83,6 +83,7 @@ flutter:
     - assets/icons/refazer.png
     - assets/icons/proximo.png
     - assets/icons/edit.png
+    - assets/icons/arrowdetailresult.png
     - assets/etapas/etapa-1/pergunta-1.png
     - assets/resultado/concluido.png
     - assets/resultado/cinestesica.png
