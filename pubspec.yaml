@@ -85,6 +85,13 @@ flutter:
     - assets/icons/edit.png
     - assets/etapas/etapa-1/pergunta-1.png
     - assets/resultado/concluido.png
+    - assets/resultado/cinestesica.png
+    - assets/resultado/espacial.png
+    - assets/resultado/interpessoal.png
+    - assets/resultado/intrapessoal.png
+    - assets/resultado/linguistico.png
+    - assets/resultado/logico.png
+    - assets/resultado/musical.png
     - assets/icons/github.png
     - assets/icons/linkedin.png
     - assets/icons/instagram.png

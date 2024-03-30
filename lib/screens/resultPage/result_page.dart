@@ -14,14 +14,26 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   Object? resultadoTeste;
   List<MapEntry<String, int>>? resultadoOrdenadoMaiorParaMenor;
-  var listKeys = {
-    'Linguistica': Strings.linguistica,
-    'Logico': Strings.logico,
-    'Musical': Strings.musical,
-    'Cinestesica': Strings.cinestesica,
-    'Interpessoal': Strings.interpessoal,
-    'Intrapessoal': Strings.intrapessoal,
-    'Espacial': Strings.espacial,
+  var resultList = {
+    'Linguistica': {
+      'key': Strings.linguistica,
+      'asset': Strings.linguisticoAsset
+    },
+    'Logico': {'key': Strings.logico, 'asset': Strings.logicoAsset},
+    'Musical': {'key': Strings.musical, 'asset': Strings.musicalAsset},
+    'Cinestesica': {
+      'key': Strings.cinestesica,
+      'asset': Strings.cinestesicaAsset
+    },
+    'Interpessoal': {
+      'key': Strings.interpessoal,
+      'asset': Strings.interpessoalAsset
+    },
+    'Intrapessoal': {
+      'key': Strings.intrapessoal,
+      'asset': Strings.intrapessoalAsset
+    },
+    'Espacial': {'key': Strings.espacial, 'asset': Strings.espacialAsset},
   };
   ordenarResultado(resultadoTeste) {
     var keys = (resultadoTeste as Map<Object?, Object?>).keys.toList();
@@ -95,7 +107,7 @@ class _ResultPageState extends State<ResultPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text(
-                                  listKeys[item.key]!,
+                                  resultList[item.key]!['key']!,
                                   style: TextStyle(
                                       fontSize: 50.sp,
                                       color: Cores.kTertiaryColor,
@@ -139,7 +151,7 @@ class _ResultPageState extends State<ResultPage> {
                             SizedBox(
                               width: 600.w,
                               child: Image.asset(
-                                Strings.concluidoAsset,
+                                resultList[item.key]!['asset']!,
                                 fit: BoxFit.cover,
                               ),
                             )
