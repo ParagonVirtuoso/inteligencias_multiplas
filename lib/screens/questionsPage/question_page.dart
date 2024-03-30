@@ -111,22 +111,26 @@ class _QuestionsPageState extends State<QuestionsPage> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(top: 10.h),
-                        height: 120.h,
+                        width: 900.w,
                         alignment: Alignment.center,
-                        child: Text(etapas[currentStep],
+                        child: SingleChildScrollView(
+                          child: Text(
+                            perguntas[currentStep][currentQuestion],
                             style: TextStyle(
                                 fontSize: 60.sp,
                                 fontFamily: 'Roboto-Regular',
                                 fontWeight: FontWeight.w500),
-                            textScaler: TextScaler.noScaling),
+                            textScaler: TextScaler.noScaling,
+                          ),
+                        ),
                       ),
-                      Container(
-                        height: 820.h,
+                      Expanded(
+                          child: Container(
                         margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
                         child: Image.asset(
                           Strings.pergunta1Asset,
                         ),
-                      ),
+                      )),
                       Container(
                         margin: EdgeInsets.only(top: 20.h),
                         decoration: BoxDecoration(
@@ -149,7 +153,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                               color: Cores.kTertiaryColor)),
                       Container(
                         margin: EdgeInsets.only(top: 20.h),
-                        height: 120.h,
+                        width: 900.w,
                         alignment: Alignment.center,
                         child: Text(perguntas[currentStep][currentQuestion],
                             style: TextStyle(
@@ -301,8 +305,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
     if (editing) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-              Strings.salveEdicaoAtualAntes),
+          content: Text(Strings.salveEdicaoAtualAntes),
           backgroundColor: Cores.kAlertaColor,
         ),
       );
