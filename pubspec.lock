@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: "0816f12bbbd9e21f72ea8592b11bce4a628d4e5cb7a81ff9f1eee4f3dc23206e"
+      sha256: a315d1c444402c3fa468de626d33a1c666041c87e9e195e8fb355b7084aefcc1
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.37"
+    version: "1.3.38"
   async:
     dependency: transitive
     description:
@@ -117,10 +117,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: fae4ab4317c2a7afb13d44ef1e3f9f28a630e10016bc5cfe761e8e6a0ed7816a
+      sha256: "1e06b0538ab3108a61d895ee16951670b491c4a94fce8f2d30e5de7a5eca4b28"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -141,26 +141,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_database
-      sha256: "35d357a36bfedb70aae108f7bb80986e6a87905580a537a3a483d77ef20264df"
+      sha256: "992e2cbff5f76c55fdef9be77fd4874bb1e7845411cc0bba35a5e9bfdeaa220a"
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.1"
+    version: "11.0.2"
   firebase_database_platform_interface:
     dependency: transitive
     description:
       name: firebase_database_platform_interface
-      sha256: "7d742b187d6fb3bb93f807fe0ca45709b0803bc0f7103332acfc781a96bf3c6e"
+      sha256: "5ecb0cc188bd9e6f00fd748b0d07386dd6581346be15af8b9428e1daf8dfae21"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.5+37"
+    version: "0.2.5+38"
   firebase_database_web:
     dependency: transitive
     description:
       name: firebase_database_web
-      sha256: "70640f8800261fd6629952b6f83c607e35698bb54d6f215522d12864db800f0e"
+      sha256: bacfaeeee7273ca46dcfff83d18b8114763a988147a8b528800c78125fa6b66d
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.5+9"
+    version: "0.2.5+10"
   flutter:
     dependency: "direct main"
     description: flutter
