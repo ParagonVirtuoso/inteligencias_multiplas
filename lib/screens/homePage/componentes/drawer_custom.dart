@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:inteligencias_multiplas/controller/homeController/home_controller.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/button_drawer.dart';
+import 'package:inteligencias_multiplas/screens/homePage/componentes/dialog_sair.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
@@ -162,25 +163,14 @@ class _DrawerCustomState extends State<DrawerCustom> {
                 onTap: () {
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text(Strings.sair),
-                        content: const Text(Strings.desejaSair),
-                        actions: [
-                          TextButton(
-                            child: const Text(Strings.sim),
-                            onPressed: () async {
-                              await HomeController().signOut();
-                              _navigateToLoginPage();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text(Strings.nao),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
+                    builder: (BuildContext dialogContext) {
+                      return DialogSair(
+                        onConfirm: () async {
+                          Navigator.pop(dialogContext);
+                          await (widget.homeController ?? HomeController())
+                              .signOut();
+                          _navigateToLoginPage();
+                        },
                       );
                     },
                   );
