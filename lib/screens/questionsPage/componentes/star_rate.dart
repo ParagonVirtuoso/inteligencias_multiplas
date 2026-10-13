@@ -4,11 +4,11 @@ import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class StarRate extends StatefulWidget {
-  int selectedStar;
-  var selecionarEstrela;
-  var listaJaRespondida;
+  final int selectedStar;
+  final Function(int) selecionarEstrela;
+  final List<dynamic> listaJaRespondida;
 
-  StarRate(
+  const StarRate(
       {super.key,
       required this.selectedStar,
       required this.selecionarEstrela,

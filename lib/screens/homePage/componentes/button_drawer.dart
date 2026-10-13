@@ -21,7 +21,8 @@ class ButtonDrawer extends StatelessWidget {
     return GestureDetector(
         onTap: onTap,
         child: Container(
-            height: 110.h,
+            constraints: BoxConstraints(minHeight: 110.h),
+            padding: EdgeInsets.symmetric(vertical: 8.h),
             margin: EdgeInsets.only(
                 left: 50.w, right: 50.w, top: 10.h, bottom: 10.h),
             decoration: BoxDecoration(
@@ -38,12 +39,16 @@ class ButtonDrawer extends StatelessWidget {
                         icon,
                       ),
                     )),
-                Text(text,
-                    style: TextStyle(
-                        fontSize: 45.sp,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Roboto-Regular',
-                        color: corTexto))
+                Expanded(
+                  child: Text(text,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: 45.sp,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Roboto-Regular',
+                          color: corTexto)),
+                ),
               ],
             )));
   }

@@ -106,7 +106,7 @@ class _FinishTestState extends State<FinishTest> {
                           borderRadius: BorderRadius.circular(30.r),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withValues(alpha: 0.5),
                               spreadRadius: 2,
                               blurRadius: 3,
                               offset: const Offset(0, 3),

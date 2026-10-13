@@ -121,7 +121,7 @@ class CardTutorial extends StatelessWidget {
         GestureDetector(
           onTap: () async {
             var dataTest = await buscarDadosTeste();
-            if (dataTest) {
+            if (context.mounted && dataTest) {
               Navigator.pushNamed(context, '/questions');
             }
           },

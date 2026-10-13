@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class HomeController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth get _auth => FirebaseAuth.instance;
   Future<void> signOut() async {
     await _auth.signOut();
   }
@@ -21,5 +22,19 @@ class HomeController {
 
   void navTerms(context) {
     Navigator.of(context).pushNamed('/terms');
+  }
+
+  Future<void> avaliarApp({InAppReview? inAppReview, String? appStoreId}) async {
+    final review = inAppReview ?? InAppReview.instance;
+    try {
+      await review.openStoreListing(appStoreId: appStoreId);
+    } catch (_) {
+      try {
+        final reviewDisponivel = await review.isAvailable();
+        if (reviewDisponivel) {
+          await review.requestReview();
+        }
+      } catch (_) {}
+    }
   }
 }

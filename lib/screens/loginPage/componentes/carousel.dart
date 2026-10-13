@@ -13,7 +13,8 @@ class Carousel extends StatefulWidget {
 }
 
 class _CarouselState extends State<Carousel> {
-  final CarouselController _controllerCarousel = CarouselController();
+  final CarouselSliderController _controllerCarousel =
+      CarouselSliderController();
   int _indicadorCarousel = 0;
 
   final List<String> textCarouselList = [
