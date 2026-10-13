@@ -280,5 +280,42 @@ void main() {
       expect(find.byType(DialogSair), findsNothing);
       expect(fakeHomeController.signOutCalled, isFalse);
     });
+
+    testWidgets('DrawerCustom displays dynamic app version',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.75;
+
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      await tester.pumpWidget(
+        ScreenUtilInit(
+          designSize: const Size(1080, 1920),
+          builder: (context, child) => const MaterialApp(
+            home: Scaffold(
+              drawer: Drawer(
+                child: DrawerCustom(
+                  profilePic: '',
+                  user: 'Visitante',
+                  email: '',
+                  appVersion: '4.7.2',
+                ),
+              ),
+              body: Center(child: Text('Body')),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      final scaffoldState = tester.state<ScaffoldState>(find.byType(Scaffold));
+      scaffoldState.openDrawer();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Versão 4.7.2'), findsOneWidget);
+    });
   });
 }

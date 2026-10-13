@@ -48,6 +48,23 @@ class Strings {
   static const termosUso = 'Termos de Uso';
   static const desenvolvedores = 'Desenvolvedores';
   static const avaliarApp = 'Avaliar o aplicativo';
+  static const salvarProgresso = 'Salvar progresso';
+  static const fazerLogin = 'Fazer Login';
+  static const fazerLoginSalvar = 'Fazer Login / Salvar';
+  static const salvarConta = 'Salvar conta';
+  static const salvarResultado = 'Salvar resultado';
+  static const salvarResultadoDescricao =
+      'Conecte com Google ou Facebook para não perder seu histórico.';
+  static const vinculeParaSalvar =
+      'Vincule uma conta para salvar seus testes e acessá-los em qualquer aparelho.';
+  static const contaVinculadaSucesso =
+      'Conta vinculada com sucesso! Seu progresso está salvo.';
+  static const erroVincularConta = 'Erro ao vincular conta. Tente novamente.';
+  static const agoraNao = 'Agora não';
+  static const modoVisitante = 'Modo Visitante';
+  static const salvarGoogleOuFacebook = 'Salvar no Google ou Facebook';
+  static const contaConectada = 'Conta conectada';
+  static const progressoSalvoNuvem = 'Progresso salvo na nuvem';
   static const emailCopiado = 'E-mail copiado para a área de transferência!';
   static const copiarEmail = 'Copiar e-mail';
   static const teste = 'Teste';

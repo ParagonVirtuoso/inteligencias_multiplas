@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
+import '../../controller/homeController/home_controller.dart';
 import '../../utils/cores.dart';
 import '../../utils/strings.dart';
+import '../homePage/componentes/modal_vincular_conta.dart';
 import 'componentes/modal_detalhe_inteligencia.dart';
 
 class ResultPage extends StatefulWidget {
@@ -18,6 +21,85 @@ class _ResultPageState extends State<ResultPage> {
   List<MapEntry<String, int>>? resultadoOrdenadoMaiorParaMenor;
   final InAppReview _inAppReview = InAppReview.instance;
   bool _tentouSolicitarAvaliacao = false;
+  bool _isVisitante = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _verificarVisitante();
+  }
+
+  void _verificarVisitante() {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      _isVisitante = user == null || user.isAnonymous;
+    } catch (_) {
+      _isVisitante = false;
+    }
+  }
+
+  void _abrirModalVincularConta() {
+    showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext modalContext) {
+        return ModalVincularConta(
+          onGooglePressed: () => _vincularGoogle(),
+          onFacebookPressed: () => _vincularFacebook(),
+        );
+      },
+    );
+  }
+
+  Future<void> _vincularGoogle() async {
+    final resultado = await HomeController().vincularContaGoogle();
+    if (!mounted) return;
+
+    if (resultado == true) {
+      setState(() {
+        _isVisitante = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.contaVinculadaSucesso),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (resultado == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.erroVincularConta),
+          backgroundColor: Cores.kErroColor,
+        ),
+      );
+    }
+  }
+
+  Future<void> _vincularFacebook() async {
+    final resultado = await HomeController().vincularContaFacebook();
+    if (!mounted) return;
+
+    if (resultado == true) {
+      setState(() {
+        _isVisitante = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.contaVinculadaSucesso),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (resultado == false) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.erroVincularConta),
+          backgroundColor: Cores.kErroColor,
+        ),
+      );
+    }
+  }
   var resultList = {
     'Linguistica': {
       'key': Strings.linguistica,
@@ -108,9 +190,88 @@ class _ResultPageState extends State<ResultPage> {
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: resultadoOrdenadoMaiorParaMenor?.length ?? 0,
+                  itemCount: (resultadoOrdenadoMaiorParaMenor?.length ?? 0) +
+                      (_isVisitante ? 1 : 0),
                   itemBuilder: (context, index) {
-                    final item = resultadoOrdenadoMaiorParaMenor![index];
+                    if (_isVisitante && index == 0) {
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 40.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 40.w, vertical: 30.h),
+                        decoration: BoxDecoration(
+                          color: Cores.kWhiteColor,
+                          borderRadius: BorderRadius.circular(40.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.15),
+                              spreadRadius: 1,
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.cloud_upload_outlined,
+                              color: Cores.kAzulBotaoItemColor,
+                              size: 70.sp,
+                            ),
+                            SizedBox(width: 25.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    Strings.salvarResultado,
+                                    style: TextStyle(
+                                      fontSize: 38.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Cores.kQuaternaryColor,
+                                      fontFamily: 'Roboto-Regular',
+                                    ),
+                                  ),
+                                  SizedBox(height: 6.h),
+                                  Text(
+                                    Strings.salvarResultadoDescricao,
+                                    style: TextStyle(
+                                      fontSize: 28.sp,
+                                      color: Cores.kDeepGreyColor,
+                                      fontFamily: 'Roboto-Regular',
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 20.w),
+                            ElevatedButton(
+                              onPressed: _abrirModalVincularConta,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Cores.kAzulBotaoItemColor,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.r),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24.w, vertical: 12.h),
+                              ),
+                              child: Text(
+                                Strings.salvarConta,
+                                style: TextStyle(
+                                  fontSize: 32.sp,
+                                  color: Cores.kWhiteColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    final itemIndex = _isVisitante ? index - 1 : index;
+                    final item = resultadoOrdenadoMaiorParaMenor![itemIndex];
                     return Container(
                       height: 380.h,
                       margin: EdgeInsets.only(bottom: 40.h),

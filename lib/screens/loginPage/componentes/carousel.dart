@@ -26,27 +26,25 @@ class _CarouselState extends State<Carousel> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CarouselSlider(
-          carouselController: _controllerCarousel,
-          options: CarouselOptions(
-              enlargeCenterPage: true,
-              autoPlay: true,
-              viewportFraction: 0.9,
-              height: 580.h,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _indicadorCarousel = index;
-                });
-              }),
-          items: textCarouselList.map((textoIndicado) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        height: 400.h,
+        Expanded(
+          child: CarouselSlider(
+            carouselController: _controllerCarousel,
+            options: CarouselOptions(
+                enlargeCenterPage: true,
+                autoPlay: true,
+                viewportFraction: 0.9,
+                height: 720.h,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _indicadorCarousel = index;
+                  });
+                }),
+            items: textCarouselList.map((textoIndicado) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Center(
+                    child: SizedBox(
+                        height: 500.h,
                         width: 1080.w,
                         child: textoIndicado == textCarouselList[0]
                             ? Column(
@@ -73,7 +71,7 @@ class _CarouselState extends State<Carousel> {
                               )
                             : Container(
                                 alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                margin: EdgeInsets.symmetric(horizontal: 10.w),
                                 child: Text(
                                   textoIndicado,
                                   textAlign: TextAlign.justify,
@@ -82,12 +80,12 @@ class _CarouselState extends State<Carousel> {
                                       fontSize: 45.sp,
                                       fontWeight: FontWeight.w500,
                                       fontFamily: 'Roboto-Regular'),
-                                )))
-                  ],
-                );
-              },
-            );
-          }).toList(),
+                                ))),
+                  );
+                },
+              );
+            }).toList(),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +95,7 @@ class _CarouselState extends State<Carousel> {
               child: Container(
                 width: 22.w,
                 height: 22.w,
-                margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (_indicadorCarousel == entry.key
@@ -106,7 +104,8 @@ class _CarouselState extends State<Carousel> {
               ),
             );
           }).toList(),
-        )
+        ),
+        SizedBox(height: 35.h),
       ],
     );
   }

@@ -129,10 +129,18 @@ void main() {
       final googleFinder = find.text(Strings.continuarComGoogleTelaLogin);
       expect(googleFinder, findsOneWidget);
 
-      // Verify tapping terms navigates to terms route
+      // Verify tapping terms opens modal bottom sheet
       await tester.tap(find.text(Strings.termosPoliticaRodapeTelaLogin));
       await tester.pumpAndSettle();
-      expect(find.text('Terms Screen'), findsOneWidget);
+      expect(find.text(Strings.termosUso), findsOneWidget);
+      expect(find.text(Strings.termosDescricao), findsOneWidget);
+      expect(find.text('Entendido'), findsOneWidget);
+
+      // Dismiss modal by tapping 'Entendido'
+      await tester.tap(find.text('Entendido'));
+      await tester.pumpAndSettle();
+      expect(find.text(Strings.termosDescricao), findsNothing);
+      expect(find.text(Strings.entrarTelaLogin), findsOneWidget);
     });
 
     testWidgets('tapping visitor action navigates to home without blocking',

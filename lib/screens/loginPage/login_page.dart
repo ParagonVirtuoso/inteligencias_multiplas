@@ -117,6 +117,113 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void _exibirModalTermos() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext modalContext) {
+        return Container(
+          height: 1050.h,
+          padding: EdgeInsets.symmetric(horizontal: 60.w, vertical: 30.h),
+          decoration: BoxDecoration(
+            color: Cores.kWhiteColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(50.r),
+              topRight: Radius.circular(50.r),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 100.w,
+                height: 10.h,
+                margin: EdgeInsets.only(bottom: 25.h),
+                decoration: BoxDecoration(
+                  color: Cores.kDarkGreyColor.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    Strings.termosUso,
+                    style: TextStyle(
+                      fontSize: 52.sp,
+                      color: Cores.kQuaternaryColor,
+                      fontFamily: 'Roboto-Regular',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(modalContext),
+                    icon: const Icon(Icons.close, color: Cores.kDeepGreyColor),
+                  ),
+                ],
+              ),
+              const Divider(thickness: 1),
+              SizedBox(height: 20.h),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        Strings.termosDescricao,
+                        style: TextStyle(
+                          fontSize: 42.sp,
+                          color: Cores.kQuaternaryColor,
+                          fontFamily: 'Roboto-Regular',
+                          height: 1.5,
+                        ),
+                      ),
+                      SizedBox(height: 30.h),
+                      Text(
+                        Strings.sobreAppDescricao,
+                        style: TextStyle(
+                          fontSize: 38.sp,
+                          color: Cores.kDeepGreyColor,
+                          fontFamily: 'Roboto-Regular',
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              SizedBox(
+                width: double.infinity,
+                height: 115.h,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Cores.kAzulBotaoItemColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.r),
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(modalContext),
+                  child: Text(
+                    'Entendido',
+                    style: TextStyle(
+                      color: Cores.kWhiteColor,
+                      fontSize: 42.sp,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Roboto-Regular',
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (carrega == true) {
@@ -311,9 +418,7 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 55.h),
                             // Termos e Política de Privacidade no rodapé
                             GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/terms');
-                              },
+                              onTap: _exibirModalTermos,
                               behavior: HitTestBehavior.opaque,
                               child: Text(
                                 Strings.termosPoliticaRodapeTelaLogin,
