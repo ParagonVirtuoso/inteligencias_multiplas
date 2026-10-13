@@ -61,6 +61,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  config:
+    enable-swift-package-manager: false
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -97,6 +99,8 @@ flutter:
     - assets/icons/github.png
     - assets/icons/linkedin.png
     - assets/icons/instagram.png
+    - assets/devs/dev.png
+    - assets/devs/ux.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

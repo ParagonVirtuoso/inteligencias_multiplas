@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inteligencias_multiplas/screens/questionsPage/componentes/star_rate.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
-import 'package:inteligencias_multiplas/utils/etapas.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 import '../../controller/finishTestController/finish_test_controller.dart';
 import '../../utils/perguntas.dart';
@@ -19,7 +18,13 @@ class QuestionsPage extends StatefulWidget {
 }
 
 class _QuestionsPageState extends State<QuestionsPage> {
-  double progressoTotal = 0.0;
+  double get progressoTotal {
+    final int total = respostas.length * 7;
+    final int respondidas =
+        respostas.fold(0, (s, etapa) => s + etapa.where((r) => r != 0).length);
+    return respondidas / total;
+  }
+
   int selectedStar = 0;
   int currentStep = 0;
   int currentQuestion = 0;
@@ -37,8 +42,9 @@ class _QuestionsPageState extends State<QuestionsPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
+      if (!mounted) return;
       data = ModalRoute.of(context)?.settings.arguments;
-      if (data != null) {
+      if (data != null && mounted) {
         tratarDadosFirebase(context, data);
       }
     });
@@ -46,6 +52,11 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final int safeStep = currentStep.clamp(0, perguntas.length - 1);
+    final int safeQuestion =
+        currentQuestion.clamp(0, (perguntas[safeStep] as List).length - 1);
+    final String perguntaTexto = perguntas[safeStep][safeQuestion];
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -93,7 +104,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                       child: Container(
                         margin: EdgeInsets.only(right: 50.w),
                         child: Text(
-                          '${Strings.etapa} ${currentStep + 1}',
+                          '${Strings.etapa} ${safeStep + 1}',
                           style: TextStyle(
                               fontSize: 40.sp,
                               fontFamily: 'Roboto-Regular',
@@ -115,7 +126,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         alignment: Alignment.center,
                         child: SingleChildScrollView(
                           child: Text(
-                            perguntas[currentStep][currentQuestion],
+                            perguntaTexto,
                             style: TextStyle(
                                 fontSize: 60.sp,
                                 fontFamily: 'Roboto-Regular',
@@ -145,7 +156,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                               Cores.kTertiaryColor),
                         ),
                       ),
-                      Text('${progressoTotal.toStringAsFixed(2)}% completo',
+                      Text('${(progressoTotal * 100).round()}% completo',
                           style: TextStyle(
                               fontSize: 33.sp,
                               fontFamily: 'Roboto-Regular',
@@ -155,7 +166,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         margin: EdgeInsets.only(top: 20.h),
                         width: 900.w,
                         alignment: Alignment.center,
-                        child: Text(perguntas[currentStep][currentQuestion],
+                        child: Text(perguntaTexto,
                             style: TextStyle(
                                 fontSize: 60.sp,
                                 fontFamily: 'Roboto-Regular',
@@ -245,30 +256,31 @@ class _QuestionsPageState extends State<QuestionsPage> {
     }
 
     respostas[currentStep][currentQuestion] = selectedStar;
-    progressoTotal += 0.0142;
     listaJaRespondida[selectedStar - 1] = true;
     selectedStar = 0;
 
-    currentQuestion = obterProximaPergunta();
-    if (currentQuestion == 7) {
+    final int proximaPergunta = obterProximaPergunta();
+    if (proximaPergunta >= 7) {
       await salvarListaJaRespondidaFirebase();
-      if (currentStep == 9) {
+      if (!mounted) return;
+      if (currentStep >= 9) {
         navegarParaResultados();
         return;
       }
-      currentStep++;
-      currentQuestion = 0;
-      listaJaRespondida = List.filled(7, false);
+      setState(() {
+        currentStep++;
+        currentQuestion = 0;
+        listaJaRespondida = List.filled(7, false);
+        corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+      });
+    } else {
+      if (!mounted) return;
+      setState(() {
+        currentQuestion = proximaPergunta;
+        corBotaoNext = Cores.kAzulBotaoDisableItemColor;
+      });
     }
 
-    setState(() {
-      progressoTotal;
-      selectedStar;
-      corBotaoNext = Cores.kAzulBotaoDisableItemColor;
-      currentQuestion;
-      currentStep;
-      listaJaRespondida;
-    });
     editing = false;
   }
 
@@ -286,12 +298,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   int obterProximaPergunta() {
-    int proximaPergunta = currentQuestion;
-    while (
-        proximaPergunta < 7 && respostas[currentStep][proximaPergunta] != 0) {
-      proximaPergunta++;
+    for (int i = 0; i < 7; i++) {
+      int next = (currentQuestion + i) % 7;
+      if (respostas[currentStep][next] == 0) {
+        return next;
+      }
     }
-    return proximaPergunta;
+    return 7;
   }
 
   void selecionarEstrela(int index) {
@@ -314,12 +327,14 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
     editing = true;
     setState(() {
-      listaJaRespondida[questionToEdit] = false;
+      final int previousStar = respostas[currentStep][questionToEdit];
+      if (previousStar >= 1 && previousStar <= 7) {
+        listaJaRespondida[previousStar - 1] = false;
+      }
       corBotaoNext = Cores.kAzulBotaoDisableItemColor;
       respostas[currentStep][questionToEdit] = 0;
       selectedStar = 0;
       currentQuestion = questionToEdit;
-      progressoTotal -= 0.0142;
     });
   }
 
@@ -346,7 +361,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
           for (int j = 0; j < 7; j++) {
             respostas[i - 1][j] = data['ETAPA $i']['RESPOSTA${j + 1}'];
           }
-          progressoTotal += 0.0142 * 7;
         });
       }
     }
@@ -362,19 +376,23 @@ class _QuestionsPageState extends State<QuestionsPage> {
       return;
     }
 
-    await database
-        .ref()
-        .child('usuarios')
-        .child(_auth.currentUser!.uid)
-        .child('ETAPA ${currentStep + 1}')
-        .set({
-      'RESPOSTA1': respostas[currentStep][0],
-      'RESPOSTA2': respostas[currentStep][1],
-      'RESPOSTA3': respostas[currentStep][2],
-      'RESPOSTA4': respostas[currentStep][3],
-      'RESPOSTA5': respostas[currentStep][4],
-      'RESPOSTA6': respostas[currentStep][5],
-      'RESPOSTA7': respostas[currentStep][6],
-    });
+    try {
+      await database
+          .ref()
+          .child('usuarios')
+          .child(_auth.currentUser!.uid)
+          .child('ETAPA ${currentStep + 1}')
+          .set({
+        'RESPOSTA1': respostas[currentStep][0],
+        'RESPOSTA2': respostas[currentStep][1],
+        'RESPOSTA3': respostas[currentStep][2],
+        'RESPOSTA4': respostas[currentStep][3],
+        'RESPOSTA5': respostas[currentStep][4],
+        'RESPOSTA6': respostas[currentStep][5],
+        'RESPOSTA7': respostas[currentStep][6],
+      });
+    } catch (e) {
+      debugPrint('Erro ao salvar no Firebase: $e');
+    }
   }
 }

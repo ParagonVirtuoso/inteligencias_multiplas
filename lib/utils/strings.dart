@@ -38,6 +38,9 @@ class Strings {
       'Este é um trabalho de conclusão de curso, para universidade Instituto Federal do Tocantins campus Porto Nacional.\nDa turma de Licenciatura em computação do ano de 2016.\nIdealizado e realizado por Denys Fernandes.';
   static const termosUso = 'Termos de Uso';
   static const desenvolvedores = 'Desenvolvedores';
+  static const avaliarApp = 'Avaliar o aplicativo';
+  static const emailCopiado = 'E-mail copiado para a área de transferência!';
+  static const copiarEmail = 'Copiar e-mail';
   static const teste = 'Teste';
   static const etapa = 'Etapa';
   static const selecioneEstrela =
@@ -113,4 +116,6 @@ class Strings {
   static const linkedinIconAsset = 'assets/icons/linkedin.png';
   static const instagramIconAsset = 'assets/icons/instagram.png';
   static const arrowdetailresult = 'assets/icons/arrowdetailresult.png';
+  static const devDenysAsset = 'assets/devs/dev.png';
+  static const devEliasAsset = 'assets/devs/ux.png';
 }

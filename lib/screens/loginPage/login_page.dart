@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
       final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+          FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
       FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
       await FacebookAuth.instance.getUserData();
@@ -93,14 +93,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future _recuperarDadosUsuario() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;
-    if (user != null) {
-      Navigator.pushReplacementNamed(context, Strings.homeNavigate);
+    try {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? user = auth.currentUser;
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, Strings.homeNavigate);
+      }
+    } catch (_) {}
+    if (mounted) {
+      setState(() {
+        carrega = false;
+      });
     }
-    setState(() {
-      carrega = false;
-    });
   }
 
   @override
@@ -186,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(30.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
+                                    color: Colors.grey.withValues(alpha: 0.5),
                                     spreadRadius: 2,
                                     blurRadius: 3,
                                     offset: const Offset(0, 3),
@@ -207,16 +211,20 @@ class _LoginPageState extends State<LoginPage> {
                                         fit: BoxFit.cover,
                                         alignment: Alignment.center,
                                       )),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    margin: EdgeInsets.only(left: 10.w),
-                                    child: Text(
-                                        Strings.entrarComGoogleTelaLogin,
-                                        style: TextStyle(
-                                            color: Cores.kTertiaryColor,
-                                            fontSize: 50.sp,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: 'Roboto-Regular')),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      margin: EdgeInsets.only(left: 10.w),
+                                      child: Text(
+                                          Strings.entrarComGoogleTelaLogin,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              color: Cores.kTertiaryColor,
+                                              fontSize: 50.sp,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: 'Roboto-Regular')),
+                                    ),
                                   )
                                 ],
                               ),
@@ -272,7 +280,7 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(30.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
+                                    color: Colors.grey.withValues(alpha: 0.5),
                                     spreadRadius: 2,
                                     blurRadius: 3,
                                     offset: const Offset(0, 3),
@@ -293,15 +301,19 @@ class _LoginPageState extends State<LoginPage> {
                                         fit: BoxFit.cover,
                                         alignment: Alignment.center,
                                       )),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        Strings.entrarComFacebookTelaLogin,
-                                        style: TextStyle(
-                                            color: Cores.kTertiaryColor,
-                                            fontSize: 50.sp,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: 'Roboto-Regular')),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          Strings.entrarComFacebookTelaLogin,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              color: Cores.kTertiaryColor,
+                                              fontSize: 50.sp,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: 'Roboto-Regular')),
+                                    ),
                                   )
                                 ],
                               ),

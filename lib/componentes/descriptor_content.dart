@@ -16,7 +16,6 @@ class DesciptorContent extends StatefulWidget {
 
 class _DesciptorContentState extends State<DesciptorContent> {
   var _statusBarIcon = SystemUiOverlayStyle.light;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   var _user = '';
   var _profilePic = '';
   var _email = '';
@@ -24,9 +23,12 @@ class _DesciptorContentState extends State<DesciptorContent> {
   @override
   initState() {
     super.initState();
-    _user = _auth.currentUser?.displayName ?? '';
-    _profilePic = _auth.currentUser?.photoURL ?? '';
-    _email = _auth.currentUser?.email ?? '';
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      _user = user?.displayName ?? '';
+      _profilePic = user?.photoURL ?? '';
+      _email = user?.email ?? '';
+    } catch (_) {}
   }
 
   @override
