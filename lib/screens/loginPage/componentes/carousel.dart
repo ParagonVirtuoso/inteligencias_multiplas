@@ -32,7 +32,7 @@ class _CarouselState extends State<Carousel> {
               enlargeCenterPage: true,
               autoPlay: true,
               viewportFraction: 0.9,
-              height: 770.h,
+              height: 580.h,
               onPageChanged: (index, reason) {
                 setState(() {
                   _indicadorCarousel = index;
@@ -48,10 +48,28 @@ class _CarouselState extends State<Carousel> {
                     SizedBox(
                         height: 400.h,
                         width: 1080.w,
-                        child: _indicadorCarousel == 0
-                            ? Image.asset(
-                                textCarouselList[0],
-                                fit: BoxFit.contain,
+                        child: textoIndicado == textCarouselList[0]
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    textCarouselList[0],
+                                    height: 250.h,
+                                    fit: BoxFit.contain,
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  Text(
+                                    Strings.subtituloHeroLogin,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Cores.kWhiteColor,
+                                      fontSize: 42.sp,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: 'Roboto-Regular',
+                                    ),
+                                  ),
+                                ],
                               )
                             : Container(
                                 alignment: Alignment.center,
@@ -77,13 +95,13 @@ class _CarouselState extends State<Carousel> {
             return GestureDetector(
               onTap: () => _controllerCarousel.animateToPage(entry.key),
               child: Container(
-                width: 20.w,
-                height: 30.h,
-                margin: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.w),
+                width: 22.w,
+                height: 22.w,
+                margin: EdgeInsets.symmetric(vertical: 20.h, horizontal: 10.w),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (_indicadorCarousel == entry.key
-                        ? Cores.kTertiaryColor
+                        ? const Color(0xFF1E1E1E).withValues(alpha: 0.6)
                         : Colors.white)),
               ),
             );

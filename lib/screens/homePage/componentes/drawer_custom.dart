@@ -56,9 +56,14 @@ class _DrawerCustomState extends State<DrawerCustom> {
                     width: 170.w,
                     height: 150.h,
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        widget.profilePic,
-                      ),
+                      backgroundColor: Cores.kGreyColor,
+                      backgroundImage: widget.profilePic.trim().isNotEmpty
+                          ? NetworkImage(widget.profilePic)
+                          : null,
+                      child: widget.profilePic.trim().isEmpty
+                          ? const Icon(Icons.person,
+                              color: Cores.kDeepGreyColor, size: 30)
+                          : null,
                     ),
                   ),
                   Container(
@@ -70,7 +75,9 @@ class _DrawerCustomState extends State<DrawerCustom> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.user,
+                          widget.user.trim().isNotEmpty
+                              ? widget.user
+                              : 'Visitante',
                           style: TextStyle(
                             fontSize: 42.sp,
                             color: Cores.kBlackColor,
@@ -81,7 +88,9 @@ class _DrawerCustomState extends State<DrawerCustom> {
                         SizedBox(
                           width: 400.w,
                           child: Text(
-                            widget.email,
+                            widget.email.trim().isNotEmpty
+                              ? widget.email
+                              : 'visitante@app.com',
                             style: TextStyle(
                               fontSize: 30.sp,
                               color: Cores.kDeepGreyColor,

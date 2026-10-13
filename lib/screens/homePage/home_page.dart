@@ -78,9 +78,14 @@ class _HomePageState extends State<HomePage> {
                         height: 200.h,
                         margin: EdgeInsets.only(left: 40.w, right: 40.w),
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            _profilePic,
-                          ),
+                          backgroundColor: Colors.white24,
+                          backgroundImage: _profilePic.trim().isNotEmpty
+                              ? NetworkImage(_profilePic)
+                              : null,
+                          child: _profilePic.trim().isEmpty
+                              ? const Icon(Icons.person,
+                                  color: Colors.white, size: 40)
+                              : null,
                         ),
                       ),
                       Expanded(
@@ -96,7 +101,10 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
-                          Text('$_user.',
+                          Text(
+                              _user.trim().isNotEmpty
+                                  ? '$_user.'
+                                  : 'Visitante.',
                               style: TextStyle(
                                   fontSize: 75.sp,
                                   color: Colors.white,
@@ -127,11 +135,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<dynamic> buscarDadosTeste() async {
+    final user = _auth.currentUser;
+    if (user == null) return true;
     FirebaseDatabase database = FirebaseDatabase.instance;
     final userProgressDataSnapshot = await database
         .ref()
         .child('usuarios')
-        .child(_auth.currentUser!.uid)
+        .child(user.uid)
         .get();
     if (userProgressDataSnapshot.exists) {
       if (userProgressDataSnapshot.value != null) {

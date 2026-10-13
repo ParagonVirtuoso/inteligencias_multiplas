@@ -10,8 +10,17 @@ class Strings {
       "Indivíduos possuem diferentes tipos de mentes e faculdades mentais, apresentando diferentes inteligências, surgindo a teoria das inteligências múltiplas.";
   static const sucessoTelaLogin = "Login realizado com sucesso!";
   static const conecteTelaLogin = "Conecte-se";
+  static const entrarTelaLogin = "Entrar";
+  static const auxAcesseSalvarProgresso =
+      "Acesse para salvar seu histórico e progresso";
   static const entrarComGoogleTelaLogin = "Entrar Com o Google";
+  static const continuarComGoogleTelaLogin = "Continuar com o Google";
   static const entrarComFacebookTelaLogin = "Entrar Com o Facebook";
+  static const continuarComFacebookTelaLogin = "Continuar com o Facebook";
+  static const continuarComoVisitanteTelaLogin = "ou continue como visitante";
+  static const termosPoliticaRodapeTelaLogin =
+      "Ao continuar, você concorda com nossos\nTermos e Política de Privacidade";
+  static const subtituloHeroLogin = "Descubra seus talentos e vocação";
   static const ouTelaLogin = "Ou";
   static const aceitoTermosTelaLogin = "Aceitar termos";
   static const erroAceiteTermosTelaLogin =

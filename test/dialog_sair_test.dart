@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:inteligencias_multiplas/controller/homeController/home_controller.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/dialog_sair.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/drawer_custom.dart';
-import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class _FakeHomeController extends HomeController {
@@ -52,11 +52,20 @@ class _MockHttpHeaders implements HttpHeaders {
 }
 
 class _MockHttpClientResponse implements HttpClientResponse {
+  static final Uint8List _transparent1x1Png = Uint8List.fromList(<int>[
+    0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D,
+    0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
+    0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4, 0x89, 0x00, 0x00, 0x00,
+    0x0A, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x00, 0x01, 0x00, 0x00,
+    0x05, 0x00, 0x01, 0x0D, 0x0A, 0x2D, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x49,
+    0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82,
+  ]);
+
   @override
   int get statusCode => 200;
 
   @override
-  int get contentLength => 0;
+  int get contentLength => _transparent1x1Png.length;
 
   @override
   HttpClientResponseCompressionState get compressionState =>
@@ -69,7 +78,7 @@ class _MockHttpClientResponse implements HttpClientResponse {
     void Function()? onDone,
     bool? cancelOnError,
   }) {
-    return const Stream<List<int>>.empty().listen(
+    return Stream<List<int>>.value(_transparent1x1Png).listen(
       onData,
       onError: onError,
       onDone: onDone,
@@ -143,6 +152,14 @@ void main() {
         (WidgetTester tester) async {
       final fakeHomeController = _FakeHomeController();
 
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.75;
+
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
       await tester.pumpWidget(
         ScreenUtilInit(
           designSize: const Size(1080, 1920),
@@ -180,10 +197,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap Sair in Drawer
-      final sairButtonFinder = find.widgetWithText(ElevatedButton, Strings.sair);
-      // Wait: in drawer it's ButtonDrawer with text Strings.sair
       final drawerSairFinder = find.text(Strings.sair);
       expect(drawerSairFinder, findsOneWidget);
+      await tester.ensureVisible(drawerSairFinder);
+      await tester.pumpAndSettle();
 
       await tester.tap(drawerSairFinder);
       await tester.pumpAndSettle();
@@ -204,6 +221,14 @@ void main() {
     testWidgets('DialogSair dismisses on tapping Nao inside DrawerCustom',
         (WidgetTester tester) async {
       final fakeHomeController = _FakeHomeController();
+
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.75;
+
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
 
       await tester.pumpWidget(
         ScreenUtilInit(
@@ -238,7 +263,11 @@ void main() {
       await tester.pumpAndSettle();
 
       // Tap Sair in Drawer
-      await tester.tap(find.text(Strings.sair));
+      final drawerSairFinder = find.text(Strings.sair);
+      await tester.ensureVisible(drawerSairFinder);
+      await tester.pumpAndSettle();
+
+      await tester.tap(drawerSairFinder);
       await tester.pumpAndSettle();
 
       expect(find.byType(DialogSair), findsOneWidget);
