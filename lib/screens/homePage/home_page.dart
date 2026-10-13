@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inteligencias_multiplas/controller/homeController/home_controller.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/card_tutorial.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/drawer_custom.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
@@ -18,17 +20,43 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _statusBarIcon = SystemUiOverlayStyle.light;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  StreamSubscription<User?>? _authSubscription;
   var _user = '';
   var _profilePic = '';
   var _email = '';
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-    _user = _auth.currentUser?.displayName ?? '';
-    _profilePic = _auth.currentUser?.photoURL ?? '';
-    _email = _auth.currentUser?.email ?? '';
+    _atualizarDadosUsuario();
     buscarDadosTeste();
+    try {
+      _authSubscription = _auth.userChanges().listen((_) {
+        if (mounted) {
+          setState(() {
+            _atualizarDadosUsuario();
+          });
+        }
+      });
+    } catch (_) {}
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
+  }
+
+  void _atualizarDadosUsuario() {
+    User? currentUser;
+    try {
+      currentUser = _auth.currentUser;
+    } catch (_) {
+      currentUser = null;
+    }
+    _user = HomeController.extrairNome(currentUser, fallback: '');
+    _profilePic = HomeController.extrairFoto(currentUser, fallback: '');
+    _email = HomeController.extrairEmail(currentUser, fallback: '');
   }
 
   @override
@@ -47,6 +75,9 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
           backgroundColor: Colors.transparent,
           onDrawerChanged: (value) {
+            if (value) {
+              _atualizarDadosUsuario();
+            }
             setState(() {
               _statusBarIcon = value
                   ? SystemUiOverlayStyle.dark
@@ -54,9 +85,17 @@ class _HomePageState extends State<HomePage> {
             });
           },
           drawer: Drawer(
-            width: 650.w,
+            width: 780.w,
             child: DrawerCustom(
-                profilePic: _profilePic, user: _user, email: _email),
+              profilePic: _profilePic,
+              user: _user,
+              email: _email,
+              onAccountLinked: () {
+                setState(() {
+                  _atualizarDadosUsuario();
+                });
+              },
+            ),
           ),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -78,9 +117,14 @@ class _HomePageState extends State<HomePage> {
                         height: 200.h,
                         margin: EdgeInsets.only(left: 40.w, right: 40.w),
                         child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            _profilePic,
-                          ),
+                          backgroundColor: Colors.white24,
+                          backgroundImage: _profilePic.trim().isNotEmpty
+                              ? NetworkImage(_profilePic)
+                              : null,
+                          child: _profilePic.trim().isEmpty
+                              ? const Icon(Icons.person,
+                                  color: Colors.white, size: 40)
+                              : null,
                         ),
                       ),
                       Expanded(
@@ -96,7 +140,10 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
-                          Text('$_user.',
+                          Text(
+                              _user.trim().isNotEmpty
+                                  ? '$_user.'
+                                  : 'Visitante.',
                               style: TextStyle(
                                   fontSize: 75.sp,
                                   color: Colors.white,
@@ -127,11 +174,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<dynamic> buscarDadosTeste() async {
+    final user = _auth.currentUser;
+    if (user == null) return true;
     FirebaseDatabase database = FirebaseDatabase.instance;
     final userProgressDataSnapshot = await database
         .ref()
         .child('usuarios')
-        .child(_auth.currentUser!.uid)
+        .child(user.uid)
         .get();
     if (userProgressDataSnapshot.exists) {
       if (userProgressDataSnapshot.value != null) {

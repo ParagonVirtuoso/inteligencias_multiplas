@@ -26,36 +26,52 @@ class _CarouselState extends State<Carousel> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CarouselSlider(
-          carouselController: _controllerCarousel,
-          options: CarouselOptions(
-              enlargeCenterPage: true,
-              autoPlay: true,
-              viewportFraction: 0.9,
-              height: 770.h,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _indicadorCarousel = index;
-                });
-              }),
-          items: textCarouselList.map((textoIndicado) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        height: 400.h,
+        Expanded(
+          child: CarouselSlider(
+            carouselController: _controllerCarousel,
+            options: CarouselOptions(
+                enlargeCenterPage: true,
+                autoPlay: true,
+                viewportFraction: 0.9,
+                height: 720.h,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _indicadorCarousel = index;
+                  });
+                }),
+            items: textCarouselList.map((textoIndicado) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Center(
+                    child: SizedBox(
+                        height: 500.h,
                         width: 1080.w,
-                        child: _indicadorCarousel == 0
-                            ? Image.asset(
-                                textCarouselList[0],
-                                fit: BoxFit.contain,
+                        child: textoIndicado == textCarouselList[0]
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    textCarouselList[0],
+                                    height: 250.h,
+                                    fit: BoxFit.contain,
+                                  ),
+                                  SizedBox(height: 20.h),
+                                  Text(
+                                    Strings.subtituloHeroLogin,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Cores.kWhiteColor,
+                                      fontSize: 42.sp,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: 'Roboto-Regular',
+                                    ),
+                                  ),
+                                ],
                               )
                             : Container(
                                 alignment: Alignment.center,
-                                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                margin: EdgeInsets.symmetric(horizontal: 10.w),
                                 child: Text(
                                   textoIndicado,
                                   textAlign: TextAlign.justify,
@@ -64,12 +80,12 @@ class _CarouselState extends State<Carousel> {
                                       fontSize: 45.sp,
                                       fontWeight: FontWeight.w500,
                                       fontFamily: 'Roboto-Regular'),
-                                )))
-                  ],
-                );
-              },
-            );
-          }).toList(),
+                                ))),
+                  );
+                },
+              );
+            }).toList(),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -77,18 +93,19 @@ class _CarouselState extends State<Carousel> {
             return GestureDetector(
               onTap: () => _controllerCarousel.animateToPage(entry.key),
               child: Container(
-                width: 20.w,
-                height: 30.h,
-                margin: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.w),
+                width: 22.w,
+                height: 22.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: (_indicadorCarousel == entry.key
-                        ? Cores.kTertiaryColor
+                        ? const Color(0xFF1E1E1E).withValues(alpha: 0.6)
                         : Colors.white)),
               ),
             );
           }).toList(),
-        )
+        ),
+        SizedBox(height: 35.h),
       ],
     );
   }

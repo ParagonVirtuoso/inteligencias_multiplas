@@ -146,7 +146,10 @@ class _FinishTestState extends State<FinishTest> {
       'Musical': notas[6].reduce((a, b) => a + b),
     };
     salvarTotalFirebase(total);
-    FinishResultController().navResult(context, total);
+    FinishResultController().navResult(context, {
+      'total': total,
+      'respostas': respostas,
+    });
   }
 
   Future<void> salvarTotalFirebase(total) async {

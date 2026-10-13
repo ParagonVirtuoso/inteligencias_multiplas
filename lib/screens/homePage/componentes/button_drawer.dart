@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ButtonDrawer extends StatelessWidget {
-  final String icon;
+  final String? icon;
+  final Widget? iconWidget;
   final String text;
   final Color corFundo;
   final Color corTexto;
   final VoidCallback onTap;
   const ButtonDrawer({
     super.key,
-    required this.icon,
+    this.icon,
+    this.iconWidget,
     required this.text,
     required this.corFundo,
     required this.corTexto,
     required this.onTap,
-  });
+  }) : assert(icon != null || iconWidget != null,
+            'Deve fornecer icon ou iconWidget');
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +37,12 @@ class ButtonDrawer extends StatelessWidget {
               children: [
                 Container(
                     margin: EdgeInsets.only(left: 20.w, right: 20.w),
-                    child: Image(
-                      image: AssetImage(
-                        icon,
-                      ),
-                    )),
+                    child: iconWidget ??
+                        Image(
+                          image: AssetImage(
+                            icon!,
+                          ),
+                        )),
                 Expanded(
                   child: Text(text,
                       overflow: TextOverflow.ellipsis,

@@ -63,6 +63,12 @@ class _DesciptorContentState extends State<DesciptorContent> {
             elevation: 0,
             systemOverlayStyle: _statusBarIcon,
             iconTheme: const IconThemeData(color: Colors.white),
+            leading: Navigator.canPop(context)
+                ? IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                : null,
           ),
           body: Column(
             children: [
