@@ -117,7 +117,7 @@ void main() {
       expect(find.text(Strings.continuarComFacebookTelaLogin), findsOneWidget);
 
       // "Ou" divider is removed
-      expect(find.text(Strings.ouTelaLogin), findsNothing);
+      expect(find.text('Ou'), findsNothing);
 
       // Visitor action
       expect(find.text(Strings.continuarComoVisitanteTelaLogin), findsOneWidget);

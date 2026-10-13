@@ -1,30 +1,21 @@
 class Strings {
   //navigate
   static const homeNavigate = '/home';
-  static const cadastroNavigate = '/login';
 
   //textos
   static const teoriaInteligenciaTelaLogin =
       "A teoria das inteligências múltiplas foi criada pelo psicólogo Howard Gardner na década de 1990, Ele criou essa tese, que se tornou mundialmente conhecida.";
   static const diferentesTiposInteligenciaTelaLogin =
       "Indivíduos possuem diferentes tipos de mentes e faculdades mentais, apresentando diferentes inteligências, surgindo a teoria das inteligências múltiplas.";
-  static const sucessoTelaLogin = "Login realizado com sucesso!";
-  static const conecteTelaLogin = "Conecte-se";
   static const entrarTelaLogin = "Entrar";
   static const auxAcesseSalvarProgresso =
       "Acesse para salvar seu histórico e progresso";
-  static const entrarComGoogleTelaLogin = "Entrar Com o Google";
   static const continuarComGoogleTelaLogin = "Continuar com o Google";
-  static const entrarComFacebookTelaLogin = "Entrar Com o Facebook";
   static const continuarComFacebookTelaLogin = "Continuar com o Facebook";
   static const continuarComoVisitanteTelaLogin = "ou continue como visitante";
   static const termosPoliticaRodapeTelaLogin =
       "Ao continuar, você concorda com nossos\nTermos e Política de Privacidade";
   static const subtituloHeroLogin = "Descubra seus talentos e vocação";
-  static const ouTelaLogin = "Ou";
-  static const aceitoTermosTelaLogin = "Aceitar termos";
-  static const erroAceiteTermosTelaLogin =
-      'Aceite os termos de uso para continuar';
   static const bemVindoTelaHome = 'Bem Vindo,';
   static const comoFunciona = 'Como funciona o teste?';
   static const avalieCadaQuestao =
@@ -49,8 +40,6 @@ class Strings {
   static const desenvolvedores = 'Desenvolvedores';
   static const avaliarApp = 'Avaliar o aplicativo';
   static const salvarProgresso = 'Salvar progresso';
-  static const fazerLogin = 'Fazer Login';
-  static const fazerLoginSalvar = 'Fazer Login / Salvar';
   static const salvarConta = 'Salvar conta';
   static const salvarResultado = 'Salvar resultado';
   static const salvarResultadoDescricao =
