@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:in_app_review/in_app_review.dart';
 import '../../utils/cores.dart';
 import '../../utils/strings.dart';
 import 'componentes/modal_detalhe_inteligencia.dart';
@@ -15,6 +16,8 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   Object? resultadoTeste;
   List<MapEntry<String, int>>? resultadoOrdenadoMaiorParaMenor;
+  final InAppReview _inAppReview = InAppReview.instance;
+  bool _tentouSolicitarAvaliacao = false;
   var resultList = {
     'Linguistica': {
       'key': Strings.linguistica,
@@ -68,6 +71,9 @@ class _ResultPageState extends State<ResultPage> {
     super.didChangeDependencies();
     resultadoTeste = ModalRoute.of(context)?.settings.arguments;
     ordenarResultado(resultadoTeste);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      solicitarAvaliacaoInApp();
+    });
   }
 
   @override
@@ -190,5 +196,27 @@ class _ResultPageState extends State<ResultPage> {
         builder: (BuildContext context) {
           return ModalDetalheInteligencia(title: title,description: description);
         });
+  }
+
+  Future<void> solicitarAvaliacaoInApp() async {
+    if (_tentouSolicitarAvaliacao || !mounted || !resultadoPositivoDisponivel()) {
+      return;
+    }
+
+    _tentouSolicitarAvaliacao = true;
+    try {
+      final reviewDisponivel = await _inAppReview.isAvailable();
+      if (reviewDisponivel) {
+        await _inAppReview.requestReview();
+      }
+    } catch (_) {}
+  }
+
+  bool resultadoPositivoDisponivel() {
+    if (resultadoOrdenadoMaiorParaMenor == null ||
+        resultadoOrdenadoMaiorParaMenor!.isEmpty) {
+      return false;
+    }
+    return resultadoOrdenadoMaiorParaMenor!.first.value > 0;
   }
 }
