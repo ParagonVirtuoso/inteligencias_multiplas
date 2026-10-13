@@ -43,6 +43,7 @@ dependencies:
   flutter_facebook_auth: ^7.0.0
   url_launcher: ^6.3.1
   firebase_database: ^11.1.4
+  in_app_review: ^2.0.12
 
 dev_dependencies:
   flutter_test:
