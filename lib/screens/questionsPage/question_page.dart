@@ -340,8 +340,24 @@ class _QuestionsPageState extends State<QuestionsPage> {
 
   void verificarConclusao(BuildContext context, dynamic data) {
     if (data['TOTAL'] != null) {
+      List<List<int>>? respostasSalvas;
+      if (data['ETAPA 1'] != null) {
+        respostasSalvas = List.generate(10, (i) {
+          final etapaData = data['ETAPA ${i + 1}'];
+          if (etapaData != null) {
+            return List.generate(7, (j) {
+              final val = etapaData['RESPOSTA${j + 1}'];
+              return val is num ? val.toInt() : 0;
+            });
+          }
+          return List.generate(7, (j) => 0);
+        });
+      }
       setState(() {
-        FinishResultController().navResult(context, data['TOTAL']);
+        FinishResultController().navResult(context, {
+          'total': data['TOTAL'],
+          'respostas': respostasSalvas ?? respostas,
+        });
       });
     } else if (data['ETAPA 10'] != null) {
       setState(() {

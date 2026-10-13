@@ -102,6 +102,66 @@ class Strings {
   static const interpessoalDescricao = 'A inteligência interpessoal está relacionada com a capacidade de compreender e se relacionar com outras pessoas, além de perceber e interpretar emoções e sentimentos.\nPsicólogos, terapeutas, professores e líderes são exemplos de profissionais que possuem alta inteligência interpessoal.';
   static const intrapessoalDescricao = 'A inteligência intrapessoal está relacionada com a capacidade de compreender e se relacionar consigo mesmo, além de perceber e interpretar emoções e sentimentos.\nFilósofos, psicólogos, terapeutas e líderes espirituais são exemplos de profissionais que possuem alta inteligência intrapessoal.';
   static const espacialDescricao = 'A inteligência espacial está relacionada com a capacidade de perceber e interpretar imagens, formas e cores, além de compreender o espaço tridimensional.\nArquitetos, designers, artistas plásticos e pilotos são exemplos de profissionais que possuem alta inteligência espacial.';
+  // Compartilhamento e Relatório PDF
+  static const compartilharResultadoPdf = 'Compartilhar resultado em PDF';
+  static const nenhumResultadoCompartilhar =
+      'Nenhum resultado disponível para compartilhar.';
+  static const erroCompartilharPdf =
+      'Não foi possível compartilhar o relatório em PDF.';
+  static const pdfTituloRelatorio = 'TESTE DE MÚLTIPLAS INTELIGÊNCIAS';
+  static const pdfSubtituloRelatorio = 'Relatório Oficial de Resultados';
+  static const pdfParticipante = 'Participante:';
+  static const pdfData = 'Data:';
+  static const pdfRodapeHowardGardner =
+      'Teste de Múltiplas Inteligências (Baseado na Teoria de Howard Gardner)';
+  static const pdfInteligenciaPredominante =
+      'INTELIGÊNCIA PREDOMINANTE (1º LUGAR)';
+  static const pdfClassificacaoGeral = 'CLASSIFICAÇÃO GERAL DAS INTELIGÊNCIAS';
+  static const pdfSobreTeoria = 'Sobre a Teoria das Inteligências Múltiplas:';
+  static const pdfSobreTeoriaDescricao =
+      'Criada pelo psicólogo Howard Gardner em 1983 na Universidade de Harvard, a teoria propõe que a inteligência humana não se resume ao raciocínio lógico-matemático e linguístico tradicional. Todas as pessoas possuem potenciais em diferentes áreas cognitivas, que podem ser desenvolvidos ao longo da vida.';
+  static const pdfDetalhamentoQuestionario =
+      'DETALHAMENTO DO QUESTIONÁRIO POR INTELIGÊNCIA';
+  static const pdfDetalhamentoSubtitulo =
+      'Todas as 70 afirmações avaliadas, agrupadas pelas 7 inteligências em ordem de pontuação.';
+  static const pdfTotalQuestoesBadge = '70 QUESTÕES';
+  static const pdfComoInterpretarNotas = 'Como Interpretar as Notas:';
+  static const pdfGuiaNotaAlta =
+      '• 6 e 7 pts (Destaque Azul): Afirmações onde você mais se identifica no dia a dia.';
+  static const pdfGuiaNotaMedia =
+      '• 3 a 5 pts: Habilidades praticadas de modo equilibrado ou sob necessidade.';
+  static const pdfGuiaNotaBaixa =
+      '• 1 e 2 pts: Características menos espontâneas ou raramente priorizadas.';
+  static const pdfMetodologiaIpsativa = 'Metodologia Ipsativa:';
+  static const pdfMetodologiaIpsativaDescricao =
+      'Em cada uma das 10 etapas, você atribuiu notas de 1 a 7 sem repetição. A somatória revela os padrões reais das suas forças cognitivas.';
+  static const pdfShareSubject =
+      'Resultado do Teste de Inteligências Múltiplas';
+  static const pdfShareText =
+      'Confira meu relatório do Teste de Inteligências Múltiplas!';
+
+  static const List<String> pdfPrefixosEtapas = [
+    'Lazer',
+    'Habilidade',
+    'Preferência',
+    'Pergunta-chave',
+    'No trabalho',
+    'Ao aprender',
+    'No dia a dia',
+    'Autoimagem',
+    'Ao estudar',
+    'Ponto forte',
+  ];
+
+  static const Map<String, String> pdfPerguntasChaveEtapa4 = {
+    'Cinestesica': "'Onde?' (espaço físico)",
+    'Espacial': "'Como?' (processo e forma)",
+    'Interpessoal': "'Quem?' (pessoas)",
+    'Intrapessoal': "'Para que?' (propósito interior)",
+    'Linguistica': "'Por que?' (argumentação)",
+    'Logico': "'O que?' (fatos e dados)",
+    'Musical': "'Quando?' (tempo e ritmo)",
+  };
   //assets
   static const logoAsset = 'assets/icons/logo.png';
   static const logoMarcaAsset = 'assets/icons/logoFull.png';

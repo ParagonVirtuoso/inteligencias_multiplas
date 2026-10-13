@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
 import '../../controller/homeController/home_controller.dart';
+import '../../controller/resultController/result_controller.dart';
 import '../../utils/cores.dart';
 import '../../utils/strings.dart';
 import '../homePage/componentes/modal_vincular_conta.dart';
@@ -19,9 +21,11 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   Object? resultadoTeste;
   List<MapEntry<String, int>>? resultadoOrdenadoMaiorParaMenor;
+  List<List<int>>? _respostasTeste;
   final InAppReview _inAppReview = InAppReview.instance;
   bool _tentouSolicitarAvaliacao = false;
   bool _isVisitante = false;
+  bool _compartilhandoPdf = false;
 
   @override
   void initState() {
@@ -155,11 +159,111 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    resultadoTeste = ModalRoute.of(context)?.settings.arguments;
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Map && args.containsKey('total')) {
+      resultadoTeste = args['total'];
+      final rawRespostas = args['respostas'];
+      if (rawRespostas is List) {
+        _respostasTeste = rawRespostas.map((etapa) {
+          if (etapa is List) {
+            return etapa.map((e) => (e as num).toInt()).toList();
+          }
+          return <int>[];
+        }).toList();
+      }
+    } else {
+      resultadoTeste = args;
+    }
     ordenarResultado(resultadoTeste);
+    _carregarRespostasFirebaseSeNecessario();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       solicitarAvaliacaoInApp();
     });
+  }
+
+  Future<void> _carregarRespostasFirebaseSeNecessario() async {
+    if (_respostasTeste != null && _respostasTeste!.isNotEmpty) return;
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+      final snapshot = await FirebaseDatabase.instance
+          .ref()
+          .child('usuarios')
+          .child(user.uid)
+          .get();
+      if (!snapshot.exists || snapshot.value == null) return;
+      final data = snapshot.value as Map<dynamic, dynamic>?;
+      if (data != null && data['ETAPA 1'] != null) {
+        final parsed = List.generate(10, (i) {
+          final etapaData = data['ETAPA ${i + 1}'] as Map<dynamic, dynamic>?;
+          if (etapaData != null) {
+            return List.generate(7, (j) {
+              final val = etapaData['RESPOSTA${j + 1}'];
+              return val is num ? val.toInt() : 0;
+            });
+          }
+          return List.generate(7, (j) => 0);
+        });
+        if (mounted) {
+          setState(() {
+            _respostasTeste = parsed;
+          });
+        }
+      }
+    } catch (_) {
+      // Falha silenciosa
+    }
+  }
+
+  Future<void> _compartilharPdf() async {
+    if (resultadoOrdenadoMaiorParaMenor == null ||
+        resultadoOrdenadoMaiorParaMenor!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(Strings.nenhumResultadoCompartilhar),
+          backgroundColor: Cores.kAlertaColor,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _compartilhandoPdf = true;
+    });
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final nome = user != null ? HomeController.extrairNome(user) : null;
+      final email = user != null ? HomeController.extrairEmail(user) : null;
+
+      final infoMap = resultList.map(
+        (key, value) => MapEntry(key, Map<String, String>.from(value)),
+      );
+
+      await ResultController().compartilharResultadoPdf(
+        context: context,
+        itensOrdenados: resultadoOrdenadoMaiorParaMenor!,
+        infoInteligencias: infoMap,
+        respostas: _respostasTeste,
+        nomeUsuario: nome,
+        emailUsuario: email,
+      );
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(Strings.erroCompartilharPdf),
+            backgroundColor: Cores.kErroColor,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _compartilhandoPdf = false;
+        });
+      }
+    }
   }
 
   @override
@@ -173,6 +277,26 @@ class _ResultPageState extends State<ResultPage> {
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
+          actions: [
+            if (_compartilhandoPdf)
+              Center(
+                child: Container(
+                  width: 44.w,
+                  height: 44.w,
+                  margin: EdgeInsets.only(right: 32.w),
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                ),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.share, color: Colors.white),
+                tooltip: Strings.compartilharResultadoPdf,
+                onPressed: _compartilharPdf,
+              ),
+          ],
         ),
         body: Container(
             margin: EdgeInsets.only(
