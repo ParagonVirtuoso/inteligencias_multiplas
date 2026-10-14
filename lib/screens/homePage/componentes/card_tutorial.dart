@@ -44,39 +44,16 @@ class CardTutorial extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.r),
             color: Cores.kAzulDrawerItemColor,
           ),
-          child: const Row(
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image(
+            children: List.generate(
+              9,
+              (index) => const Image(
                 image: AssetImage(Strings.starIconAsset),
                 color: Cores.kQuaternaryColor,
               ),
-              Image(
-                image: AssetImage(Strings.starIconAsset),
-                color: Cores.kQuaternaryColor,
-              ),
-              Image(
-                image: AssetImage(Strings.starIconAsset),
-                color: Cores.kQuaternaryColor,
-              ),
-              Image(
-                image: AssetImage(Strings.starIconAsset),
-                color: Cores.kQuaternaryColor,
-              ),
-              Image(
-                image: AssetImage(Strings.starIconAsset),
-                color: Cores.kQuaternaryColor,
-              ),
-              Image(
-                image: AssetImage(Strings.starIconAsset),
-                color: Cores.kQuaternaryColor,
-              ),
-              Image(
-                image: AssetImage(Strings.starIconAsset),
-                color: Cores.kQuaternaryColor,
-              ),
-            ],
+            ),
           ),
         ),
         RichText(

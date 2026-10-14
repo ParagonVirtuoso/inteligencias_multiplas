@@ -134,8 +134,12 @@ class _FinishTestState extends State<FinishTest> {
   }
 
   void salvarResultado() {
-    var notas =
-        List.generate(7, (i) => List.generate(10, (j) => respostas[j][i]));
+    final int numInteligencias =
+        respostas != null && (respostas as List).isNotEmpty
+            ? (respostas[0] as List).length
+            : 9;
+    var notas = List.generate(
+        numInteligencias, (i) => List.generate(10, (j) => respostas[j][i]));
     var total = {
       'Cinestesica': notas[0].reduce((a, b) => a + b),
       'Espacial': notas[1].reduce((a, b) => a + b),
@@ -144,6 +148,10 @@ class _FinishTestState extends State<FinishTest> {
       'Linguistica': notas[4].reduce((a, b) => a + b),
       'Logico': notas[5].reduce((a, b) => a + b),
       'Musical': notas[6].reduce((a, b) => a + b),
+      if (numInteligencias >= 8)
+        'Naturalista': notas[7].reduce((a, b) => a + b),
+      if (numInteligencias >= 9)
+        'Existencial': notas[8].reduce((a, b) => a + b),
     };
     salvarTotalFirebase(total);
     FinishResultController().navResult(context, {

@@ -21,9 +21,11 @@ class StarRate extends StatefulWidget {
 class _StarRateState extends State<StarRate> {
   @override
   Widget build(BuildContext context) {
+    final totalStars = widget.listaJaRespondida.length;
     return Container(
       height: 150.h,
       margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.r),
         color: Cores.kAzulDrawerItemColor,
@@ -31,85 +33,25 @@ class _StarRateState extends State<StarRate> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          GestureDetector(
-              onTap: () {
-                widget.selecionarEstrela(1);
-              },
-              child: Opacity(
-                opacity: widget.listaJaRespondida[0] ? 0.5 : 1,
-                child: Image(
-                    image: AssetImage(widget.selectedStar >= 1
-                        ? Strings.starFullIconAsset
-                        : Strings.starIconAsset)),
-              )),
-          GestureDetector(
-              onTap: () {
-                widget.selecionarEstrela(2);
-              },
-              child: Opacity(
-                opacity: widget.listaJaRespondida[1] ? 0.5 : 1,
-                child: Image(
-                    image: AssetImage(widget.selectedStar >= 2
-                        ? Strings.starFullIconAsset
-                        : Strings.starIconAsset)),
-              )),
-          GestureDetector(
-              onTap: () {
-                widget.selecionarEstrela(3);
-              },
-              child: Opacity(
-                opacity: widget.listaJaRespondida[2] ? 0.5 : 1,
-                child: Image(
-                    image: AssetImage(widget.selectedStar >= 3
-                        ? Strings.starFullIconAsset
-                        : Strings.starIconAsset)),
-              )),
-          GestureDetector(
-              onTap: () {
-                widget.selecionarEstrela(4);
-              },
-              child: Opacity(
-                opacity: widget.listaJaRespondida[3] ? 0.5 : 1,
-                child: Image(
-                    image: AssetImage(widget.selectedStar >= 4
-                        ? Strings.starFullIconAsset
-                        : Strings.starIconAsset)),
-              )),
-          GestureDetector(
-              onTap: () {
-                widget.selecionarEstrela(5);
-              },
-              child: Opacity(
-                opacity: widget.listaJaRespondida[4] ? 0.5 : 1,
-                child: Image(
-                    image: AssetImage(widget.selectedStar >= 5
-                        ? Strings.starFullIconAsset
-                        : Strings.starIconAsset)),
-              )),
-          GestureDetector(
-              onTap: () {
-                widget.selecionarEstrela(6);
-              },
-              child: Opacity(
-                opacity: widget.listaJaRespondida[5] ? 0.5 : 1,
-                child: Image(
-                    image: AssetImage(widget.selectedStar >= 6
-                        ? Strings.starFullIconAsset
-                        : Strings.starIconAsset)),
-              )),
-          GestureDetector(
-              onTap: () {
-                widget.selecionarEstrela(7);
-              },
-              child: Opacity(
-                opacity: widget.listaJaRespondida[6] ? 0.5 : 1,
-                child: Image(
-                    image: AssetImage(widget.selectedStar >= 7
-                        ? Strings.starFullIconAsset
-                        : Strings.starIconAsset)),
-              ))
-        ],
+        children: List.generate(totalStars, (index) {
+          final starValue = index + 1;
+          final jaRespondida = index < widget.listaJaRespondida.length &&
+              widget.listaJaRespondida[index] == true;
+          return GestureDetector(
+            onTap: () {
+              widget.selecionarEstrela(starValue);
+            },
+            child: Opacity(
+              opacity: jaRespondida ? 0.5 : 1.0,
+              child: Image(
+                image: AssetImage(widget.selectedStar >= starValue
+                    ? Strings.starFullIconAsset
+                    : Strings.starIconAsset),
+                width: totalStars > 7 ? 78.w : null,
+              ),
+            ),
+          );
+        }),
       ),
     );
   }

@@ -140,6 +140,16 @@ class _ResultPageState extends State<ResultPage> {
       'asset': Strings.espacialAsset,
       'descricao': Strings.espacialDescricao
     },
+    'Naturalista': {
+      'key': Strings.naturalista,
+      'asset': Strings.naturalistaAsset,
+      'descricao': Strings.naturalistaDescricao
+    },
+    'Existencial': {
+      'key': Strings.existencial,
+      'asset': Strings.existencialAsset,
+      'descricao': Strings.existencialDescricao
+    },
   };
   void ordenarResultado(dynamic resultadoTeste) {
     if (resultadoTeste is! Map) {

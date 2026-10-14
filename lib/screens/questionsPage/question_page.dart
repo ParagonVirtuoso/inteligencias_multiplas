@@ -7,6 +7,7 @@ import 'package:inteligencias_multiplas/screens/questionsPage/componentes/star_r
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 import '../../controller/finishTestController/finish_test_controller.dart';
+import '../../utils/etapas.dart';
 import '../../utils/perguntas.dart';
 import 'componentes/modal_alerta_resposta.dart';
 
@@ -19,7 +20,7 @@ class QuestionsPage extends StatefulWidget {
 
 class _QuestionsPageState extends State<QuestionsPage> {
   double get progressoTotal {
-    final int total = respostas.length * 7;
+    final int total = respostas.length * 9;
     final int respondidas =
         respostas.fold(0, (s, etapa) => s + etapa.where((r) => r != 0).length);
     return respondidas / total;
@@ -35,8 +36,8 @@ class _QuestionsPageState extends State<QuestionsPage> {
   final FirebaseDatabase database = FirebaseDatabase.instance;
 
   List<List<int>> respostas =
-      List.generate(10, (i) => List.filled(7, 0), growable: true);
-  var listaJaRespondida = [false, false, false, false, false, false, false];
+      List.generate(10, (i) => List.filled(9, 0), growable: true);
+  var listaJaRespondida = List.filled(9, false);
 
   @override
   void initState() {
@@ -51,10 +52,39 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    for (final asset in Strings.ilustracoesPerguntas) {
+      precacheImage(AssetImage(asset), context);
+    }
+    _precacheEtapaImages(currentStep);
+  }
+
+  void _precacheEtapaImages(int step) {
+    if (step < 0 || step >= 10) return;
+    for (int i = 0; i < 9; i++) {
+      precacheImage(AssetImage(obterCaminhoPergunta(step, i)), context);
+    }
+  }
+
+  String obterCaminhoPergunta(int safeStep, int safeQuestion) {
+    return 'assets/etapas/etapa-${safeStep + 1}/pergunta-${safeQuestion + 1}.png';
+  }
+
+  String obterIlustracaoPadrao(int safeQuestion) {
+    if (safeQuestion >= 0 && safeQuestion < Strings.ilustracoesPerguntas.length) {
+      return Strings.ilustracoesPerguntas[safeQuestion];
+    }
+    return Strings.cinestesicaAsset;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final int safeStep = currentStep.clamp(0, perguntas.length - 1);
     final int safeQuestion =
         currentQuestion.clamp(0, (perguntas[safeStep] as List).length - 1);
+    final String etapaTitulo =
+        safeStep < etapas.length ? etapas[safeStep].toString() : '';
     final String perguntaTexto = perguntas[safeStep][safeQuestion];
 
     return Scaffold(
@@ -126,11 +156,12 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         alignment: Alignment.center,
                         child: SingleChildScrollView(
                           child: Text(
-                            perguntaTexto,
+                            etapaTitulo,
                             style: TextStyle(
                                 fontSize: 60.sp,
                                 fontFamily: 'Roboto-Regular',
                                 fontWeight: FontWeight.w500),
+                            textAlign: TextAlign.center,
                             textScaler: TextScaler.noScaling,
                           ),
                         ),
@@ -138,8 +169,19 @@ class _QuestionsPageState extends State<QuestionsPage> {
                       Expanded(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
-                        child: Image.asset(
-                          Strings.pergunta1Asset,
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: Image.asset(
+                            obterCaminhoPergunta(safeStep, safeQuestion),
+                            key: ValueKey<String>('$safeStep-$safeQuestion'),
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                obterIlustracaoPadrao(safeQuestion),
+                                fit: BoxFit.contain,
+                              );
+                            },
+                          ),
                         ),
                       )),
                       Container(
@@ -167,6 +209,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                         width: 900.w,
                         alignment: Alignment.center,
                         child: Text(perguntaTexto,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 60.sp,
                                 fontFamily: 'Roboto-Regular',
@@ -227,7 +270,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       return;
     }
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 9; i++) {
       if (respostas[currentStep][i] == selectedStar) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -260,7 +303,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
     selectedStar = 0;
 
     final int proximaPergunta = obterProximaPergunta();
-    if (proximaPergunta >= 7) {
+    if (proximaPergunta >= 9) {
       await salvarListaJaRespondidaFirebase();
       if (!mounted) return;
       if (currentStep >= 9) {
@@ -270,9 +313,10 @@ class _QuestionsPageState extends State<QuestionsPage> {
       setState(() {
         currentStep++;
         currentQuestion = 0;
-        listaJaRespondida = List.filled(7, false);
+        listaJaRespondida = List.filled(9, false);
         corBotaoNext = Cores.kAzulBotaoDisableItemColor;
       });
+      _precacheEtapaImages(currentStep);
     } else {
       if (!mounted) return;
       setState(() {
@@ -298,13 +342,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
   }
 
   int obterProximaPergunta() {
-    for (int i = 0; i < 7; i++) {
-      int next = (currentQuestion + i) % 7;
+    for (int i = 0; i < 9; i++) {
+      int next = (currentQuestion + i) % 9;
       if (respostas[currentStep][next] == 0) {
         return next;
       }
     }
-    return 7;
+    return 9;
   }
 
   void selecionarEstrela(int index) {
@@ -328,7 +372,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
     editing = true;
     setState(() {
       final int previousStar = respostas[currentStep][questionToEdit];
-      if (previousStar >= 1 && previousStar <= 7) {
+      if (previousStar >= 1 && previousStar <= 9) {
         listaJaRespondida[previousStar - 1] = false;
       }
       corBotaoNext = Cores.kAzulBotaoDisableItemColor;
@@ -345,12 +389,13 @@ class _QuestionsPageState extends State<QuestionsPage> {
         respostasSalvas = List.generate(10, (i) {
           final etapaData = data['ETAPA ${i + 1}'];
           if (etapaData != null) {
-            return List.generate(7, (j) {
+            final totalEtapa = etapaData['RESPOSTA9'] != null ? 9 : 7;
+            return List.generate(totalEtapa, (j) {
               final val = etapaData['RESPOSTA${j + 1}'];
               return val is num ? val.toInt() : 0;
             });
           }
-          return List.generate(7, (j) => 0);
+          return List.generate(9, (j) => 0);
         });
       }
       setState(() {
@@ -361,8 +406,12 @@ class _QuestionsPageState extends State<QuestionsPage> {
       });
     } else if (data['ETAPA 10'] != null) {
       setState(() {
-        for (int j = 0; j < 7; j++) {
-          respostas[9][j] = data['ETAPA 10']['RESPOSTA${j + 1}'];
+        final totalEtapa = data['ETAPA 10']['RESPOSTA9'] != null ? 9 : 7;
+        for (int j = 0; j < totalEtapa && j < respostas[9].length; j++) {
+          final val = data['ETAPA 10']['RESPOSTA${j + 1}'];
+          if (val is num) {
+            respostas[9][j] = val.toInt();
+          }
         }
         FinishResultController().navFinishTest(context, respostas);
       });
@@ -374,8 +423,12 @@ class _QuestionsPageState extends State<QuestionsPage> {
       if (data['ETAPA $i'] != null) {
         setState(() {
           currentStep = i;
-          for (int j = 0; j < 7; j++) {
-            respostas[i - 1][j] = data['ETAPA $i']['RESPOSTA${j + 1}'];
+          final totalEtapa = data['ETAPA $i']['RESPOSTA9'] != null ? 9 : 7;
+          for (int j = 0; j < totalEtapa && j < respostas[i - 1].length; j++) {
+            final val = data['ETAPA $i']['RESPOSTA${j + 1}'];
+            if (val is num) {
+              respostas[i - 1][j] = val.toInt();
+            }
           }
         });
       }
@@ -393,20 +446,16 @@ class _QuestionsPageState extends State<QuestionsPage> {
     }
 
     try {
+      final mapRespostas = <String, dynamic>{};
+      for (int j = 0; j < respostas[currentStep].length; j++) {
+        mapRespostas['RESPOSTA${j + 1}'] = respostas[currentStep][j];
+      }
       await database
           .ref()
           .child('usuarios')
           .child(_auth.currentUser!.uid)
           .child('ETAPA ${currentStep + 1}')
-          .set({
-        'RESPOSTA1': respostas[currentStep][0],
-        'RESPOSTA2': respostas[currentStep][1],
-        'RESPOSTA3': respostas[currentStep][2],
-        'RESPOSTA4': respostas[currentStep][3],
-        'RESPOSTA5': respostas[currentStep][4],
-        'RESPOSTA6': respostas[currentStep][5],
-        'RESPOSTA7': respostas[currentStep][6],
-      });
+          .set(mapRespostas);
     } catch (e) {
       debugPrint('Erro ao salvar no Firebase: $e');
     }

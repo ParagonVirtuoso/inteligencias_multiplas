@@ -19,7 +19,7 @@ class Strings {
   static const bemVindoTelaHome = 'Bem Vindo,';
   static const comoFunciona = 'Como funciona o teste?';
   static const avalieCadaQuestao =
-      'Avalie cada questão com estrelas de acordo com sua identificação . Determine o seu nível de intimidade classificando-as com estrela de 1 a 7.';
+      'Avalie cada questão com estrelas de acordo com sua identificação . Determine o seu nível de intimidade classificando-as com estrela de 1 a 9.';
   static const naoExisteRespostaCerta =
       'Lembre-se, não existe resposta errada, cada um de nós temos nossas próprias escolhas.';
   static const voce = 'Você';
@@ -89,6 +89,8 @@ class Strings {
   static const interpessoal = 'Interpessoal';
   static const intrapessoal = 'Intrapessoal';
   static const espacial = 'Espacial';
+  static const naturalista = 'Naturalista';
+  static const existencial = 'Existencial';
   static const verMais = 'Ver mais';
   static const pontos = 'Pontos';
   static const erroApagarDados = 'Erro ao apagar dados do teste';
@@ -102,6 +104,10 @@ class Strings {
   static const interpessoalDescricao = 'A inteligência interpessoal está relacionada com a capacidade de compreender e se relacionar com outras pessoas, além de perceber e interpretar emoções e sentimentos.\nPsicólogos, terapeutas, professores e líderes são exemplos de profissionais que possuem alta inteligência interpessoal.';
   static const intrapessoalDescricao = 'A inteligência intrapessoal está relacionada com a capacidade de compreender e se relacionar consigo mesmo, além de perceber e interpretar emoções e sentimentos.\nFilósofos, psicólogos, terapeutas e líderes espirituais são exemplos de profissionais que possuem alta inteligência intrapessoal.';
   static const espacialDescricao = 'A inteligência espacial está relacionada com a capacidade de perceber e interpretar imagens, formas e cores, além de compreender o espaço tridimensional.\nArquitetos, designers, artistas plásticos e pilotos são exemplos de profissionais que possuem alta inteligência espacial.';
+  static const naturalistaDescricao =
+      'A inteligência naturalista está relacionada com a capacidade de reconhecer, classificar e compreender os diferentes elementos do meio ambiente, como animais, plantas e fenômenos naturais.\nBiólogos, ecologistas, botânicos, veterinários e agrônomos são exemplos de profissionais que possuem alta inteligência naturalista.';
+  static const existencialDescricao =
+      'A inteligência existencial é a capacidade de refletir e questionar temas profundos da existência humana, como a origem da vida, o universo, a finitude, o propósito e o sentido das coisas.\nFilósofos, pensadores, teólogos, cosmólogos e líderes espirituais apresentam altos níveis dessa inteligência.';
   // Compartilhamento e Relatório PDF
   static const compartilharResultadoPdf = 'Compartilhar resultado em PDF';
   static const nenhumResultadoCompartilhar =
@@ -123,18 +129,18 @@ class Strings {
   static const pdfDetalhamentoQuestionario =
       'DETALHAMENTO DO QUESTIONÁRIO POR INTELIGÊNCIA';
   static const pdfDetalhamentoSubtitulo =
-      'Todas as 70 afirmações avaliadas, agrupadas pelas 7 inteligências em ordem de pontuação.';
-  static const pdfTotalQuestoesBadge = '70 QUESTÕES';
+      'Todas as 90 afirmações avaliadas, agrupadas pelas 9 inteligências em ordem de pontuação.';
+  static const pdfTotalQuestoesBadge = '90 QUESTÕES';
   static const pdfComoInterpretarNotas = 'Como Interpretar as Notas:';
   static const pdfGuiaNotaAlta =
-      '• 6 e 7 pts (Destaque Azul): Afirmações onde você mais se identifica no dia a dia.';
+      '• 7 a 9 pts (Destaque Azul): Afirmações onde você mais se identifica no dia a dia.';
   static const pdfGuiaNotaMedia =
-      '• 3 a 5 pts: Habilidades praticadas de modo equilibrado ou sob necessidade.';
+      '• 4 a 6 pts: Habilidades praticadas de modo equilibrado ou sob necessidade.';
   static const pdfGuiaNotaBaixa =
-      '• 1 e 2 pts: Características menos espontâneas ou raramente priorizadas.';
+      '• 1 a 3 pts: Características menos espontâneas ou raramente priorizadas.';
   static const pdfMetodologiaIpsativa = 'Metodologia Ipsativa:';
   static const pdfMetodologiaIpsativaDescricao =
-      'Em cada uma das 10 etapas, você atribuiu notas de 1 a 7 sem repetição. A somatória revela os padrões reais das suas forças cognitivas.';
+      'Em cada uma das 10 etapas, você atribuiu notas de 1 a 9 sem repetição. A somatória revela os padrões reais das suas forças cognitivas.';
   static const pdfShareSubject =
       'Resultado do Teste de Inteligências Múltiplas';
   static const pdfShareText =
@@ -161,6 +167,8 @@ class Strings {
     'Linguistica': "'Por que?' (argumentação)",
     'Logico': "'O que?' (fatos e dados)",
     'Musical': "'Quando?' (tempo e ritmo)",
+    'Naturalista': "'De qual categoria/grupo?' (natureza e seres vivos)",
+    'Existencial': "'Qual o sentido maior?' (propósito e existência)",
   };
   //assets
   static const logoAsset = 'assets/icons/logo.png';
@@ -187,6 +195,19 @@ class Strings {
   static const linguisticoAsset = 'assets/resultado/linguistico.png';
   static const logicoAsset = 'assets/resultado/logico.png';
   static const musicalAsset = 'assets/resultado/musical.png';
+  static const naturalistaAsset = 'assets/resultado/naturalista.png';
+  static const existencialAsset = 'assets/resultado/existencial.png';
+  static const List<String> ilustracoesPerguntas = [
+    cinestesicaAsset,
+    espacialAsset,
+    interpessoalAsset,
+    intrapessoalAsset,
+    linguisticoAsset,
+    logicoAsset,
+    musicalAsset,
+    naturalistaAsset,
+    existencialAsset,
+  ];
   static const githubIconAsset = 'assets/icons/github.png';
   static const linkedinIconAsset = 'assets/icons/linkedin.png';
   static const instagramIconAsset = 'assets/icons/instagram.png';

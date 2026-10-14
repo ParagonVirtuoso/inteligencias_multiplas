@@ -255,4 +255,127 @@ void main() {
     // Ensure the generated PDF is substantial and contains both pages
     expect(pdfBytes.length, greaterThan(15000));
   });
+
+  test(
+      'ResultController.gerarRelatorioPdf generates exactly 2 pages with 9 intelligences and 10x9 answers',
+      () async {
+    final controller = ResultController();
+    final sortedEntries = [
+      const MapEntry('Existencial', 72),
+      const MapEntry('Musical', 65),
+      const MapEntry('Naturalista', 60),
+      const MapEntry('Logico', 55),
+      const MapEntry('Linguistica', 50),
+      const MapEntry('Intrapessoal', 45),
+      const MapEntry('Interpessoal', 40),
+      const MapEntry('Espacial', 35),
+      const MapEntry('Cinestesica', 30),
+    ];
+
+    final infoMap = {
+      'Existencial': {
+        'key': 'Existencial',
+        'descricao': Strings.existencialDescricao,
+      },
+      'Musical': {
+        'key': 'Musical',
+        'descricao': 'A inteligência musical...',
+      },
+      'Naturalista': {
+        'key': 'Naturalista',
+        'descricao': Strings.naturalistaDescricao,
+      },
+      'Logico': {
+        'key': 'Lógico',
+        'descricao': 'A inteligência lógico-matemática...',
+      },
+      'Linguistica': {
+        'key': 'Linguística',
+        'descricao': 'A inteligência linguística...',
+      },
+      'Intrapessoal': {
+        'key': 'Intrapessoal',
+        'descricao': 'A inteligência intrapessoal...',
+      },
+      'Interpessoal': {
+        'key': 'Interpessoal',
+        'descricao': 'A inteligência interpessoal...',
+      },
+      'Espacial': {
+        'key': 'Espacial',
+        'descricao': 'A inteligência espacial...',
+      },
+      'Cinestesica': {
+        'key': 'Cinestésica',
+        'descricao': 'A inteligência cinestésica...',
+      },
+    };
+
+    // 10 etapas, each with 9 notes from 1 to 9
+    final mockRespostas =
+        List.generate(10, (i) => [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+    final pdfBytes = await controller.gerarRelatorioPdf(
+      itensOrdenados: sortedEntries,
+      infoInteligencias: infoMap,
+      respostas: mockRespostas,
+      nomeUsuario: 'Denys Fernandes',
+      emailUsuario: 'd.fernandes@icasei.com.br',
+      dataRealizacao: DateTime(2026, 10, 13, 18, 29),
+    );
+
+    expect(pdfBytes, isNotNull);
+    expect(pdfBytes.isNotEmpty, isTrue);
+
+    final pdfContent = String.fromCharCodes(pdfBytes);
+    final pageMatches = RegExp(r'/Type\s*/Page\b').allMatches(pdfContent);
+    expect(pageMatches.length, equals(2),
+        reason:
+            'Relatório completo com 9 inteligências deve ter estritamente 2 páginas (sem quebrar cards)');
+
+    expect(pdfBytes.length, greaterThan(18000));
+  });
+
+  testWidgets(
+      'ResultPage renders without overflow with all 9 intelligences',
+      (WidgetTester tester) async {
+    final mock9Results = {
+      'Linguistica': 45,
+      'Logico': 55,
+      'Musical': 35,
+      'Cinestesica': 50,
+      'Interpessoal': 60,
+      'Intrapessoal': 40,
+      'Espacial': 30,
+      'Naturalista': 65,
+      'Existencial': 70,
+    };
+
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.75;
+
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        builder: (context, child) => MaterialApp(
+          onGenerateRoute: (settings) {
+            return MaterialPageRoute(
+              builder: (context) => const ResultPage(),
+              settings: RouteSettings(name: '/result', arguments: mock9Results),
+            );
+          },
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('70 Pontos'), findsOneWidget);
+    expect(find.text('65 Pontos'), findsOneWidget);
+  });
 }
