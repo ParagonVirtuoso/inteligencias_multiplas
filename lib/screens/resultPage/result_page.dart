@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../controller/homeController/home_controller.dart';
 import '../../controller/resultController/result_controller.dart';
 import '../../utils/cores.dart';
@@ -12,7 +14,16 @@ import '../homePage/componentes/modal_vincular_conta.dart';
 import 'componentes/modal_detalhe_inteligencia.dart';
 
 class ResultPage extends StatefulWidget {
-  const ResultPage({super.key});
+  final bool isWebOverride;
+  final ResultController? resultControllerOverride;
+  final Future<void> Function(XFile file)? onSaveFile;
+
+  const ResultPage({
+    super.key,
+    this.isWebOverride = kIsWeb,
+    this.resultControllerOverride,
+    this.onSaveFile,
+  });
 
   @override
   State<ResultPage> createState() => _ResultPageState();
@@ -26,6 +37,8 @@ class _ResultPageState extends State<ResultPage> {
   bool _tentouSolicitarAvaliacao = false;
   bool _isVisitante = false;
   bool _compartilhandoPdf = false;
+
+  bool get _isWeb => widget.isWebOverride;
 
   @override
   void initState() {
@@ -242,7 +255,12 @@ class _ResultPageState extends State<ResultPage> {
     });
 
     try {
-      final user = FirebaseAuth.instance.currentUser;
+      User? user;
+      try {
+        user = FirebaseAuth.instance.currentUser;
+      } catch (_) {
+        user = null;
+      }
       final nome = user != null ? HomeController.extrairNome(user) : null;
       final email = user != null ? HomeController.extrairEmail(user) : null;
 
@@ -250,19 +268,33 @@ class _ResultPageState extends State<ResultPage> {
         (key, value) => MapEntry(key, Map<String, String>.from(value)),
       );
 
-      await ResultController().compartilharResultadoPdf(
-        context: context,
-        itensOrdenados: resultadoOrdenadoMaiorParaMenor!,
-        infoInteligencias: infoMap,
-        respostas: _respostasTeste,
-        nomeUsuario: nome,
-        emailUsuario: email,
-      );
+      final controller = widget.resultControllerOverride ?? ResultController();
+      if (_isWeb) {
+        await controller.baixarResultadoPdf(
+          itensOrdenados: resultadoOrdenadoMaiorParaMenor!,
+          infoInteligencias: infoMap,
+          respostas: _respostasTeste,
+          nomeUsuario: nome,
+          emailUsuario: email,
+          onSaveFile: widget.onSaveFile,
+        );
+      } else {
+        await controller.compartilharResultadoPdf(
+          context: context,
+          itensOrdenados: resultadoOrdenadoMaiorParaMenor!,
+          infoInteligencias: infoMap,
+          respostas: _respostasTeste,
+          nomeUsuario: nome,
+          emailUsuario: email,
+        );
+      }
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(Strings.erroCompartilharPdf),
+          SnackBar(
+            content: Text(
+              _isWeb ? Strings.erroBaixarPdf : Strings.erroCompartilharPdf,
+            ),
             backgroundColor: Cores.kErroColor,
           ),
         );
@@ -289,45 +321,71 @@ class _ResultPageState extends State<ResultPage> {
           ),
           actions: [
             if (_compartilhandoPdf)
-              Center(
-                child: Container(
-                  width: 44.w,
-                  height: 44.w,
-                  margin: EdgeInsets.only(right: 32.w),
-                  child: const CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              const SizedBox(
+                width: 48.0,
+                height: 48.0,
+                child: Center(
+                  child: SizedBox(
+                    width: 22.0,
+                    height: 22.0,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
                   ),
                 ),
               )
             else
               IconButton(
-                icon: const Icon(Icons.share, color: Colors.white),
-                tooltip: Strings.compartilharResultadoPdf,
+                icon: Icon(
+                  _isWeb ? Icons.download : Icons.share,
+                  color: Colors.white,
+                ),
+                tooltip: _isWeb
+                    ? Strings.baixarResultadoPdf
+                    : Strings.compartilharResultadoPdf,
                 onPressed: _compartilharPdf,
               ),
           ],
         ),
-        body: Container(
-            margin: EdgeInsets.only(
-                left: 50.w, right: 50.w, top: 10.h, bottom: 10.h),
-            child: Column(children: [
-              Container(
-                margin: EdgeInsets.only(top: 5.h, bottom: 50.h),
-                child: Text(Strings.deslizeResultados,
-                    style: TextStyle(
-                        fontSize: 50.sp,
-                        color: Cores.kWhiteColor,
-                        fontFamily: 'Roboto-Regular',
-                        fontWeight: FontWeight.w500)),
-              ),
-              Expanded(
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 860),
+            child: Container(
+                margin: EdgeInsets.only(
+                    left: (50.w).clamp(16.0, 36.0),
+                    right: (50.w).clamp(16.0, 36.0),
+                    top: 10.h,
+                    bottom: 10.h),
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: (resultadoOrdenadoMaiorParaMenor?.length ?? 0) +
-                      (_isVisitante ? 1 : 0),
+                  itemCount: ((resultadoOrdenadoMaiorParaMenor?.isNotEmpty ??
+                              false)
+                          ? 1
+                          : 0) +
+                      (_isVisitante ? 1 : 0) +
+                      (resultadoOrdenadoMaiorParaMenor?.length ?? 0),
                   itemBuilder: (context, index) {
-                    if (_isVisitante && index == 0) {
+                    final hasHeader =
+                        resultadoOrdenadoMaiorParaMenor?.isNotEmpty ?? false;
+                    if (hasHeader && index == 0) {
+                      return Center(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 5.h, bottom: 50.h),
+                          child: Text(
+                            Strings.deslizeResultados,
+                            style: TextStyle(
+                              fontSize: 50.sp,
+                              color: Cores.kWhiteColor,
+                              fontFamily: 'Roboto-Regular',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    final headerOffset = hasHeader ? 1 : 0;
+                    if (_isVisitante && index == headerOffset) {
                       return Container(
                         margin: EdgeInsets.only(bottom: 40.h),
                         padding: EdgeInsets.symmetric(
@@ -404,10 +462,11 @@ class _ResultPageState extends State<ResultPage> {
                         ),
                       );
                     }
-                    final itemIndex = _isVisitante ? index - 1 : index;
+                    final itemIndex =
+                        index - headerOffset - (_isVisitante ? 1 : 0);
                     final item = resultadoOrdenadoMaiorParaMenor![itemIndex];
                     return Container(
-                      height: 380.h,
+                      height: (380.h).clamp(160.0, 220.0),
                       margin: EdgeInsets.only(bottom: 40.h),
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
@@ -467,8 +526,8 @@ class _ResultPageState extends State<ResultPage> {
                                                 'descricao']!);
                                       },
                                       child: Container(
-                                        width: 250.w,
-                                        height: 70.h,
+                                        width: (250.w).clamp(100.0, 160.0),
+                                        height: (70.h).clamp(32.0, 42.0),
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
                                             color: Cores.kAzulBotaoItemColor,
@@ -498,8 +557,10 @@ class _ResultPageState extends State<ResultPage> {
                     );
                   },
                 ),
-              )
-            ])));
+              ),
+            ),
+          ),
+        );
   }
 
   void exibirDetalhesInteligencia(title,description) {
@@ -511,6 +572,7 @@ class _ResultPageState extends State<ResultPage> {
   }
 
   Future<void> solicitarAvaliacaoInApp() async {
+    if (kIsWeb) return;
     if (_tentouSolicitarAvaliacao || !mounted || !resultadoPositivoDisponivel()) {
       return;
     }

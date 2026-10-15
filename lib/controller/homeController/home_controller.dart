@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -27,6 +28,7 @@ class HomeController {
   }
 
   Future<void> avaliarApp({InAppReview? inAppReview, String? appStoreId}) async {
+    if (kIsWeb) return;
     final review = inAppReview ?? InAppReview.instance;
     try {
       await review.openStoreListing(appStoreId: appStoreId);
@@ -90,6 +92,45 @@ class HomeController {
     GoogleSignIn? googleSignIn,
   }) async {
     final firebaseAuth = auth ?? _auth;
+
+    if (kIsWeb) {
+      try {
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        final currentUser = firebaseAuth.currentUser;
+        if (currentUser != null && currentUser.isAnonymous) {
+          try {
+            final userCredential =
+                await currentUser.linkWithPopup(googleProvider);
+            await userCredential.user?.reload();
+            return true;
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'credential-already-in-use') {
+              final userCredential =
+                  await firebaseAuth.signInWithPopup(googleProvider);
+              await userCredential.user?.reload();
+              return true;
+            }
+            if (e.code == 'popup-closed-by-user') {
+              return null;
+            }
+            return false;
+          }
+        } else {
+          final userCredential =
+              await firebaseAuth.signInWithPopup(googleProvider);
+          await userCredential.user?.reload();
+          return true;
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'popup-closed-by-user') return null;
+        debugPrint('Erro ao vincular conta Google no Web: $e');
+        return false;
+      } catch (e) {
+        debugPrint('Erro ao vincular conta Google no Web: $e');
+        return false;
+      }
+    }
+
     final google = googleSignIn ?? GoogleSignIn();
 
     try {
@@ -148,6 +189,45 @@ class HomeController {
     FacebookAuth? facebookAuth,
   }) async {
     final firebaseAuth = auth ?? _auth;
+
+    if (kIsWeb) {
+      try {
+        final FacebookAuthProvider facebookProvider = FacebookAuthProvider();
+        final currentUser = firebaseAuth.currentUser;
+        if (currentUser != null && currentUser.isAnonymous) {
+          try {
+            final userCredential =
+                await currentUser.linkWithPopup(facebookProvider);
+            await userCredential.user?.reload();
+            return true;
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'credential-already-in-use') {
+              final userCredential =
+                  await firebaseAuth.signInWithPopup(facebookProvider);
+              await userCredential.user?.reload();
+              return true;
+            }
+            if (e.code == 'popup-closed-by-user') {
+              return null;
+            }
+            return false;
+          }
+        } else {
+          final userCredential =
+              await firebaseAuth.signInWithPopup(facebookProvider);
+          await userCredential.user?.reload();
+          return true;
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'popup-closed-by-user') return null;
+        debugPrint('Erro ao vincular conta Facebook no Web: $e');
+        return false;
+      } catch (e) {
+        debugPrint('Erro ao vincular conta Facebook no Web: $e');
+        return false;
+      }
+    }
+
     final fb = facebookAuth ?? FacebookAuth.instance;
 
     try {

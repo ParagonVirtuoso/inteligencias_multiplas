@@ -330,6 +330,299 @@ void main() {
       expect(find.text('Elias Ribeiro'), findsOneWidget);
     });
 
+    group('DevelopersPage & DeveloperItem cross-platform responsive tests', () {
+      Widget buildResponsiveApp({
+        required Widget child,
+        required double width,
+        required double height,
+        double textScale = 1.0,
+      }) {
+        final isDesktopWeb = width > 600;
+        final mq = MediaQueryData(
+          size: Size(width, height),
+          textScaler: TextScaler.linear(textScale),
+        );
+
+        double customFontSizeResolver(num fontSize, ScreenUtil instance) {
+          if (isDesktopWeb) {
+            final double webScale =
+                (width / 1080 * 0.42).clamp(0.36, 0.44);
+            return fontSize * webScale;
+          }
+          return FontSizeResolvers.width(fontSize, instance);
+        }
+
+        return MediaQuery(
+          data: mq,
+          child: ScreenUtilInit(
+            designSize: const Size(1080, 1920),
+            minTextAdapt: true,
+            useInheritedMediaQuery: true,
+            fontSizeResolver: customFontSizeResolver,
+            builder: (context, _) {
+              ScreenUtil.configure(
+                data: mq,
+                fontSizeResolver: customFontSizeResolver,
+              );
+              return MaterialApp(
+                home: child,
+              );
+            },
+          ),
+        );
+      }
+
+      testWidgets(
+          'DevelopersPage renders without 74px RenderFlex overflow on Ultrawide screen (2560x1080)',
+          (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(2560, 1080);
+        tester.view.devicePixelRatio = 1.0;
+
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const DevelopersPage(),
+            width: 2560,
+            height: 1080,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('Desenvolvedores'), findsOneWidget);
+        expect(find.text('Denys Fernandes'), findsOneWidget);
+        expect(find.text('Elias Ribeiro'), findsOneWidget);
+        expect(find.text('Desenvolvedor'), findsOneWidget);
+        expect(find.text('UI / UX Designer'), findsOneWidget);
+      });
+
+      testWidgets(
+          'DevelopersPage renders without overflow on Ultrawide 3440x1440 screen',
+          (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(3440, 1440);
+        tester.view.devicePixelRatio = 1.0;
+
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const DevelopersPage(),
+            width: 3440,
+            height: 1440,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('Desenvolvedores'), findsOneWidget);
+        expect(find.text('Denys Fernandes'), findsOneWidget);
+        expect(find.text('Elias Ribeiro'), findsOneWidget);
+      });
+
+      testWidgets(
+          'DevelopersPage renders cleanly on Full HD Desktop (1920x1080)',
+          (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(1920, 1080);
+        tester.view.devicePixelRatio = 1.0;
+
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const DevelopersPage(),
+            width: 1920,
+            height: 1080,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('Denys Fernandes'), findsOneWidget);
+        expect(find.text('Elias Ribeiro'), findsOneWidget);
+      });
+
+      testWidgets(
+          'DevelopersPage renders cleanly on Laptop screen (1366x768)',
+          (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(1366, 768);
+        tester.view.devicePixelRatio = 1.0;
+
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const DevelopersPage(),
+            width: 1366,
+            height: 768,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('Denys Fernandes'), findsOneWidget);
+      });
+
+      testWidgets(
+          'DevelopersPage renders cleanly on Tablet / Portrait Web (768x1024)',
+          (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(768, 1024);
+        tester.view.devicePixelRatio = 1.0;
+
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const DevelopersPage(),
+            width: 768,
+            height: 1024,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('Denys Fernandes'), findsOneWidget);
+      });
+
+      testWidgets(
+          'DevelopersPage renders on iPhone 15 size (393x852) with proper mobile proportions',
+          (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(1179, 2556);
+        tester.view.devicePixelRatio = 3.0;
+
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const DevelopersPage(),
+            width: 393,
+            height: 852,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        expect(find.text('Denys Fernandes'), findsOneWidget);
+        expect(find.text('Elias Ribeiro'), findsOneWidget);
+      });
+
+      testWidgets(
+          'DevelopersPage renders under 2.0x accessibility font scale on Desktop and Mobile without overflow',
+          (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(2560, 1080);
+        tester.view.devicePixelRatio = 1.0;
+
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const DevelopersPage(),
+            width: 2560,
+            height: 1080,
+            textScale: 2.0,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+      });
+
+      testWidgets('tapping social icons launches url without throwing',
+          (WidgetTester tester) async {
+        final List<String> launchedUrls = [];
+        tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          const MethodChannel('plugins.flutter.io/url_launcher'),
+          (MethodCall methodCall) async {
+            if (methodCall.method == 'launch' ||
+                methodCall.method == 'launchUrl') {
+              launchedUrls.add(methodCall.arguments['url']);
+              return true;
+            }
+            if (methodCall.method == 'canLaunch') {
+              return true;
+            }
+            return true;
+          },
+        );
+
+        addTearDown(() {
+          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+            const MethodChannel('plugins.flutter.io/url_launcher'),
+            null,
+          );
+        });
+
+        await tester.pumpWidget(
+          buildResponsiveApp(
+            child: const Scaffold(
+              body: DeveloperItem(
+                name: 'Denys Fernandes',
+                email: 'denysfernandes21@gmail.com',
+                githubUrl: 'https://github.com/ParagonVirtuoso',
+                linkedinUrl:
+                    'https://www.linkedin.com/in/denys-fernandes-a1916198/',
+                instagramUrl: 'https://www.instagram.com/denysfh/',
+                cargo: 'Desenvolvedor',
+              ),
+            ),
+            width: 1920,
+            height: 1080,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        final githubFinder = find.byTooltip('GitHub');
+        final linkedinFinder = find.byTooltip('LinkedIn');
+        final instagramFinder = find.byTooltip('Instagram');
+
+        expect(githubFinder, findsOneWidget);
+        expect(linkedinFinder, findsOneWidget);
+        expect(instagramFinder, findsOneWidget);
+
+        await tester.tap(githubFinder);
+        await tester.pump();
+        expect(launchedUrls, contains('https://github.com/ParagonVirtuoso'));
+
+        await tester.tap(linkedinFinder);
+        await tester.pump();
+        expect(launchedUrls,
+            contains('https://www.linkedin.com/in/denys-fernandes-a1916198/'));
+
+        await tester.tap(instagramFinder);
+        await tester.pump();
+        expect(launchedUrls, contains('https://www.instagram.com/denysfh/'));
+      });
+    });
+
     group('DeveloperItem image provider resolution tests', () {
       testWidgets('DeveloperItem resolves imageAsset to AssetImage',
           (WidgetTester tester) async {

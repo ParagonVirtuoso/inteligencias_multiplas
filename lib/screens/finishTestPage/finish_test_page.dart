@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../componentes/botao_voltar.dart';
 import '../../controller/finishTestController/finish_test_controller.dart';
 import '../../utils/cores.dart';
 import '../../utils/strings.dart';
@@ -17,8 +18,22 @@ class FinishTest extends StatefulWidget {
 
 class _FinishTestState extends State<FinishTest> {
   dynamic respostas;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseDatabase database = FirebaseDatabase.instance;
+
+  FirebaseAuth? get _auth {
+    try {
+      return FirebaseAuth.instance;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  FirebaseDatabase? get _database {
+    try {
+      return FirebaseDatabase.instance;
+    } catch (_) {
+      return null;
+    }
+  }
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -27,110 +42,146 @@ class _FinishTestState extends State<FinishTest> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isDesktop = mediaQuery.size.width > 600;
+
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          toolbarHeight: 0,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
-          ),
-          iconTheme: const IconThemeData(color: Colors.white),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
         ),
-        body: Container(
-          margin:
-              EdgeInsets.only(left: 50.w, right: 50.w, top: 10.h, bottom: 10.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  width: 50.w,
-                  height: 45.h,
-                  margin: EdgeInsets.only(left: 40.w, top: 20.h),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Cores.kWhiteColor,
-                    borderRadius: BorderRadius.circular(13.r),
-                    border: Border.all(color: Cores.kTertiaryColor, width: 4.w),
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Cores.kTertiaryColor,
-                    size: 13,
-                  ),
-                ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: isDesktop ? 680 : 820,
+              maxHeight: isDesktop
+                  ? (mediaQuery.size.height * 0.90).clamp(620.0, 780.0)
+                  : double.infinity,
+            ),
+            child: Container(
+              margin: EdgeInsets.only(
+                left: isDesktop ? 20.0 : (28.w).clamp(12.0, 20.0),
+                right: isDesktop ? 20.0 : (28.w).clamp(12.0, 20.0),
+                top: isDesktop ? 16.0 : 6.h,
+                bottom: isDesktop ? 20.0 : (22.h).clamp(18.0, 24.0),
               ),
-              Expanded(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(Strings.questionarioConcluido,
-                        style: TextStyle(
-                            color: Cores.kQuaternaryColor,
-                            fontSize: 45.sp,
-                            fontFamily: 'Roboto-Regular',
-                            fontWeight: FontWeight.bold)),
+                  // Top Header with componentized BotaoVoltar
+                  Row(
+                    key: const Key('finish_header_row'),
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      BotaoVoltar(
+                        key: const Key('finish_back_button'),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        tooltip: Strings.voltar,
+                      ),
+                      const Spacer(),
+                    ],
                   ),
-                  Image.asset(
-                    Strings.concluidoAsset,
-                    fit: BoxFit.cover,
+
+                  SizedBox(height: (12.h).clamp(8.0, 16.0)),
+
+                  // Body with completion illustration and title
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          Strings.questionarioConcluido,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Cores.kQuaternaryColor,
+                            fontSize: (50.sp).clamp(18.0, 22.0),
+                            fontFamily: 'Roboto-Regular',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: (16.h).clamp(10.0, 20.0)),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: isDesktop
+                                    ? 280.0
+                                    : (450.h).clamp(180.0, 240.0),
+                              ),
+                              child: Image.asset(
+                                Strings.concluidoAsset,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: (18.h).clamp(16.0, 22.0)),
+
+                  // Bottom Action Button: Ver Resultados
+                  GestureDetector(
+                    key: const Key('finish_results_button'),
+                    behavior: HitTestBehavior.opaque,
+                    onTap: salvarResultado,
+                    child: Container(
+                      height: (105.h).clamp(48.0, 56.0),
+                      width: (420.w).clamp(240.0, 340.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      margin: EdgeInsets.zero,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.r),
+                        color: Cores.kAzulBotaoItemColor,
+                      ),
+                      child: Center(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                Strings.proximoIconAsset,
+                                width: (48.w).clamp(20.0, 22.0),
+                                height: (48.w).clamp(20.0, 22.0),
+                                fit: BoxFit.contain,
+                              ),
+                              SizedBox(width: (16.w).clamp(10.0, 14.0)),
+                              Text(
+                                Strings.verResultados,
+                                style: TextStyle(
+                                  fontSize: (48.sp).clamp(16.0, 18.0),
+                                  color: Cores.kWhiteColor,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Roboto-Regular',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
-              )),
-              Container(
-                  alignment: Alignment.center,
-                  height: 400.h,
-                  child: OutlinedButton(
-                      onPressed: () {
-                        salvarResultado();
-                      },
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        side: const BorderSide(
-                            width: 0, color: Colors.transparent),
-                      ),
-                      child: Container(
-                        height: 100.h,
-                        width: 580.w,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Cores.kAzulBotaoItemColor,
-                          borderRadius: BorderRadius.circular(30.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withValues(alpha: 0.5),
-                              spreadRadius: 2,
-                              blurRadius: 3,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Image(
-                                image: AssetImage(Strings.proximoIconAsset)),
-                            Text(Strings.verResultados,
-                                style: TextStyle(
-                                    color: Cores.kWhiteColor,
-                                    fontSize: 45.sp,
-                                    fontFamily: 'Roboto-Regular',
-                                    fontWeight: FontWeight.w500))
-                          ],
-                        ),
-                      )))
-            ],
+              ),
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void salvarResultado() {
@@ -161,13 +212,14 @@ class _FinishTestState extends State<FinishTest> {
   }
 
   Future<void> salvarTotalFirebase(total) async {
-    if (_auth.currentUser == null) {
+    final user = _auth?.currentUser;
+    if (user == null) {
       return;
     }
-    await database
-        .ref()
+    await _database
+        ?.ref()
         .child('usuarios')
-        .child(_auth.currentUser!.uid)
+        .child(user.uid)
         .child('TOTAL')
         .set(total);
   }

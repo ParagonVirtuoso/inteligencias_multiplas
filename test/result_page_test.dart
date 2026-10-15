@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:inteligencias_multiplas/controller/resultController/result_controller.dart';
 import 'package:inteligencias_multiplas/screens/resultPage/result_page.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   final mockResults = {
@@ -378,4 +380,278 @@ void main() {
     expect(find.text('70 Pontos'), findsOneWidget);
     expect(find.text('65 Pontos'), findsOneWidget);
   });
+
+  test(
+      'ResultController.baixarResultadoPdf generates valid PDF and invokes onSaveFile',
+      () async {
+    final controller = ResultController();
+    final sortedEntries = [
+      const MapEntry('Musical', 46),
+      const MapEntry('Logico', 44),
+      const MapEntry('Linguistica', 42),
+    ];
+    final infoMap = {
+      'Musical': {'key': 'Musical', 'descricao': 'Desc 1'},
+      'Logico': {'key': 'Logico', 'descricao': 'Desc 2'},
+      'Linguistica': {'key': 'Linguistica', 'descricao': 'Desc 3'},
+    };
+
+    XFile? savedFile;
+    await controller.baixarResultadoPdf(
+      itensOrdenados: sortedEntries,
+      infoInteligencias: infoMap,
+      nomeUsuario: 'Usuário Web',
+      emailUsuario: 'web@teste.com',
+      onSaveFile: (file) async {
+        savedFile = file;
+      },
+    );
+
+    expect(savedFile, isNotNull);
+    expect(savedFile!.name, 'resultado_inteligencias_multiplas.pdf');
+    expect(savedFile!.mimeType, 'application/pdf');
+    final bytes = await savedFile!.readAsBytes();
+    expect(bytes.length, greaterThan(10000));
+  });
+
+  testWidgets(
+      'ResultPage renders download button on Web and share button on Mobile',
+      (WidgetTester tester) async {
+    // 1. Mobile (isWebOverride: false)
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.75;
+
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        builder: (context, child) => MaterialApp(
+          key: const ValueKey('mobile_app'),
+          onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => const ResultPage(isWebOverride: false),
+            settings: RouteSettings(name: '/result', arguments: mockResults),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.share), findsOneWidget);
+    expect(find.byTooltip(Strings.compartilharResultadoPdf), findsOneWidget);
+    expect(find.byIcon(Icons.download), findsNothing);
+
+    // 2. Web (isWebOverride: true)
+    tester.view.physicalSize = const Size(1920, 1080);
+    tester.view.devicePixelRatio = 1.0;
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        fontSizeResolver: (fontSize, instance) {
+          final factor = (1920 / 1080 * 0.42).clamp(0.36, 0.44);
+          return fontSize * factor;
+        },
+        builder: (context, child) => MaterialApp(
+          key: const ValueKey('web_app'),
+          onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => const ResultPage(isWebOverride: true),
+            settings: RouteSettings(name: '/result', arguments: mockResults),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.download), findsOneWidget);
+    expect(find.byTooltip(Strings.baixarResultadoPdf), findsOneWidget);
+    expect(find.byIcon(Icons.share), findsNothing);
+  });
+
+  testWidgets(
+      'ResultPage CircularProgressIndicator in AppBar is never giant on desktop web (1920x1080)',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1920, 1080);
+    tester.view.devicePixelRatio = 1.0;
+
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    final completer = Completer<void>();
+    final mockController = _MockWebResultController(completer);
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        fontSizeResolver: (fontSize, instance) {
+          final factor = (1920 / 1080 * 0.42).clamp(0.36, 0.44);
+          return fontSize * factor;
+        },
+        builder: (context, child) => MaterialApp(
+          key: const ValueKey('web_progress_app'),
+          onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => ResultPage(
+              isWebOverride: true,
+              resultControllerOverride: mockController,
+            ),
+            settings: RouteSettings(name: '/result', arguments: mockResults),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final downloadButton = find.byIcon(Icons.download);
+    expect(downloadButton, findsOneWidget);
+
+    // Tap download to trigger loading state
+    await tester.tap(downloadButton);
+    await tester.pump(); // Start async execution, _compartilhandoPdf = true
+
+    final progressFinder = find.byType(CircularProgressIndicator);
+    expect(progressFinder, findsOneWidget);
+
+    // Measure CircularProgressIndicator rendered size - must NOT be giant (previously was 78px)
+    final progressBox = tester.renderObject<RenderBox>(progressFinder);
+    expect(progressBox.size.width, lessThanOrEqualTo(24.0));
+    expect(progressBox.size.height, lessThanOrEqualTo(24.0));
+
+    // Measure parent action container size in AppBar - exactly standard action slot (48x48)
+    final parentSizedBoxFinder = find.ancestor(
+      of: progressFinder,
+      matching: find.byType(SizedBox),
+    ).first;
+    final parentBox = tester.renderObject<RenderBox>(parentSizedBoxFinder);
+    expect(parentBox.size.width, lessThanOrEqualTo(48.0));
+    expect(parentBox.size.height, lessThanOrEqualTo(48.0));
+
+    // Complete the download
+    completer.complete();
+    await tester.pumpAndSettle();
+
+    // Verify progress indicator is gone and download icon is back
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.byIcon(Icons.download), findsOneWidget);
+  });
+
+  testWidgets(
+      'ResultPage shows error snackbar on web when PDF download fails',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1920, 1080);
+    tester.view.devicePixelRatio = 1.0;
+
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    final mockController = _MockErrorResultController();
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        fontSizeResolver: (fontSize, instance) {
+          final factor = (1920 / 1080 * 0.42).clamp(0.36, 0.44);
+          return fontSize * factor;
+        },
+        builder: (context, child) => MaterialApp(
+          key: const ValueKey('web_error_app'),
+          onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => ResultPage(
+              isWebOverride: true,
+              resultControllerOverride: mockController,
+            ),
+            settings: RouteSettings(name: '/result', arguments: mockResults),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.download));
+    await tester.pumpAndSettle();
+
+    expect(find.text(Strings.erroBaixarPdf), findsOneWidget);
+    expect(find.byIcon(Icons.download), findsOneWidget);
+  });
+
+  testWidgets(
+      'Strings.deslizeResultados is inside ListView and scrolls with the list',
+      (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1080, 1920);
+    tester.view.devicePixelRatio = 2.0;
+
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        builder: (context, child) => MaterialApp(
+          onGenerateRoute: (settings) {
+            return MaterialPageRoute(
+              builder: (context) => const ResultPage(),
+              settings: RouteSettings(name: '/result', arguments: mockResults),
+            );
+          },
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    final textFinder = find.text(Strings.deslizeResultados);
+    expect(textFinder, findsOneWidget);
+
+    expect(
+      find.descendant(of: find.byType(ListView), matching: textFinder),
+      findsOneWidget,
+    );
+
+    final initialOffset = tester.getTopLeft(textFinder);
+
+    await tester.drag(find.byType(ListView), const Offset(0, -300));
+    await tester.pumpAndSettle();
+
+    final scrolledOffset = tester.getTopLeft(textFinder);
+    expect(scrolledOffset.dy, lessThan(initialOffset.dy));
+  });
+}
+
+class _MockWebResultController extends ResultController {
+  final Completer<void> completer;
+  _MockWebResultController(this.completer);
+
+  @override
+  Future<void> baixarResultadoPdf({
+    required List<MapEntry<String, int>> itensOrdenados,
+    required Map<String, Map<String, String>> infoInteligencias,
+    List<List<int>>? respostas,
+    String? nomeUsuario,
+    String? emailUsuario,
+    DateTime? dataRealizacao,
+    Future<void> Function(XFile file)? onSaveFile,
+  }) async {
+    await completer.future;
+  }
+}
+
+class _MockErrorResultController extends ResultController {
+  @override
+  Future<void> baixarResultadoPdf({
+    required List<MapEntry<String, int>> itensOrdenados,
+    required Map<String, Map<String, String>> infoInteligencias,
+    List<List<int>>? respostas,
+    String? nomeUsuario,
+    String? emailUsuario,
+    DateTime? dataRealizacao,
+    Future<void> Function(XFile file)? onSaveFile,
+  }) async {
+    throw Exception('Simulated download failure');
+  }
 }

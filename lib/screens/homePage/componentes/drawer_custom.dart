@@ -199,10 +199,21 @@ class _DrawerCustomState extends State<DrawerCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.hasBoundedHeight
+                  ? constraints.maxHeight
+                  : 0.0,
+            ),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -227,7 +238,12 @@ class _DrawerCustomState extends State<DrawerCustom> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(40.w, 42.h, 40.w, 42.h),
+                padding: EdgeInsets.fromLTRB(
+                  (40.w).clamp(14.0, 24.0),
+                  (42.h).clamp(16.0, 26.0),
+                  (40.w).clamp(14.0, 24.0),
+                  (42.h).clamp(16.0, 26.0),
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,25 +254,13 @@ class _DrawerCustomState extends State<DrawerCustom> {
                         GestureDetector(
                           onTap: _isVisitante ? _abrirModalVincularConta : null,
                           child: Container(
-                            width: 175.w,
-                            height: 175.w,
-                            decoration: BoxDecoration(
+                            width: (175.w).clamp(56.0, 72.0),
+                            height: (175.w).clamp(56.0, 72.0),
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 3.0,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.18),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
                             ),
                             child: CircleAvatar(
-                              backgroundColor:
-                                  Colors.white.withValues(alpha: 0.25),
+                              backgroundColor: Colors.white24,
                               backgroundImage: _profilePic.trim().isNotEmpty
                                   ? NetworkImage(_profilePic)
                                   : null,
@@ -267,7 +271,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 28.w),
+                        SizedBox(width: (28.w).clamp(10.0, 16.0)),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,7 +282,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 52.sp,
+                                  fontSize: (52.sp).clamp(18.0, 22.0),
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
                                   fontFamily: 'Roboto-Regular',
@@ -288,7 +292,8 @@ class _DrawerCustomState extends State<DrawerCustom> {
                               if (_isVisitante)
                                 Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 20.w, vertical: 7.h),
+                                      horizontal: (20.w).clamp(10.0, 16.0),
+                                      vertical: (7.h).clamp(4.0, 8.0)),
                                   decoration: BoxDecoration(
                                     color: Colors.white.withValues(alpha: 0.22),
                                     borderRadius: BorderRadius.circular(16.r),
@@ -296,15 +301,19 @@ class _DrawerCustomState extends State<DrawerCustom> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(Icons.person_outline,
-                                          color: Colors.white, size: 28.sp),
-                                      SizedBox(width: 8.w),
-                                      Text(
-                                        Strings.modoVisitante,
-                                        style: TextStyle(
-                                          fontSize: 28.sp,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
+                                      Icon(Icons.person,
+                                          color: Colors.white, size: (28.sp).clamp(14.0, 18.0)),
+                                      SizedBox(width: (8.w).clamp(4.0, 8.0)),
+                                      Flexible(
+                                        child: Text(
+                                          Strings.modoVisitante,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: (28.sp).clamp(11.5, 13.5),
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -315,8 +324,8 @@ class _DrawerCustomState extends State<DrawerCustom> {
                                   children: [
                                     Icon(Icons.check_circle,
                                         color: Colors.lightGreenAccent,
-                                        size: 34.sp),
-                                    SizedBox(width: 10.w),
+                                        size: (34.sp).clamp(16.0, 20.0)),
+                                    SizedBox(width: (10.w).clamp(6.0, 10.0)),
                                     Expanded(
                                       child: Text(
                                         _email.trim().isNotEmpty
@@ -325,7 +334,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 32.sp,
+                                          fontSize: (32.sp).clamp(12.0, 14.5),
                                           color: Colors.white
                                               .withValues(alpha: 0.95),
                                           fontWeight: FontWeight.w500,
@@ -341,14 +350,16 @@ class _DrawerCustomState extends State<DrawerCustom> {
                       ],
                     ),
                     if (_isVisitante) ...[
-                      SizedBox(height: 30.h),
+                      SizedBox(height: (30.h).clamp(12.0, 20.0)),
                       GestureDetector(
                         onTap: _abrirModalVincularConta,
                         behavior: HitTestBehavior.opaque,
                         child: Container(
                           width: double.infinity,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 26.w, vertical: 20.h),
+                            horizontal: (26.w).clamp(12.0, 18.0),
+                            vertical: (20.h).clamp(10.0, 14.0),
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(24.r),
@@ -363,8 +374,8 @@ class _DrawerCustomState extends State<DrawerCustom> {
                           child: Row(
                             children: [
                               Container(
-                                width: 72.w,
-                                height: 72.w,
+                                width: (72.r).clamp(32.0, 42.0),
+                                height: (72.r).clamp(32.0, 42.0),
                                 decoration: const BoxDecoration(
                                   color: Cores.kAzulDrawerItemColor,
                                   shape: BoxShape.circle,
@@ -372,10 +383,10 @@ class _DrawerCustomState extends State<DrawerCustom> {
                                 child: Icon(
                                   Icons.cloud_upload_outlined,
                                   color: Cores.kAzulBotaoItemColor,
-                                  size: 40.sp,
+                                  size: (40.sp).clamp(18.0, 22.0),
                                 ),
                               ),
-                              SizedBox(width: 20.w),
+                              SizedBox(width: (20.w).clamp(8.0, 14.0)),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -383,7 +394,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                                     Text(
                                       Strings.salvarProgresso,
                                       style: TextStyle(
-                                        fontSize: 34.sp,
+                                        fontSize: (34.sp).clamp(13.5, 15.5),
                                         color: Cores.kTertiaryColor,
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Roboto-Regular',
@@ -393,7 +404,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                                     Text(
                                       Strings.salvarGoogleOuFacebook,
                                       style: TextStyle(
-                                        fontSize: 26.sp,
+                                        fontSize: (26.sp).clamp(11.0, 12.5),
                                         color: Cores.kDeepGreyColor,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: 'Roboto-Regular',
@@ -404,7 +415,7 @@ class _DrawerCustomState extends State<DrawerCustom> {
                               ),
                               Icon(
                                 Icons.arrow_forward_ios_rounded,
-                                size: 28.sp,
+                                size: (28.sp).clamp(14.0, 18.0),
                                 color: Cores.kDeepGreyColor,
                               ),
                             ],
@@ -412,11 +423,13 @@ class _DrawerCustomState extends State<DrawerCustom> {
                         ),
                       ),
                     ] else ...[
-                      SizedBox(height: 24.h),
+                      SizedBox(height: (24.h).clamp(10.0, 16.0)),
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(
-                            horizontal: 24.w, vertical: 16.h),
+                          horizontal: (24.w).clamp(12.0, 18.0),
+                          vertical: (16.h).clamp(8.0, 12.0),
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white.withValues(alpha: 0.18),
                           borderRadius: BorderRadius.circular(20.r),
@@ -430,14 +443,14 @@ class _DrawerCustomState extends State<DrawerCustom> {
                             Icon(
                               Icons.cloud_done_rounded,
                               color: Colors.white,
-                              size: 34.sp,
+                              size: (34.sp).clamp(16.0, 20.0),
                             ),
-                            SizedBox(width: 16.w),
+                            SizedBox(width: (16.w).clamp(8.0, 12.0)),
                             Expanded(
                               child: Text(
                                 Strings.progressoSalvoNuvem,
                                 style: TextStyle(
-                                  fontSize: 28.sp,
+                                  fontSize: (28.sp).clamp(11.5, 13.5),
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: 'Roboto-Regular',
@@ -453,101 +466,113 @@ class _DrawerCustomState extends State<DrawerCustom> {
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 40.h,
-              ),
-              ButtonDrawer(
-                icon: Strings.refazerIconAsset,
-                text: Strings.refazer,
-                corFundo: Cores.kAzulBotaoItemColor,
-                corTexto: Cores.kWhiteColor,
-                onTap: _resetTest,
-              ),
-              ButtonDrawer(
-                icon: Strings.starIconAsset,
-                text: Strings.teste,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-                onTap: () {
-                  Navigator.of(context).pushReplacementNamed('/home');
-                },
-              ),
-              ButtonDrawer(
-                icon: Strings.desenvolvedoresIconAsset,
-                text: Strings.desenvolvedores,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-                onTap: () {
-                  HomeController().navDevelopers(context);
-                },
-              ),
-              ButtonDrawer(
-                icon: Strings.termosUsoAppIconAsset,
-                text: Strings.termosUso,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-                onTap: () {
-                  HomeController().navTerms(context);
-                },
-              ),
-              ButtonDrawer(
-                icon: Strings.sobreAppIconAsset,
-                text: Strings.sobreApp,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-                onTap: () {
-                  HomeController().navAbout(context);
-                },
-              ),
-              ButtonDrawer(
-                icon: Strings.starFullIconAsset,
-                text: Strings.avaliarApp,
-                corFundo: Cores.kAzulDrawerItemColor,
-                corTexto: Cores.kTertiaryColor,
-                onTap: _avaliarApp,
-              ),
-              SizedBox(height: 70.h),
-              ButtonDrawer(
-                icon: Strings.sairAppIconAsset,
-                text: Strings.sair,
-                corFundo: Cores.kBorderColor,
-                corTexto: Cores.kDeepGreyColor,
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext dialogContext) {
-                      return DialogSair(
-                        onConfirm: () async {
-                          Navigator.pop(dialogContext);
-                          await (widget.homeController ?? HomeController())
-                              .signOut();
-                          _navigateToLoginPage();
-                        },
-                      );
-                    },
-                  );
-                },
-              ),
-              if (_appVersion != null && _appVersion!.trim().isNotEmpty)
-                Container(
-                  margin: EdgeInsets.only(top: 20.h, bottom: 40.h),
-                  child: Text(
-                    'Versão $_appVersion',
-                    style: TextStyle(
-                      fontSize: 30.sp,
-                      color: Cores.kDeepGreyColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-            ],
+          SizedBox(
+            height: (40.h).clamp(14.0, 24.0),
           ),
+          ButtonDrawer(
+            icon: Strings.refazerIconAsset,
+            text: Strings.refazer,
+            corFundo: Cores.kAzulBotaoItemColor,
+            corTexto: Cores.kWhiteColor,
+            onTap: _resetTest,
+          ),
+          ButtonDrawer(
+            icon: Strings.starIconAsset,
+            text: Strings.teste,
+            corFundo: Cores.kAzulDrawerItemColor,
+            corTexto: Cores.kTertiaryColor,
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/home');
+            },
+          ),
+          ButtonDrawer(
+            icon: Strings.desenvolvedoresIconAsset,
+            text: Strings.desenvolvedores,
+            corFundo: Cores.kAzulDrawerItemColor,
+            corTexto: Cores.kTertiaryColor,
+            onTap: () {
+              HomeController().navDevelopers(context);
+            },
+          ),
+          ButtonDrawer(
+            icon: Strings.termosUsoAppIconAsset,
+            text: Strings.termosUso,
+            corFundo: Cores.kAzulDrawerItemColor,
+            corTexto: Cores.kTertiaryColor,
+            onTap: () {
+              HomeController().navTerms(context);
+            },
+          ),
+          ButtonDrawer(
+            icon: Strings.sobreAppIconAsset,
+            text: Strings.sobreApp,
+            corFundo: Cores.kAzulDrawerItemColor,
+            corTexto: Cores.kTertiaryColor,
+            onTap: () {
+              HomeController().navAbout(context);
+            },
+          ),
+          ButtonDrawer(
+            icon: Strings.starFullIconAsset,
+            text: Strings.avaliarApp,
+            corFundo: Cores.kAzulDrawerItemColor,
+            corTexto: Cores.kTertiaryColor,
+            onTap: _avaliarApp,
+          ),
+          const Spacer(),
+          SizedBox(height: (24.h).clamp(12.0, 20.0)),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: ButtonDrawer(
+              icon: Strings.sairAppIconAsset,
+              text: Strings.sair,
+              corFundo: Cores.kCinzaSairBotao,
+              corTexto: Cores.kCinzaTextoIconeSair,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext dialogContext) {
+                    return DialogSair.conta(
+                      onConfirm: () async {
+                        Navigator.pop(dialogContext);
+                        await (widget.homeController ?? HomeController())
+                            .signOut();
+                        _navigateToLoginPage();
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          if (_appVersion != null && _appVersion!.trim().isNotEmpty)
+            Container(
+              margin: EdgeInsets.only(
+                top: (20.h).clamp(10.0, 16.0),
+                bottom: (40.h).clamp(16.0, 28.0) +
+                    MediaQuery.paddingOf(context).bottom,
+              ),
+              child: Text(
+                'Versão $_appVersion',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: (30.sp).clamp(11.5, 13.5),
+                  color: Cores.kDeepGreyColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            )
+          else
+            SizedBox(
+              height: (40.h).clamp(16.0, 28.0) +
+                  MediaQuery.paddingOf(context).bottom,
+            ),
         ],
-      ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

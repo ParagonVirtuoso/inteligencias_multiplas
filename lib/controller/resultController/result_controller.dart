@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
@@ -853,6 +851,7 @@ class ResultController {
     String? nomeUsuario,
     String? emailUsuario,
     DateTime? dataRealizacao,
+    SharePlus? sharePlus,
   }) async {
     Rect? origin;
     try {
@@ -873,23 +872,55 @@ class ResultController {
       dataRealizacao: dataRealizacao,
     );
 
-    final tempDir = await getTemporaryDirectory();
-    final file = File('${tempDir.path}/resultado_inteligencias_multiplas.pdf');
-    await file.writeAsBytes(pdfBytes);
-
-    await SharePlus.instance.share(
+    const fileName = 'resultado_inteligencias_multiplas.pdf';
+    final share = sharePlus ?? SharePlus.instance;
+    await share.share(
       ShareParams(
         files: [
-          XFile(
-            file.path,
+          XFile.fromData(
+            pdfBytes,
             mimeType: 'application/pdf',
-            name: 'resultado_inteligencias_multiplas.pdf',
+            name: fileName,
           ),
         ],
+        fileNameOverrides: const [fileName],
         subject: Strings.pdfShareSubject,
         text: Strings.pdfShareText,
         sharePositionOrigin: origin,
       ),
     );
+  }
+
+  Future<void> baixarResultadoPdf({
+    required List<MapEntry<String, int>> itensOrdenados,
+    required Map<String, Map<String, String>> infoInteligencias,
+    List<List<int>>? respostas,
+    String? nomeUsuario,
+    String? emailUsuario,
+    DateTime? dataRealizacao,
+    Future<void> Function(XFile file)? onSaveFile,
+  }) async {
+    final pdfBytes = await gerarRelatorioPdf(
+      itensOrdenados: itensOrdenados,
+      infoInteligencias: infoInteligencias,
+      respostas: respostas,
+      nomeUsuario: nomeUsuario,
+      emailUsuario: emailUsuario,
+      dataRealizacao: dataRealizacao,
+    );
+
+    const fileName = 'resultado_inteligencias_multiplas.pdf';
+    final xFile = XFile.fromData(
+      pdfBytes,
+      mimeType: 'application/pdf',
+      name: fileName,
+      path: fileName,
+    );
+
+    if (onSaveFile != null) {
+      await onSaveFile(xFile);
+    } else {
+      await xFile.saveTo(fileName);
+    }
   }
 }

@@ -13,9 +13,32 @@ Para instalar o aplicativo em um dispositivo Android ou iOS, siga estas etapas:
 
 Se você tiver problemas para encontrar o aplicativo na loja de aplicativos do seu dispositivo, verifique se ele está disponível em sua região. Caso ainda não consiga encontrar o aplicativo, entre em contato com o suporte através da seção "Issues" do repositório no GitHub para obter ajuda.
 
-## Adicionando as configurações do Firebase ao projeto Flutter
+## Configurando o projeto em uma nova máquina
 
-Para compilar o aplicativo corretamente, é necessário adicionar as configurações do Firebase, incluindo o arquivo lib/firebase_options.dart e o arquivo ios/Runner/GoogleService-Info.plist.
+Para compilar e executar o aplicativo, configure os arquivos de credenciais para cada plataforma desejada:
+
+### 1. Android
+- Adicione o arquivo `google-services.json` obtido no Firebase Console em:
+  ```
+  android/app/google-services.json
+  ```
+
+### 2. iOS
+- Adicione o arquivo `GoogleService-Info.plist` obtido no Firebase Console em:
+  ```
+  ios/Runner/GoogleService-Info.plist
+  ```
+
+### 3. Web & Firebase Options
+- Copie o template de opções do Firebase:
+  ```bash
+  cp lib/firebase_options.example.dart lib/firebase_options.dart
+  ```
+- Preencha com as credenciais do seu projeto Firebase (ou utilize o comando `flutterfire configure`).
+- Para o login via Facebook no Web, informe o `facebookAppId` em `lib/firebase_options.dart`.
+
+> **Atenção:** Arquivos como `lib/firebase_options.dart`, `google-services.json`, `GoogleService-Info.plist`, `.firebaserc` e `firebase.json` estão no `.gitignore` para proteger suas credenciais e nunca devem ser versionados.
+
 ## Uso
 
 Após instalar o aplicativo, abra-o e siga as instruções na tela para começar a usar. Você pode avaliar suas habilidades em diferentes áreas de inteligência e ver os resultados em gráficos e tabelas.

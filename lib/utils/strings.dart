@@ -1,6 +1,13 @@
 class Strings {
   //navigate
+  static const loginNavigate = '/';
   static const homeNavigate = '/home';
+  static const questionsNavigate = '/questions';
+  static const finishTestNavigate = '/finishTest';
+  static const resultNavigate = '/result';
+  static const developersNavigate = '/developers';
+  static const aboutNavigate = '/about';
+  static const termsNavigate = '/terms';
 
   //textos
   static const teoriaInteligenciaTelaLogin =
@@ -17,22 +24,59 @@ class Strings {
       "Ao continuar, você concorda com nossos\nTermos e Política de Privacidade";
   static const subtituloHeroLogin = "Descubra seus talentos e vocação";
   static const bemVindoTelaHome = 'Bem Vindo,';
+  static const visitante = 'Visitante';
+  static const visitantePonto = 'Visitante.';
   static const comoFunciona = 'Como funciona o teste?';
   static const avalieCadaQuestao =
-      'Avalie cada questão com estrelas de acordo com sua identificação . Determine o seu nível de intimidade classificando-as com estrela de 1 a 9.';
+      'Dê uma nota de 1 a 9 para cada pergunta, de acordo com o que mais combina com você.';
   static const naoExisteRespostaCerta =
-      'Lembre-se, não existe resposta errada, cada um de nós temos nossas próprias escolhas.';
-  static const voce = 'Você';
-  static const naoRepetirRespesta = ' não poderá repetir ';
+      'Lembre-se: não existe resposta certa ou errada, cada um de nós possui seus próprios talentos e escolhas.';
+  static const voce = 'Você ';
+  static const naoRepetirRespesta = 'não poderá repetir ';
   static const naoRepetirRespestaDescricao =
-      'a mesma avaliação em diferentes perguntas.';
+      'a mesma nota em diferentes perguntas da mesma etapa.';
+  static const tutorialFichasTitulo = 'Notas de 1 a 9';
+  static const tutorialFichasDescricao =
+      'Cada etapa tem 9 perguntas. Escolha uma nota de 1 a 9 para cada uma, sem repetir notas na mesma etapa.';
+  static const tutorialSwapTitulo = 'Troca Rápida de Notas';
+  static const tutorialSwapDescricao =
+      'Quer usar uma nota que já escolheu antes? É só tocar nela e o aplicativo troca as notas automaticamente para você.';
+  static const tutorialNavTitulo = 'Avance e Volte Livremente';
+  static const tutorialNavDescricao =
+      'Você pode navegar entre as perguntas a qualquer momento para rever ou mudar suas respostas antes de terminar.';
+  static const toqueParaTestar = 'Toque para testar';
+  static const legendaSuaNota = 'Sua nota';
+  static const legendaDisponivel = 'Livre';
+  static const legendaAtribuida = 'Outra pergunta';
+  static const legendaBadgePerguntaExemplo = 'P#';
   static const iniciarTeste = 'Iniciar Teste';
+
+  static String tutorialNotaSelecionada(int nota) => 'Nota $nota selecionada';
+  static String tutorialNotasTrocadas(int pergunta) =>
+      'Notas trocadas com a Pergunta $pergunta!';
+  static String tooltipNotaSelecionada(int nota) =>
+      'Nota $nota ($legendaSuaNota)';
+  static String tooltipNotaAtribuida(int nota, int pergunta) =>
+      'Nota $nota (Atribuída à P$pergunta)';
+  static String tooltipNotaDisponivel(int nota) =>
+      'Nota $nota ($legendaDisponivel)';
+  static String rotuloPerguntaAbreviada(int numero) => 'P$numero';
   static const refazer = 'Refazer';
   static const proximo = 'Próximo';
+  static const voltar = 'Voltar';
   static const sair = 'Sair';
   static const sim = 'Sim';
   static const nao = 'Não';
   static const desejaSair = 'Deseja realmente sair?';
+  static const sairConta = 'Sair da conta';
+  static const desejaSairConta =
+      'Tem certeza que deseja sair da sua conta? Você precisará fazer login novamente para acessar seus testes salvos.';
+  static const confirmarSairConta = 'Sair';
+  static const sairDoTeste = 'Sair do teste?';
+  static const desejaSairDoTeste =
+      'Tem certeza que deseja sair? O progresso não salvo nesta etapa será perdido.';
+  static const confirmarSairDoTeste = 'Sair do teste';
+  static const continuarTeste = 'Continuar teste';
   static const sobreApp = 'Sobre o App';
   static const sobreAppDescricao =
       'Este é um trabalho de conclusão de curso, para universidade Instituto Federal do Tocantins campus Porto Nacional.\nDa turma de Licenciatura em computação do ano de 2016.\nIdealizado e realizado por Denys Fernandes.';
@@ -59,13 +103,29 @@ class Strings {
   static const teste = 'Teste';
   static const etapa = 'Etapa';
   static const selecioneEstrela =
-      'Selecione uma estrela de acordo com sua afinidade';
+      'Selecione uma nota de acordo com sua afinidade';
   static const quantEstrelaGosta =
-      'Avalie, a quantidade de estrelas significa o quanto você gosta.';
+      'Avalie, a nota de 1 a 9 significa o seu grau de afinidade.';
+  static const avalieComFichas =
+      'Classifique com notas de 1 a 9 (sem repetir na etapa):';
+  static const selecioneUmaNota =
+      'Selecione uma nota de 1 a 9 de acordo com sua afinidade';
+  static const trocarNota = 'Trocar nota';
+  static const trocarNotas = 'Trocar notas';
+  static const confirmarTroca = 'Confirmar troca';
+  static const cancelar = 'Cancelar';
+  static const notaJaAtribuida =
+      'Esta nota já está atribuída a outra pergunta.';
+  static const desejaTrocarNotas = 'Deseja trocar as notas entre as perguntas?';
+  static const perguntaAtual = 'Pergunta atual';
+  static const semNota = 'Sem nota';
+  static const pendente = 'Pendente';
+  static const suaNota = 'Sua nota';
+  static const disponivel = 'Livre';
   static const voceUsouSelecao = 'Você já usou essa seleção';
   static const editar = 'Editar';
   static const atencaoPerguntaAvaliada =
-      'Atenção, outra pergunta já foi avaliada com essa quantidade de estrelas.';
+      'Atenção, outra pergunta já foi avaliada com essa nota.';
   static const seVoce = 'Se você';
   static const continuarError = ' continuar';
   static const escolherOutraClassifica =
@@ -96,24 +156,34 @@ class Strings {
   static const erroApagarDados = 'Erro ao apagar dados do teste';
   static const dadosTesteVazio = 'O teste não possui progresso para apagar';
   static const dadosTesteApagado = 'Dados do teste apagados com sucesso';
-  static const salveEdicaoAtualAntes = 'Por favor, salve a edição atual antes de editar outra resposta.';
-  static const linguisticaDescricao = 'A inteligência linguística está relacionada com a capacidade de se comunicar, aprender novas línguas e utilizar a linguagem de forma excepcional, seja na forma escrita ou oral.\nEscritores, jornalistas, linguistas, além de pessoas que têm facilidade para falar idiomas diferentes – os poliglotas – apresentam altos níveis de inteligência linguística.';
-  static const logicoDescricao = 'A inteligência lógico-matemática é a capacidade de resolver problemas matemáticos e lógicos, além de identificar padrões e relações entre objetos e ideias.\nEngenheiros, matemáticos, cientistas e programadores são exemplos de profissionais que possuem alta inteligência lógico-matemática.';
-  static const musicalDescricao = 'A inteligência musical está relacionada com a capacidade de compreender, criar e reproduzir sons, ritmos e melodias.\nMúsicos, compositores, cantores e maestros são exemplos de profissionais que possuem alta inteligência musical.';
-  static const cinestesicaDescricao = 'A inteligência cinestésica está relacionada com a capacidade de controlar os movimentos do corpo, além de perceber e interpretar sensações táteis.\nAtletas, dançarinos, cirurgiões e artistas plásticos são exemplos de profissionais que possuem alta inteligência cinestésica.';
-  static const interpessoalDescricao = 'A inteligência interpessoal está relacionada com a capacidade de compreender e se relacionar com outras pessoas, além de perceber e interpretar emoções e sentimentos.\nPsicólogos, terapeutas, professores e líderes são exemplos de profissionais que possuem alta inteligência interpessoal.';
-  static const intrapessoalDescricao = 'A inteligência intrapessoal está relacionada com a capacidade de compreender e se relacionar consigo mesmo, além de perceber e interpretar emoções e sentimentos.\nFilósofos, psicólogos, terapeutas e líderes espirituais são exemplos de profissionais que possuem alta inteligência intrapessoal.';
-  static const espacialDescricao = 'A inteligência espacial está relacionada com a capacidade de perceber e interpretar imagens, formas e cores, além de compreender o espaço tridimensional.\nArquitetos, designers, artistas plásticos e pilotos são exemplos de profissionais que possuem alta inteligência espacial.';
+  static const salveEdicaoAtualAntes =
+      'Por favor, salve a edição atual antes de editar outra resposta.';
+  static const linguisticaDescricao =
+      'A inteligência linguística está relacionada com a capacidade de se comunicar, aprender novas línguas e utilizar a linguagem de forma excepcional, seja na forma escrita ou oral.\nEscritores, jornalistas, linguistas, além de pessoas que têm facilidade para falar idiomas diferentes – os poliglotas – apresentam altos níveis de inteligência linguística.';
+  static const logicoDescricao =
+      'A inteligência lógico-matemática é a capacidade de resolver problemas matemáticos e lógicos, além de identificar padrões e relações entre objetos e ideias.\nEngenheiros, matemáticos, cientistas e programadores são exemplos de profissionais que possuem alta inteligência lógico-matemática.';
+  static const musicalDescricao =
+      'A inteligência musical está relacionada com a capacidade de compreender, criar e reproduzir sons, ritmos e melodias.\nMúsicos, compositores, cantores e maestros são exemplos de profissionais que possuem alta inteligência musical.';
+  static const cinestesicaDescricao =
+      'A inteligência cinestésica está relacionada com a capacidade de controlar os movimentos do corpo, além de perceber e interpretar sensações táteis.\nAtletas, dançarinos, cirurgiões e artistas plásticos são exemplos de profissionais que possuem alta inteligência cinestésica.';
+  static const interpessoalDescricao =
+      'A inteligência interpessoal está relacionada com a capacidade de compreender e se relacionar com outras pessoas, além de perceber e interpretar emoções e sentimentos.\nPsicólogos, terapeutas, professores e líderes são exemplos de profissionais que possuem alta inteligência interpessoal.';
+  static const intrapessoalDescricao =
+      'A inteligência intrapessoal está relacionada com a capacidade de compreender e se relacionar consigo mesmo, além de perceber e interpretar emoções e sentimentos.\nFilósofos, psicólogos, terapeutas e líderes espirituais são exemplos de profissionais que possuem alta inteligência intrapessoal.';
+  static const espacialDescricao =
+      'A inteligência espacial está relacionada com a capacidade de perceber e interpretar imagens, formas e cores, além de compreender o espaço tridimensional.\nArquitetos, designers, artistas plásticos e pilotos são exemplos de profissionais que possuem alta inteligência espacial.';
   static const naturalistaDescricao =
       'A inteligência naturalista está relacionada com a capacidade de reconhecer, classificar e compreender os diferentes elementos do meio ambiente, como animais, plantas e fenômenos naturais.\nBiólogos, ecologistas, botânicos, veterinários e agrônomos são exemplos de profissionais que possuem alta inteligência naturalista.';
   static const existencialDescricao =
       'A inteligência existencial é a capacidade de refletir e questionar temas profundos da existência humana, como a origem da vida, o universo, a finitude, o propósito e o sentido das coisas.\nFilósofos, pensadores, teólogos, cosmólogos e líderes espirituais apresentam altos níveis dessa inteligência.';
   // Compartilhamento e Relatório PDF
   static const compartilharResultadoPdf = 'Compartilhar resultado em PDF';
+  static const baixarResultadoPdf = 'Baixar resultado em PDF';
   static const nenhumResultadoCompartilhar =
       'Nenhum resultado disponível para compartilhar.';
   static const erroCompartilharPdf =
       'Não foi possível compartilhar o relatório em PDF.';
+  static const erroBaixarPdf = 'Não foi possível baixar o relatório em PDF.';
   static const pdfTituloRelatorio = 'TESTE DE MÚLTIPLAS INTELIGÊNCIAS';
   static const pdfSubtituloRelatorio = 'Relatório Oficial de Resultados';
   static const pdfParticipante = 'Participante:';

@@ -70,7 +70,6 @@ app.*.symbols
 app.*.map.json
 
 # Web
-lib/generated_plugin_registrant.dart
 
 # --------------------------------------------------
 # Android
@@ -142,7 +141,12 @@ project.xcworkspace/xcuserdata/
 # Environment & Sensitive Files / Firebase
 # --------------------------------------------------
 .env*
-!.env.example
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
+!lib/firebase_options.example.dart
+.firebaserc
+firebase.json
+**/firebase_app_id_file.json
+# Widget Preview related
+.widget_preview/

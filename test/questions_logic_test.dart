@@ -137,4 +137,94 @@ void main() {
       expect(listaJaRespondida[8], isTrue);
     });
   });
+
+  group('Smart Swap logic tests', () {
+    test('swapping notes between two answered questions cleanly inverts values', () {
+      final answers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+      const currentQuestion = 2; // holds 3
+      const otherQuestion = 6; // holds 7
+      const targetValue = 7;
+
+      final currentAnswer = answers[currentQuestion];
+      answers[currentQuestion] = targetValue;
+      answers[otherQuestion] = currentAnswer;
+
+      expect(answers[currentQuestion], 7);
+      expect(answers[otherQuestion], 3);
+
+      // Verify no duplicates exist in answers
+      final set = answers.toSet();
+      expect(set.length, 9);
+      expect(set.contains(0), isFalse);
+    });
+
+    test('swapping when current question is unassigned leaves other question pending', () {
+      final answers = [1, 2, 0, 4, 5, 6, 7, 8, 9];
+      const currentQuestion = 2; // holds 0 (unanswered)
+      const otherQuestion = 6; // holds 7
+      const targetValue = 7;
+
+      final currentAnswer = answers[currentQuestion];
+      answers[currentQuestion] = targetValue;
+      answers[otherQuestion] = currentAnswer;
+
+      expect(answers[currentQuestion], 7);
+      expect(answers[otherQuestion], 0); // other question becomes pending
+    });
+
+    test('swapping when current question has uncommitted active selection preserves that note', () {
+      final answers = [8, 0, 0, 0, 0, 0, 0, 0, 0]; // Q0 holds 8
+      const currentQuestion = 1; // Q1 in answers holds 0
+      const otherQuestion = 0; // Q0 holds 8
+      const selectedStar = 3; // user tapped chip 3 on Q1
+      const targetValue = 8; // user tapped chip 8 to swap
+
+      final currentAnswer = selectedStar > 0 ? selectedStar : answers[currentQuestion];
+      answers[currentQuestion] = targetValue;
+      answers[otherQuestion] = currentAnswer;
+
+      expect(answers[currentQuestion], 8);
+      expect(answers[otherQuestion], 3); // note 3 safely assigned to Q0 instead of being wiped!
+    });
+
+    test('atualizarListaJaRespondida accurately reflects present values 1..9', () {
+      final answers = [5, 0, 3, 0, 0, 9, 1, 0, 0];
+      final listaJaRespondida = List.filled(9, false);
+
+      for (int i = 0; i < 9; i++) {
+        final val = i + 1;
+        listaJaRespondida[i] = answers.contains(val);
+      }
+
+      expect(listaJaRespondida[0], isTrue); // 1 is present
+      expect(listaJaRespondida[1], isFalse); // 2 is absent
+      expect(listaJaRespondida[2], isTrue); // 3 is present
+      expect(listaJaRespondida[3], isFalse); // 4 is absent
+      expect(listaJaRespondida[4], isTrue); // 5 is present
+      expect(listaJaRespondida[5], isFalse); // 6 is absent
+      expect(listaJaRespondida[6], isFalse); // 7 is absent
+      expect(listaJaRespondida[7], isFalse); // 8 is absent
+      expect(listaJaRespondida[8], isTrue); // 9 is present
+    });
+  });
+
+  group('Back navigation logic tests', () {
+    int navigateBack(int currentQuestion) {
+      if (currentQuestion > 0) {
+        return currentQuestion - 1;
+      }
+      return -1; // signals exit confirmation dialog
+    }
+
+    test('navigates to previous question within stage when question > 0', () {
+      expect(navigateBack(8), 7);
+      expect(navigateBack(4), 3);
+      expect(navigateBack(1), 0);
+    });
+
+    test('signals stage exit confirmation when at first question (0)', () {
+      expect(navigateBack(0), -1);
+    });
+  });
 }
+
