@@ -1649,7 +1649,7 @@ void main() {
       expect(find.text('Start Quiz'), findsOneWidget);
     });
 
-    testWidgets('tapping back button on question > 0 shows exit dialog DialogSair',
+    testWidgets('tapping back button on question > 0 returns to previous question until question 0 opens DialogSair',
         (WidgetTester tester) async {
       configureViewport(tester);
 
@@ -1669,20 +1669,66 @@ void main() {
       await tester.tap(find.byKey(const Key('questions_next_button')));
       await tester.pumpAndSettle();
 
-      // Now on question 1. Tap back button:
+      // Now on question 1 (P2). Tap back button:
       await tester.tap(find.byKey(const Key('questions_back_button')));
       await tester.pumpAndSettle();
 
-      // Exit dialog DialogSair.teste appears
+      // DialogSair does NOT appear; instead we returned to question 0 (P1)
+      expect(find.byType(DialogSair), findsNothing);
+      expect(find.byType(QuestionsPage), findsOneWidget);
+
+      // Now on question 0 (P1). Tap back button again:
+      await tester.tap(find.byKey(const Key('questions_back_button')));
+      await tester.pumpAndSettle();
+
+      // Since we are at the first question, DialogSair appears
       expect(find.byType(DialogSair), findsOneWidget);
       expect(find.text(Strings.sairDoTeste), findsOneWidget);
       expect(find.text(Strings.desejaSairDoTeste), findsOneWidget);
 
-      // Dismiss dialog and verify we remain on question 1
+      // Dismiss dialog and verify we remain on question 0
       await tester.tap(find.text(Strings.continuarTeste));
       await tester.pumpAndSettle();
       expect(find.byType(DialogSair), findsNothing);
       expect(find.byType(QuestionsPage), findsOneWidget);
+    });
+
+    testWidgets('system back gesture on question > 0 returns to previous question until question 0 opens DialogSair',
+        (WidgetTester tester) async {
+      configureViewport(tester);
+
+      await tester.pumpWidget(
+        wrapWithScreenUtil(
+          const QuestionsPage(),
+        ),
+      );
+      await preloadImages(tester);
+      await tester.pumpAndSettle();
+
+      // Answer question 0 with chip 3 and proceed to question 1
+      final chip3 = find.byKey(const Key('numeric_chip_3'));
+      await tester.ensureVisible(chip3);
+      await tester.tap(chip3);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('questions_next_button')));
+      await tester.pumpAndSettle();
+
+      // Invoke system back gesture on question 1
+      final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));
+      await widgetsAppState.didPopRoute();
+      await tester.pumpAndSettle();
+
+      // Should return to question 0 without dialog
+      expect(find.byType(DialogSair), findsNothing);
+      expect(find.byType(QuestionsPage), findsOneWidget);
+
+      // Invoke system back gesture again on question 0
+      await widgetsAppState.didPopRoute();
+      await tester.pumpAndSettle();
+
+      // Should now show DialogSair
+      expect(find.byType(DialogSair), findsOneWidget);
+      expect(find.text(Strings.sairDoTeste), findsOneWidget);
     });
 
     testWidgets('mini-navigator allows freely navigating between questions without deadlock',

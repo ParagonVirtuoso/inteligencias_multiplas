@@ -133,6 +133,8 @@ class Strings {
   static const editarError = ' editar ';
   static const classifiAnterior = ' a classificação da pergunta anterior.';
   static const continuar = 'Continuar';
+  static const fechar = 'Fechar';
+  static const entendido = 'Entendido';
   static const verResultados = 'Ver resultados';
   static const questionarioConcluido = 'Parabéns, questionário concluído!';
   static const deslizeResultados =

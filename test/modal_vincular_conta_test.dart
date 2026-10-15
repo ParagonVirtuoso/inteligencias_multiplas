@@ -171,6 +171,61 @@ void main() {
       await tester.pumpAndSettle();
       expect(facebookPressed, isTrue);
     });
+
+    testWidgets(
+        'ModalVincularConta.show on Web renders centered Dialog without drag handle and with 48dp buttons',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.devicePixelRatio = 1.0;
+
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      await tester.pumpWidget(
+        ScreenUtilInit(
+          designSize: const Size(1080, 1920),
+          fontSizeResolver: (fontSize, instance) {
+            final factor = (1920 / 1080 * 0.42).clamp(0.36, 0.44);
+            return fontSize * factor;
+          },
+          builder: (context, child) => MaterialApp(
+            home: Scaffold(
+              body: Builder(
+                builder: (ctx) => ElevatedButton(
+                  onPressed: () {
+                    ModalVincularConta.show(
+                      context: ctx,
+                      isWebOverride: true,
+                      onGooglePressed: () async {},
+                      onFacebookPressed: () async {},
+                    );
+                  },
+                  child: const Text(Strings.salvarConta),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(Strings.salvarConta));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Dialog), findsOneWidget);
+      expect(find.byType(BottomSheet), findsNothing);
+      expect(find.byKey(const Key('vincular_modal_drag_handle')), findsNothing);
+      expect(find.text(Strings.salvarProgresso), findsOneWidget);
+      expect(find.text(Strings.continuarComGoogleTelaLogin), findsOneWidget);
+      expect(find.text(Strings.continuarComFacebookTelaLogin), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      await tester.tap(find.text(Strings.agoraNao));
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsNothing);
+    });
   });
 
   group('DrawerCustom visitor options tests', () {

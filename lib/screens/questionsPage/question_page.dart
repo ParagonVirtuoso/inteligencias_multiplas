@@ -232,7 +232,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        _mostrarDialogSairTeste();
+        voltarPergunta();
       },
       child: Scaffold(
         backgroundColor: Colors.white,

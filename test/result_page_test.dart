@@ -621,6 +621,77 @@ void main() {
     final scrolledOffset = tester.getTopLeft(textFinder);
     expect(scrolledOffset.dy, lessThan(initialOffset.dy));
   });
+
+  testWidgets(
+      'ResultPage Ver mais opens centered Dialog on Web and BottomSheet on Mobile',
+      (WidgetTester tester) async {
+    // 1. Web mode (1920x1080)
+    tester.view.physicalSize = const Size(1920, 1080);
+    tester.view.devicePixelRatio = 1.0;
+
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        fontSizeResolver: (fontSize, instance) {
+          final factor = (1920 / 1080 * 0.42).clamp(0.36, 0.44);
+          return fontSize * factor;
+        },
+        builder: (context, child) => MaterialApp(
+          key: const ValueKey('web_detail_modal_app'),
+          onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => const ResultPage(isWebOverride: true),
+            settings: RouteSettings(name: '/result', arguments: mockResults),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Tap first "Ver mais" button (Cinestésica - 42 Pontos)
+    await tester.tap(find.text(Strings.verMais).first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(Dialog), findsOneWidget);
+    expect(find.byType(BottomSheet), findsNothing);
+    expect(find.byKey(const Key('detail_modal_drag_handle')), findsNothing);
+    expect(find.text(Strings.cinestesicaDescricao), findsOneWidget);
+    expect(find.text(Strings.entendido), findsOneWidget);
+
+    await tester.tap(find.text(Strings.entendido));
+    await tester.pumpAndSettle();
+    expect(find.byType(Dialog), findsNothing);
+
+    // 2. Mobile mode (1080x2400 @ 2.75x)
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.75;
+
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(1080, 1920),
+        builder: (context, child) => MaterialApp(
+          key: const ValueKey('mobile_detail_modal_app'),
+          onGenerateRoute: (settings) => MaterialPageRoute(
+            builder: (context) => const ResultPage(isWebOverride: false),
+            settings: RouteSettings(name: '/result', arguments: mockResults),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(Strings.verMais).first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BottomSheet), findsOneWidget);
+    expect(find.byType(Dialog), findsNothing);
+    expect(find.byKey(const Key('detail_modal_drag_handle')), findsOneWidget);
+    expect(find.text(Strings.cinestesicaDescricao), findsOneWidget);
+  });
 }
 
 class _MockWebResultController extends ResultController {

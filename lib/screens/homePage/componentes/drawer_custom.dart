@@ -4,10 +4,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:inteligencias_multiplas/componentes/modal_vincular_conta.dart';
 import 'package:inteligencias_multiplas/controller/homeController/home_controller.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/button_drawer.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/dialog_sair.dart';
-import 'package:inteligencias_multiplas/screens/homePage/componentes/modal_vincular_conta.dart';
 import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -119,17 +119,10 @@ class _DrawerCustomState extends State<DrawerCustom> {
   }
 
   void _abrirModalVincularConta() {
-    showModalBottomSheet(
+    ModalVincularConta.show(
       context: context,
-      useRootNavigator: true,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext modalContext) {
-        return ModalVincularConta(
-          onGooglePressed: () => _vincularGoogle(),
-          onFacebookPressed: () => _vincularFacebook(),
-        );
-      },
+      onGooglePressed: () => _vincularGoogle(),
+      onFacebookPressed: () => _vincularFacebook(),
     );
   }
 
