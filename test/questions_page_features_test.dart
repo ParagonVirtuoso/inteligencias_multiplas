@@ -1649,7 +1649,7 @@ void main() {
       expect(find.text('Start Quiz'), findsOneWidget);
     });
 
-    testWidgets('tapping back button on question > 0 returns to previous question until question 0 opens DialogSair',
+    testWidgets('tapping back button on question > 0 shows exit dialog DialogSair',
         (WidgetTester tester) async {
       configureViewport(tester);
 
@@ -1673,27 +1673,19 @@ void main() {
       await tester.tap(find.byKey(const Key('questions_back_button')));
       await tester.pumpAndSettle();
 
-      // DialogSair does NOT appear; instead we returned to question 0 (P1)
-      expect(find.byType(DialogSair), findsNothing);
-      expect(find.byType(QuestionsPage), findsOneWidget);
-
-      // Now on question 0 (P1). Tap back button again:
-      await tester.tap(find.byKey(const Key('questions_back_button')));
-      await tester.pumpAndSettle();
-
-      // Since we are at the first question, DialogSair appears
+      // Exit dialog DialogSair.teste appears immediately
       expect(find.byType(DialogSair), findsOneWidget);
       expect(find.text(Strings.sairDoTeste), findsOneWidget);
       expect(find.text(Strings.desejaSairDoTeste), findsOneWidget);
 
-      // Dismiss dialog and verify we remain on question 0
+      // Dismiss dialog and verify we remain on question 1
       await tester.tap(find.text(Strings.continuarTeste));
       await tester.pumpAndSettle();
       expect(find.byType(DialogSair), findsNothing);
       expect(find.byType(QuestionsPage), findsOneWidget);
     });
 
-    testWidgets('system back gesture on question > 0 returns to previous question until question 0 opens DialogSair',
+    testWidgets('system back gesture on question > 0 shows exit dialog DialogSair',
         (WidgetTester tester) async {
       configureViewport(tester);
 
@@ -1718,15 +1710,7 @@ void main() {
       await widgetsAppState.didPopRoute();
       await tester.pumpAndSettle();
 
-      // Should return to question 0 without dialog
-      expect(find.byType(DialogSair), findsNothing);
-      expect(find.byType(QuestionsPage), findsOneWidget);
-
-      // Invoke system back gesture again on question 0
-      await widgetsAppState.didPopRoute();
-      await tester.pumpAndSettle();
-
-      // Should now show DialogSair
+      // Should directly show DialogSair
       expect(find.byType(DialogSair), findsOneWidget);
       expect(find.text(Strings.sairDoTeste), findsOneWidget);
     });

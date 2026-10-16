@@ -157,14 +157,6 @@ class _QuestionsPageState extends State<QuestionsPage> {
     );
   }
 
-  Future<void> voltarPergunta() async {
-    if (currentQuestion > 0) {
-      irParaPergunta(currentQuestion - 1);
-    } else {
-      await _mostrarDialogSairTeste();
-    }
-  }
-
   void abrirSmartSwap(int targetValue, int otherQuestionIndex) {
     final safeStep = currentStep.clamp(0, perguntas.length - 1);
     final currentQText = perguntas[safeStep][currentQuestion];
@@ -232,7 +224,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-        voltarPergunta();
+        _mostrarDialogSairTeste();
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -272,7 +264,7 @@ class _QuestionsPageState extends State<QuestionsPage> {
                       children: [
                         BotaoVoltar(
                           key: const Key('questions_back_button'),
-                          onTap: voltarPergunta,
+                          onTap: _mostrarDialogSairTeste,
                           tooltip: Strings.voltar,
                         ),
                         Expanded(
