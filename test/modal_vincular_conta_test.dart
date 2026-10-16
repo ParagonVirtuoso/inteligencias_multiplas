@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,16 +16,95 @@ class _FakeHomeController extends HomeController {
   bool facebookCalled = false;
 
   @override
-  Future<bool?> vincularContaGoogle({dynamic auth, dynamic googleSignIn}) async {
+  Future<bool?> vincularContaGoogle({
+    dynamic auth,
+    dynamic googleSignIn,
+    bool? isWebOverride,
+  }) async {
     googleCalled = true;
     return true;
   }
 
   @override
-  Future<bool?> vincularContaFacebook({dynamic auth, dynamic facebookAuth}) async {
+  Future<bool?> vincularContaFacebook({
+    dynamic auth,
+    dynamic facebookAuth,
+    bool? isWebOverride,
+  }) async {
     facebookCalled = true;
     return true;
   }
+}
+
+class _FakeUser implements User {
+  @override
+  final bool isAnonymous;
+  @override
+  final String uid;
+  final FirebaseAuthException? linkPopupError;
+  int linkWithPopupCalls = 0;
+
+  _FakeUser({
+    this.isAnonymous = true,
+    this.uid = 'anon-uid',
+    this.linkPopupError,
+  });
+
+  @override
+  Future<UserCredential> linkWithPopup(AuthProvider provider) async {
+    linkWithPopupCalls++;
+    if (linkPopupError != null) {
+      throw linkPopupError!;
+    }
+    return _FakeUserCredential(this);
+  }
+
+  @override
+  Future<void> reload() async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _FakeUserCredential implements UserCredential {
+  @override
+  final User? user;
+
+  _FakeUserCredential(this.user);
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _FakeFirebaseAuth implements FirebaseAuth {
+  @override
+  final User? currentUser;
+  int signInWithPopupCalls = 0;
+  int signInWithCredentialCalls = 0;
+  AuthCredential? lastSignedInCredential;
+
+  _FakeFirebaseAuth({this.currentUser});
+
+  @override
+  Future<UserCredential> signInWithPopup(AuthProvider provider) async {
+    signInWithPopupCalls++;
+    throw FirebaseAuthException(
+      code: 'popup-blocked',
+      message: 'Unable to establish a connection with the popup.',
+    );
+  }
+
+  @override
+  Future<UserCredential> signInWithCredential(AuthCredential credential) async {
+    signInWithCredentialCalls++;
+    lastSignedInCredential = credential;
+    return _FakeUserCredential(
+      _FakeUser(isAnonymous: false, uid: 'existing-google-uid'),
+    );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _TestHttpOverrides extends HttpOverrides {
@@ -341,6 +421,67 @@ void main() {
       expect(find.text('denys@gmail.com'), findsOneWidget);
       expect(find.text(Strings.progressoSalvoNuvem), findsOneWidget);
       expect(find.text(Strings.salvarGoogleOuFacebook), findsNothing);
+    });
+  });
+
+  group('HomeController Web account linking tests', () {
+    test(
+        'vincularContaGoogle on Web uses signInWithCredential when linkWithPopup throws credential-already-in-use (no second popup)',
+        () async {
+      final oauthCred = OAuthProvider('google.com').credential(
+        accessToken: 'google-access-token',
+        idToken: 'google-id-token',
+      );
+      final anonUser = _FakeUser(
+        isAnonymous: true,
+        uid: 'anon-123',
+        linkPopupError: FirebaseAuthException(
+          code: 'credential-already-in-use',
+          credential: oauthCred,
+        ),
+      );
+      final fakeAuth = _FakeFirebaseAuth(currentUser: anonUser);
+      final controller = HomeController();
+
+      final result = await controller.vincularContaGoogle(
+        auth: fakeAuth,
+        isWebOverride: true,
+      );
+
+      expect(result, isTrue);
+      expect(anonUser.linkWithPopupCalls, 1);
+      expect(fakeAuth.signInWithPopupCalls, 0);
+      expect(fakeAuth.signInWithCredentialCalls, 1);
+      expect(fakeAuth.lastSignedInCredential, isA<GoogleAuthCredential>());
+    });
+
+    test(
+        'vincularContaFacebook on Web uses signInWithCredential when linkWithPopup throws credential-already-in-use (no second popup)',
+        () async {
+      final oauthCred = OAuthProvider('facebook.com').credential(
+        accessToken: 'fb-access-token',
+      );
+      final anonUser = _FakeUser(
+        isAnonymous: true,
+        uid: 'anon-456',
+        linkPopupError: FirebaseAuthException(
+          code: 'credential-already-in-use',
+          credential: oauthCred,
+        ),
+      );
+      final fakeAuth = _FakeFirebaseAuth(currentUser: anonUser);
+      final controller = HomeController();
+
+      final result = await controller.vincularContaFacebook(
+        auth: fakeAuth,
+        isWebOverride: true,
+      );
+
+      expect(result, isTrue);
+      expect(anonUser.linkWithPopupCalls, 1);
+      expect(fakeAuth.signInWithPopupCalls, 0);
+      expect(fakeAuth.signInWithCredentialCalls, 1);
+      expect(fakeAuth.lastSignedInCredential, isA<FacebookAuthCredential>());
     });
   });
 }

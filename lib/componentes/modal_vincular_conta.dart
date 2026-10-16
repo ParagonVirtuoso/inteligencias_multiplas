@@ -163,8 +163,9 @@ class ModalVincularConta extends StatelessWidget {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () async {
+                    final future = onGooglePressed();
                     Navigator.pop(context);
-                    await onGooglePressed();
+                    await future;
                   },
                   behavior: HitTestBehavior.opaque,
                   child: Container(
@@ -225,8 +226,9 @@ class ModalVincularConta extends StatelessWidget {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () async {
+                    final future = onFacebookPressed();
                     Navigator.pop(context);
-                    await onFacebookPressed();
+                    await future;
                   },
                   behavior: HitTestBehavior.opaque,
                   child: Container(
