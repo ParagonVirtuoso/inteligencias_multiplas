@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
@@ -17,6 +15,8 @@ class ResultController {
     'Linguistica': 4,
     'Logico': 5,
     'Musical': 6,
+    'Naturalista': 7,
+    'Existencial': 8,
   };
 
   static pw.Widget _buildCardInteligenciaAgrupada({
@@ -32,17 +32,18 @@ class ResultController {
     required PdfColor corBorda,
     required PdfColor corTextoEscuro,
     required PdfColor corTextoSuave,
+    int totalEstrelas = 9,
   }) {
     final isPrimeiro = posicao == 1;
     return pw.Container(
-      margin: const pw.EdgeInsets.only(bottom: 5),
-      padding: const pw.EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+      margin: const pw.EdgeInsets.only(bottom: 3.5),
+      padding: const pw.EdgeInsets.symmetric(horizontal: 4.5, vertical: 2.8),
       decoration: pw.BoxDecoration(
         color: isPrimeiro ? corAzulClaro : corCinzaFundo,
-        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(5)),
+        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(4)),
         border: pw.Border.all(
           color: isPrimeiro ? corAzul : corBorda,
-          width: isPrimeiro ? 0.9 : 0.5,
+          width: isPrimeiro ? 0.8 : 0.5,
         ),
       ),
       child: pw.Column(
@@ -55,8 +56,8 @@ class ResultController {
               pw.Row(
                 children: [
                   pw.Container(
-                    width: 14,
-                    height: 14,
+                    width: 13,
+                    height: 13,
                     alignment: pw.Alignment.center,
                     decoration: pw.BoxDecoration(
                       color: isPrimeiro ? corAzul : PdfColors.grey400,
@@ -65,17 +66,17 @@ class ResultController {
                     child: pw.Text(
                       '$posicaoº',
                       style: pw.TextStyle(
-                        fontSize: 6.8,
+                        fontSize: 6.5,
                         fontWeight: pw.FontWeight.bold,
                         color: PdfColors.white,
                       ),
                     ),
                   ),
-                  pw.SizedBox(width: 4),
+                  pw.SizedBox(width: 3.5),
                   pw.Text(
                     nome,
                     style: pw.TextStyle(
-                      fontSize: 8.2,
+                      fontSize: 8.0,
                       fontWeight: pw.FontWeight.bold,
                       color: isPrimeiro ? corAzul : corTextoEscuro,
                     ),
@@ -85,16 +86,16 @@ class ResultController {
               pw.Text(
                 '$totalPontos pts ($porcentagem%)',
                 style: pw.TextStyle(
-                  fontSize: 7.8,
+                  fontSize: 7.5,
                   fontWeight: pw.FontWeight.bold,
                   color: isPrimeiro ? corAzul : corTextoSuave,
                 ),
               ),
             ],
           ),
-          pw.SizedBox(height: 2.5),
+          pw.SizedBox(height: 2),
           pw.Container(height: 0.5, color: isPrimeiro ? corAzul : corBorda),
-          pw.SizedBox(height: 2.5),
+          pw.SizedBox(height: 2),
           ...List.generate(perguntasTextos.length, (i) {
             final texto = perguntasTextos[i];
             final prefixo =
@@ -102,13 +103,15 @@ class ResultController {
                     ? Strings.pdfPrefixosEtapas[i]
                     : 'Item';
             final nota = i < notas.length ? notas[i] : 0;
-            final isAlta = nota >= 6;
-            final isBaixa = nota <= 2;
+            final isAlta = totalEstrelas >= 9 ? nota >= 7 : nota >= 6;
+            final isBaixa = totalEstrelas >= 9
+                ? (nota > 0 && nota <= 3)
+                : (nota > 0 && nota <= 2);
             final isPar = i % 2 == 0;
 
             return pw.Container(
               padding:
-                  const pw.EdgeInsets.symmetric(horizontal: 2.5, vertical: 1.2),
+                  const pw.EdgeInsets.symmetric(horizontal: 2.0, vertical: 1.0),
               decoration: isPar
                   ? const pw.BoxDecoration(
                       color: PdfColors.white,
@@ -126,7 +129,7 @@ class ResultController {
                         pw.Text(
                           '${i + 1}. $prefixo: ',
                           style: pw.TextStyle(
-                            fontSize: 5.8,
+                            fontSize: 5.5,
                             fontWeight: pw.FontWeight.bold,
                             color: isAlta ? corAzul : corTextoEscuro,
                           ),
@@ -137,7 +140,7 @@ class ResultController {
                             maxLines: 1,
                             overflow: pw.TextOverflow.clip,
                             style: pw.TextStyle(
-                              fontSize: 5.8,
+                              fontSize: 5.5,
                               color: isAlta ? corTextoEscuro : corTextoSuave,
                               fontWeight: isAlta
                                   ? pw.FontWeight.bold
@@ -148,10 +151,10 @@ class ResultController {
                       ],
                     ),
                   ),
-                  pw.SizedBox(width: 3),
+                  pw.SizedBox(width: 2.5),
                   pw.Container(
                     padding: const pw.EdgeInsets.symmetric(
-                        horizontal: 3.5, vertical: 0.8),
+                        horizontal: 3.0, vertical: 0.6),
                     decoration: pw.BoxDecoration(
                       color: isAlta
                           ? corAzul
@@ -162,7 +165,7 @@ class ResultController {
                     child: pw.Text(
                       nota > 0 ? '$nota pts' : '-',
                       style: pw.TextStyle(
-                        fontSize: 6.0,
+                        fontSize: 5.8,
                         fontWeight: pw.FontWeight.bold,
                         color: isAlta ? PdfColors.white : corTextoEscuro,
                       ),
@@ -345,13 +348,16 @@ class ResultController {
         },
         build: (pw.Context context) {
           const larguraTotalBarra = 527.0;
+          final totalMaximo =
+              itensOrdenados.isNotEmpty ? itensOrdenados.length * 10 : 90;
+          final totalEstrelas = itensOrdenados.length;
 
           return [
             if (primeiroLugar != null && infoPrimeiroLugar != null) ...[
               pw.Container(
                 width: double.infinity,
                 padding: const pw.EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 6),
+                    horizontal: 9, vertical: 5),
                 decoration: pw.BoxDecoration(
                   color: corAzulClaro,
                   borderRadius:
@@ -375,67 +381,67 @@ class ResultController {
                           child: pw.Text(
                             Strings.pdfInteligenciaPredominante,
                             style: pw.TextStyle(
-                              fontSize: 7.5,
+                              fontSize: 7.2,
                               fontWeight: pw.FontWeight.bold,
                               color: PdfColors.white,
                             ),
                           ),
                         ),
                         pw.Text(
-                          '${primeiroLugar.value} Pontos (${((primeiroLugar.value / 70) * 100).round()}%)',
+                          '${primeiroLugar.value} Pontos (${((primeiroLugar.value / totalMaximo) * 100).round()}%)',
                           style: pw.TextStyle(
-                            fontSize: 10.5,
+                            fontSize: 10.0,
                             fontWeight: pw.FontWeight.bold,
                             color: corAzul,
                           ),
                         ),
                       ],
                     ),
-                    pw.SizedBox(height: 3),
+                    pw.SizedBox(height: 2.5),
                     pw.Text(
                       infoPrimeiroLugar['key'] ?? primeiroLugar.key,
                       style: pw.TextStyle(
-                        fontSize: 12.5,
+                        fontSize: 12.0,
                         fontWeight: pw.FontWeight.bold,
                         color: corAzul,
                       ),
                     ),
-                    pw.SizedBox(height: 2),
+                    pw.SizedBox(height: 1.5),
                     pw.Text(
                       infoPrimeiroLugar['descricao'] ?? '',
                       style: const pw.TextStyle(
-                        fontSize: 7.8,
+                        fontSize: 7.5,
                         color: corTextoEscuro,
-                        lineSpacing: 1.15,
+                        lineSpacing: 1.12,
                       ),
                     ),
                   ],
                 ),
               ),
-              pw.SizedBox(height: 6),
+              pw.SizedBox(height: 5),
             ],
             pw.Text(
               Strings.pdfClassificacaoGeral,
               style: pw.TextStyle(
-                fontSize: 9.5,
+                fontSize: 9.0,
                 fontWeight: pw.FontWeight.bold,
                 color: corTextoEscuro,
               ),
             ),
-            pw.SizedBox(height: 4),
+            pw.SizedBox(height: 3),
             ...List.generate(itensOrdenados.length, (index) {
               final item = itensOrdenados[index];
               final info = infoInteligencias[item.key];
               final nome = info?['key'] ?? item.key;
               final descricao = info?['descricao'] ?? '';
               final pontos = item.value;
-              final porcentagem = (pontos / 70 * 100).clamp(0, 100);
+              final porcentagem = (pontos / totalMaximo * 100).clamp(0, 100);
               final posicao = '${index + 1}º';
 
               return pw.Container(
-                margin: const pw.EdgeInsets.only(bottom: 3.5),
+                margin: const pw.EdgeInsets.only(bottom: 2.8),
                 padding: const pw.EdgeInsets.symmetric(
-                    horizontal: 8, vertical: 3.5),
+                    horizontal: 7, vertical: 2.8),
                 decoration: pw.BoxDecoration(
                   color: index == 0 ? corAzulClaro : corCinzaFundo,
                   borderRadius:
@@ -455,8 +461,8 @@ class ResultController {
                         pw.Row(
                           children: [
                             pw.Container(
-                              width: 17,
-                              height: 17,
+                              width: 15,
+                              height: 15,
                               alignment: pw.Alignment.center,
                               decoration: pw.BoxDecoration(
                                 color:
@@ -466,7 +472,7 @@ class ResultController {
                               child: pw.Text(
                                 posicao,
                                 style: pw.TextStyle(
-                                  fontSize: 7.5,
+                                  fontSize: 7.0,
                                   fontWeight: pw.FontWeight.bold,
                                   color: index == 0
                                       ? PdfColors.white
@@ -474,11 +480,11 @@ class ResultController {
                                 ),
                               ),
                             ),
-                            pw.SizedBox(width: 6),
+                            pw.SizedBox(width: 5),
                             pw.Text(
                               nome,
                               style: pw.TextStyle(
-                                fontSize: 9.5,
+                                fontSize: 9.0,
                                 fontWeight: pw.FontWeight.bold,
                                 color: index == 0 ? corAzul : corTextoEscuro,
                               ),
@@ -488,18 +494,18 @@ class ResultController {
                         pw.Text(
                           '$pontos pts (${porcentagem.round()}%)',
                           style: pw.TextStyle(
-                            fontSize: 8.5,
+                            fontSize: 8.0,
                             fontWeight: pw.FontWeight.bold,
                             color: index == 0 ? corAzul : corTextoSuave,
                           ),
                         ),
                       ],
                     ),
-                    pw.SizedBox(height: 3),
+                    pw.SizedBox(height: 2.5),
                     pw.Stack(
                       children: [
                         pw.Container(
-                          height: 3.5,
+                          height: 3.0,
                           width: double.infinity,
                           decoration: const pw.BoxDecoration(
                             color: PdfColors.grey200,
@@ -508,7 +514,7 @@ class ResultController {
                           ),
                         ),
                         pw.Container(
-                          height: 3.5,
+                          height: 3.0,
                           width: larguraTotalBarra *
                               (porcentagem / 100).clamp(0.01, 1.0),
                           decoration: pw.BoxDecoration(
@@ -520,13 +526,13 @@ class ResultController {
                       ],
                     ),
                     if (descricao.isNotEmpty) ...[
-                      pw.SizedBox(height: 2.5),
+                      pw.SizedBox(height: 2.0),
                       pw.Text(
                         descricao,
                         style: const pw.TextStyle(
-                          fontSize: 7.2,
+                          fontSize: 6.8,
                           color: corTextoSuave,
-                          lineSpacing: 1.15,
+                          lineSpacing: 1.12,
                         ),
                       ),
                     ],
@@ -534,10 +540,10 @@ class ResultController {
                 ),
               );
             }),
-            pw.SizedBox(height: 4),
+            pw.SizedBox(height: 3),
             pw.Container(
               padding: const pw.EdgeInsets.symmetric(
-                  horizontal: 8, vertical: 4.5),
+                  horizontal: 7, vertical: 3.5),
               decoration: pw.BoxDecoration(
                 color: PdfColors.white,
                 borderRadius:
@@ -550,18 +556,18 @@ class ResultController {
                   pw.Text(
                     Strings.pdfSobreTeoria,
                     style: pw.TextStyle(
-                      fontSize: 8,
+                      fontSize: 7.8,
                       fontWeight: pw.FontWeight.bold,
                       color: corTextoEscuro,
                     ),
                   ),
-                  pw.SizedBox(height: 2),
+                  pw.SizedBox(height: 1.5),
                   pw.Text(
                     Strings.pdfSobreTeoriaDescricao,
                     style: const pw.TextStyle(
-                      fontSize: 7,
+                      fontSize: 6.8,
                       color: corTextoSuave,
-                      lineSpacing: 1.15,
+                      lineSpacing: 1.12,
                     ),
                   ),
                 ],
@@ -571,7 +577,7 @@ class ResultController {
               pw.NewPage(),
               pw.Container(
                 padding: const pw.EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 5),
+                    horizontal: 9, vertical: 4.5),
                 decoration: pw.BoxDecoration(
                   color: corAzulClaro,
                   borderRadius:
@@ -588,22 +594,22 @@ class ResultController {
                         pw.Text(
                           Strings.pdfDetalhamentoQuestionario,
                           style: pw.TextStyle(
-                            fontSize: 10,
+                            fontSize: 9.5,
                             fontWeight: pw.FontWeight.bold,
                             color: corAzul,
                           ),
                         ),
-                        pw.SizedBox(height: 1.5),
+                        pw.SizedBox(height: 1.0),
                         pw.Text(
                           Strings.pdfDetalhamentoSubtitulo,
                           style: const pw.TextStyle(
-                              fontSize: 7.2, color: corTextoSuave),
+                              fontSize: 7.0, color: corTextoSuave),
                         ),
                       ],
                     ),
                     pw.Container(
                       padding: const pw.EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2.5),
+                          horizontal: 5.5, vertical: 2.0),
                       decoration: const pw.BoxDecoration(
                         color: corAzul,
                         borderRadius:
@@ -612,7 +618,7 @@ class ResultController {
                       child: pw.Text(
                         Strings.pdfTotalQuestoesBadge,
                         style: pw.TextStyle(
-                          fontSize: 7.2,
+                          fontSize: 7.0,
                           fontWeight: pw.FontWeight.bold,
                           color: PdfColors.white,
                         ),
@@ -621,7 +627,7 @@ class ResultController {
                   ],
                 ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 4),
               pw.Row(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
@@ -629,9 +635,7 @@ class ResultController {
                     child: pw.Column(
                       children: [
                         ...List.generate(
-                          itensOrdenados.length >= 4
-                              ? 4
-                              : itensOrdenados.length,
+                          (itensOrdenados.length / 2).ceil(),
                           (idx) {
                             final item = itensOrdenados[idx];
                             final info = infoInteligencias[item.key];
@@ -640,7 +644,7 @@ class ResultController {
                                 _indiceInteligencias[item.key] ?? idx;
                             final totalPontos = item.value;
                             final porcentagem =
-                                ((totalPontos / 70) * 100).round();
+                                ((totalPontos / totalMaximo) * 100).round();
 
                             final perguntasTextos =
                                 List.generate(10, (etapaIndex) {
@@ -688,22 +692,24 @@ class ResultController {
                               corBorda: corBorda,
                               corTextoEscuro: corTextoEscuro,
                               corTextoSuave: corTextoSuave,
+                              totalEstrelas: totalEstrelas,
                             );
                           },
                         ),
                       ],
                     ),
                   ),
-                  pw.SizedBox(width: 6),
+                  pw.SizedBox(width: 5),
                   pw.Expanded(
                     child: pw.Column(
                       children: [
                         ...List.generate(
-                          itensOrdenados.length > 4
-                              ? itensOrdenados.length - 4
-                              : 0,
+                          itensOrdenados.length -
+                              (itensOrdenados.length / 2).ceil(),
                           (i) {
-                            final idx = i + 4;
+                            final splitCount =
+                                (itensOrdenados.length / 2).ceil();
+                            final idx = i + splitCount;
                             final item = itensOrdenados[idx];
                             final info = infoInteligencias[item.key];
                             final nome = info?['key'] ?? item.key;
@@ -711,7 +717,7 @@ class ResultController {
                                 _indiceInteligencias[item.key] ?? idx;
                             final totalPontos = item.value;
                             final porcentagem =
-                                ((totalPontos / 70) * 100).round();
+                                ((totalPontos / totalMaximo) * 100).round();
 
                             final perguntasTextos =
                                 List.generate(10, (etapaIndex) {
@@ -759,15 +765,16 @@ class ResultController {
                               corBorda: corBorda,
                               corTextoEscuro: corTextoEscuro,
                               corTextoSuave: corTextoSuave,
+                              totalEstrelas: totalEstrelas,
                             );
                           },
                         ),
                         pw.Container(
-                          padding: const pw.EdgeInsets.all(5.5),
+                          padding: const pw.EdgeInsets.all(5.0),
                           decoration: pw.BoxDecoration(
                             color: PdfColors.white,
                             borderRadius: const pw.BorderRadius.all(
-                                pw.Radius.circular(5)),
+                                pw.Radius.circular(4)),
                             border:
                                 pw.Border.all(color: corBorda, width: 0.6),
                           ),
@@ -777,47 +784,47 @@ class ResultController {
                               pw.Text(
                                 Strings.pdfComoInterpretarNotas,
                                 style: pw.TextStyle(
-                                  fontSize: 7.8,
+                                  fontSize: 7.5,
                                   fontWeight: pw.FontWeight.bold,
                                   color: corTextoEscuro,
                                 ),
                               ),
-                              pw.SizedBox(height: 3),
+                              pw.SizedBox(height: 2.5),
                               pw.Text(
                                 Strings.pdfGuiaNotaAlta,
                                 style: const pw.TextStyle(
-                                    fontSize: 6.5, color: corTextoSuave),
+                                    fontSize: 6.2, color: corTextoSuave),
                               ),
-                              pw.SizedBox(height: 2),
+                              pw.SizedBox(height: 1.5),
                               pw.Text(
                                 Strings.pdfGuiaNotaMedia,
                                 style: const pw.TextStyle(
-                                    fontSize: 6.5, color: corTextoSuave),
+                                    fontSize: 6.2, color: corTextoSuave),
                               ),
-                              pw.SizedBox(height: 2),
+                              pw.SizedBox(height: 1.5),
                               pw.Text(
                                 Strings.pdfGuiaNotaBaixa,
                                 style: const pw.TextStyle(
-                                    fontSize: 6.5, color: corTextoSuave),
+                                    fontSize: 6.2, color: corTextoSuave),
                               ),
-                              pw.SizedBox(height: 3),
+                              pw.SizedBox(height: 2.5),
                               pw.Container(height: 0.5, color: corBorda),
-                              pw.SizedBox(height: 3),
+                              pw.SizedBox(height: 2.5),
                               pw.Text(
                                 Strings.pdfMetodologiaIpsativa,
                                 style: pw.TextStyle(
-                                  fontSize: 7.2,
+                                  fontSize: 7.0,
                                   fontWeight: pw.FontWeight.bold,
                                   color: corTextoEscuro,
                                 ),
                               ),
-                              pw.SizedBox(height: 1.5),
+                              pw.SizedBox(height: 1.2),
                               pw.Text(
                                 Strings.pdfMetodologiaIpsativaDescricao,
                                 style: const pw.TextStyle(
-                                    fontSize: 6.5,
+                                    fontSize: 6.2,
                                     color: corTextoSuave,
-                                    lineSpacing: 1.15),
+                                    lineSpacing: 1.12),
                               ),
                             ],
                           ),
@@ -844,6 +851,7 @@ class ResultController {
     String? nomeUsuario,
     String? emailUsuario,
     DateTime? dataRealizacao,
+    SharePlus? sharePlus,
   }) async {
     Rect? origin;
     try {
@@ -864,23 +872,55 @@ class ResultController {
       dataRealizacao: dataRealizacao,
     );
 
-    final tempDir = await getTemporaryDirectory();
-    final file = File('${tempDir.path}/resultado_inteligencias_multiplas.pdf');
-    await file.writeAsBytes(pdfBytes);
-
-    await SharePlus.instance.share(
+    const fileName = 'resultado_inteligencias_multiplas.pdf';
+    final share = sharePlus ?? SharePlus.instance;
+    await share.share(
       ShareParams(
         files: [
-          XFile(
-            file.path,
+          XFile.fromData(
+            pdfBytes,
             mimeType: 'application/pdf',
-            name: 'resultado_inteligencias_multiplas.pdf',
+            name: fileName,
           ),
         ],
+        fileNameOverrides: const [fileName],
         subject: Strings.pdfShareSubject,
         text: Strings.pdfShareText,
         sharePositionOrigin: origin,
       ),
     );
+  }
+
+  Future<void> baixarResultadoPdf({
+    required List<MapEntry<String, int>> itensOrdenados,
+    required Map<String, Map<String, String>> infoInteligencias,
+    List<List<int>>? respostas,
+    String? nomeUsuario,
+    String? emailUsuario,
+    DateTime? dataRealizacao,
+    Future<void> Function(XFile file)? onSaveFile,
+  }) async {
+    final pdfBytes = await gerarRelatorioPdf(
+      itensOrdenados: itensOrdenados,
+      infoInteligencias: infoInteligencias,
+      respostas: respostas,
+      nomeUsuario: nomeUsuario,
+      emailUsuario: emailUsuario,
+      dataRealizacao: dataRealizacao,
+    );
+
+    const fileName = 'resultado_inteligencias_multiplas.pdf';
+    final xFile = XFile.fromData(
+      pdfBytes,
+      mimeType: 'application/pdf',
+      name: fileName,
+      path: fileName,
+    );
+
+    if (onSaveFile != null) {
+      await onSaveFile(xFile);
+    } else {
+      await xFile.saveTo(fileName);
+    }
   }
 }

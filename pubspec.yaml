@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -91,7 +93,16 @@ flutter:
     - assets/icons/proximo.png
     - assets/icons/edit.png
     - assets/icons/arrowdetailresult.png
-    - assets/etapas/etapa-1/pergunta-1.png
+    - assets/etapas/etapa-1/
+    - assets/etapas/etapa-2/
+    - assets/etapas/etapa-3/
+    - assets/etapas/etapa-4/
+    - assets/etapas/etapa-5/
+    - assets/etapas/etapa-6/
+    - assets/etapas/etapa-7/
+    - assets/etapas/etapa-8/
+    - assets/etapas/etapa-9/
+    - assets/etapas/etapa-10/
     - assets/resultado/concluido.png
     - assets/resultado/cinestesica.png
     - assets/resultado/espacial.png
@@ -100,6 +111,8 @@ flutter:
     - assets/resultado/linguistico.png
     - assets/resultado/logico.png
     - assets/resultado/musical.png
+    - assets/resultado/naturalista.png
+    - assets/resultado/existencial.png
     - assets/icons/github.png
     - assets/icons/linkedin.png
     - assets/icons/instagram.png
@@ -123,6 +136,9 @@ flutter:
         - asset: assets/fonts/Roboto-Regular.ttf
         - asset: assets/fonts/Roboto-Bold.ttf
           weight: 700
+    - family: Roboto-Regular
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

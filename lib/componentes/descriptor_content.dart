@@ -54,7 +54,7 @@ class _DesciptorContentState extends State<DesciptorContent> {
             });
           },
           drawer: Drawer(
-            width: 650.w,
+            width: (650.w).clamp(260.0, 360.0),
             child: DrawerCustom(
                 profilePic: _profilePic, user: _user, email: _email),
           ),
@@ -73,17 +73,24 @@ class _DesciptorContentState extends State<DesciptorContent> {
           body: Column(
             children: [
               Container(
-                  height: 370.h,
-                  width: 1080.w,
+                  height: (370.h).clamp(120.0, 200.0),
+                  width: double.infinity,
                   color: Colors.transparent,
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(50.w, 40.h, 50.w, 40.h),
+                    padding: EdgeInsets.fromLTRB(
+                        (50.w).clamp(16.0, 36.0),
+                        (40.h).clamp(16.0, 32.0),
+                        (50.w).clamp(16.0, 36.0),
+                        (40.h).clamp(16.0, 32.0)),
                     child: Image.asset(Strings.logoMarcaAsset),
                   )),
               Expanded(
                 child: Container(
-                  padding:
-                      EdgeInsets.only(top: 80.h, left: 100.w, right: 100.w),
+                  width: double.infinity,
+                  padding: EdgeInsets.only(
+                      top: (80.h).clamp(32.0, 56.0),
+                      left: (100.w).clamp(24.0, 48.0),
+                      right: (100.w).clamp(24.0, 48.0)),
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -91,7 +98,12 @@ class _DesciptorContentState extends State<DesciptorContent> {
                       topRight: Radius.circular(50),
                     ),
                   ),
-                  child: widget.child,
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 860),
+                      child: widget.child,
+                    ),
+                  ),
                 ),
               )
             ],

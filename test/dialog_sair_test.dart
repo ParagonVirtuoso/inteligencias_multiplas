@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:inteligencias_multiplas/controller/homeController/home_controller.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/dialog_sair.dart';
 import 'package:inteligencias_multiplas/screens/homePage/componentes/drawer_custom.dart';
+import 'package:inteligencias_multiplas/utils/cores.dart';
 import 'package:inteligencias_multiplas/utils/strings.dart';
 
 class _FakeHomeController extends HomeController {
@@ -207,10 +208,16 @@ void main() {
 
       // DialogSair is now visible
       expect(find.byType(DialogSair), findsOneWidget);
-      expect(find.text(Strings.desejaSair), findsOneWidget);
+      expect(find.text(Strings.sairConta), findsOneWidget);
+      expect(find.text(Strings.desejaSairConta), findsOneWidget);
 
-      // Tap Sim
-      await tester.tap(find.text(Strings.sim));
+      // Tap Sair inside DialogSair
+      final dialogConfirmFinder = find.descendant(
+        of: find.byType(DialogSair),
+        matching: find.text(Strings.confirmarSairConta),
+      );
+      expect(dialogConfirmFinder, findsOneWidget);
+      await tester.tap(dialogConfirmFinder);
       await tester.pumpAndSettle();
 
       // Signs out and navigates to login screen ('/')
@@ -218,7 +225,7 @@ void main() {
       expect(find.text('Login Screen'), findsOneWidget);
     });
 
-    testWidgets('DialogSair dismisses on tapping Nao inside DrawerCustom',
+    testWidgets('DialogSair dismisses on tapping Cancelar inside DrawerCustom',
         (WidgetTester tester) async {
       final fakeHomeController = _FakeHomeController();
 
@@ -272,13 +279,113 @@ void main() {
 
       expect(find.byType(DialogSair), findsOneWidget);
 
-      // Tap Nao
-      await tester.tap(find.text(Strings.nao));
+      // Tap Cancelar
+      await tester.tap(find.text(Strings.cancelar));
       await tester.pumpAndSettle();
 
       // Dialog is dismissed, sign out is not called
       expect(find.byType(DialogSair), findsNothing);
       expect(fakeHomeController.signOutCalled, isFalse);
+    });
+
+    testWidgets('DialogSair.teste renders warning icon and test-specific texts',
+        (WidgetTester tester) async {
+      bool confirmCalled = false;
+      bool cancelCalled = false;
+
+      await tester.pumpWidget(
+        ScreenUtilInit(
+          designSize: const Size(1080, 1920),
+          builder: (context, child) => MaterialApp(
+            home: Scaffold(
+              body: DialogSair.teste(
+                onConfirm: () => confirmCalled = true,
+                onCancel: () => cancelCalled = true,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DialogSair), findsOneWidget);
+      expect(find.text(Strings.sairDoTeste), findsOneWidget);
+      expect(find.text(Strings.desejaSairDoTeste), findsOneWidget);
+      expect(find.text(Strings.continuarTeste), findsOneWidget);
+      expect(find.text(Strings.confirmarSairDoTeste), findsOneWidget);
+      expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+
+      // Verify inverted colors: "Continuar teste" is primary highlighted, "Sair do teste" is secondary
+      final continuarButtonFinder = find.ancestor(
+        of: find.text(Strings.continuarTeste),
+        matching: find.byType(ElevatedButton),
+      );
+      final sairButtonFinder = find.ancestor(
+        of: find.text(Strings.confirmarSairDoTeste),
+        matching: find.byType(ElevatedButton),
+      );
+
+      final ElevatedButton continuarButton = tester.widget(continuarButtonFinder);
+      final ElevatedButton sairButton = tester.widget(sairButtonFinder);
+
+      expect(continuarButton.style?.backgroundColor?.resolve({}), equals(Cores.kAzulBotaoItemColor));
+      expect(sairButton.style?.backgroundColor?.resolve({}), equals(Cores.kWhiteColor));
+
+      final Text continuarText = tester.widget(find.text(Strings.continuarTeste));
+      final Text sairText = tester.widget(find.text(Strings.confirmarSairDoTeste));
+      expect(continuarText.style?.color, equals(Cores.kWhiteColor));
+      expect(sairText.style?.color, equals(Cores.kDeepGreyColor));
+
+      await tester.tap(find.text(Strings.continuarTeste));
+      await tester.pump();
+      expect(cancelCalled, isTrue);
+
+      await tester.tap(find.text(Strings.confirmarSairDoTeste));
+      await tester.pump();
+      expect(confirmCalled, isTrue);
+    });
+
+    testWidgets('DialogSair.conta renders account logout elements and actions',
+        (WidgetTester tester) async {
+      bool confirmCalled = false;
+      bool cancelCalled = false;
+
+      await tester.pumpWidget(
+        ScreenUtilInit(
+          designSize: const Size(1080, 1920),
+          builder: (context, child) => MaterialApp(
+            home: Scaffold(
+              body: DialogSair.conta(
+                onConfirm: () => confirmCalled = true,
+                onCancel: () => cancelCalled = true,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(DialogSair), findsOneWidget);
+      expect(find.text(Strings.sairConta), findsOneWidget);
+      expect(find.text(Strings.desejaSairConta), findsOneWidget);
+      expect(find.text(Strings.cancelar), findsOneWidget);
+      expect(find.text(Strings.confirmarSairConta), findsOneWidget);
+
+      final imageFinder = find.byWidgetPredicate(
+        (widget) =>
+            widget is Image &&
+            widget.image is AssetImage &&
+            (widget.image as AssetImage).assetName == Strings.sairAppIconAsset,
+      );
+      expect(imageFinder, findsOneWidget);
+
+      await tester.tap(find.text(Strings.cancelar));
+      await tester.pump();
+      expect(cancelCalled, isTrue);
+
+      await tester.tap(find.text(Strings.confirmarSairConta));
+      await tester.pump();
+      expect(confirmCalled, isTrue);
     });
 
     testWidgets('DrawerCustom displays dynamic app version',
@@ -316,6 +423,68 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Versão 4.7.2'), findsOneWidget);
+    });
+
+    testWidgets(
+        'DialogSair maintains single-line buttons and comfortable width on ultrawide web (2560x1440) without vertical letter wrapping',
+        (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(2560, 1440);
+      tester.view.devicePixelRatio = 1.0;
+
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      await tester.pumpWidget(
+        ScreenUtilInit(
+          designSize: const Size(1080, 1920),
+          fontSizeResolver: (fontSize, instance) {
+            final factor = (2560 / 1080 * 0.42).clamp(0.36, 0.44);
+            return fontSize * factor;
+          },
+          builder: (context, child) => MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: DialogSair(
+                  onConfirm: () {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.byType(DialogSair), findsOneWidget);
+
+      // Verify buttons are rendered
+      final naoFinder = find.text(Strings.nao);
+      final simFinder = find.text(Strings.sim);
+      expect(naoFinder, findsOneWidget);
+      expect(simFinder, findsOneWidget);
+
+      // Verify button widths are generous and not squished into vertical letters
+      final naoButtonFinder = find.ancestor(
+        of: naoFinder,
+        matching: find.byType(ElevatedButton),
+      );
+      final simButtonFinder = find.ancestor(
+        of: simFinder,
+        matching: find.byType(ElevatedButton),
+      );
+
+      final naoBox = tester.renderObject<RenderBox>(naoButtonFinder);
+      final simBox = tester.renderObject<RenderBox>(simButtonFinder);
+
+      expect(naoBox.size.width, greaterThanOrEqualTo(100.0));
+      expect(simBox.size.width, greaterThanOrEqualTo(100.0));
+
+      // Verify text widget in button has softWrap false and maxLines 1
+      final naoTextWidget = tester.widget<Text>(naoFinder);
+      expect(naoTextWidget.softWrap, isFalse);
+      expect(naoTextWidget.maxLines, 1);
     });
   });
 }

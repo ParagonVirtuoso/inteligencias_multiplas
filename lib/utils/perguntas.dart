@@ -6,7 +6,9 @@ const List perguntas = [
     'Refletir sobre meus sentimentos',
     'Debater ideias',
     'Ordenar coisas',
-    'Cantar'
+    'Cantar',
+    'Estar em contato com a natureza',
+    'Discutir questões profundas da vida'
   ],
   [
     "Aprender novos esportes?",
@@ -16,6 +18,8 @@ const List perguntas = [
     "Contar histórias e fatos",
     "Construir e organizar planilhas",
     "Tocar instrumentos",
+    "Identificar espécies de plantas e animais",
+    "Compreender o quadro geral das coisas"
   ],
   [
     "Levantar e andar periodicamente",
@@ -24,9 +28,21 @@ const List perguntas = [
     "Trabalhar sozinho",
     "Conversar sobre ideias",
     "Analisar dados",
-    "Identificar padroes sonoros em equipamentos"
+    "Identificar padroes sonoros em equipamentos",
+    "Estar em ambientes abertos",
+    "Entender o valor real do que faço"
   ],
-  ["Onde?", "Como?", "Quem?", " Para que?", "Por que?", "O Que?", "Quando?"],
+  [
+    "Onde?",
+    "Como?",
+    "Quem?",
+    "Para que?",
+    "Por que?",
+    "O Que?",
+    "Quando?",
+    "Qual tipo?",
+    "Qual o sentido?"
+  ],
   [
     "Levantar e andar periodicamente",
     "Fazer algo funcionar",
@@ -34,34 +50,42 @@ const List perguntas = [
     "Trabalhar sozinho",
     "Conversar sobre ideias",
     "Analisar dados",
-    "Identificar padroes sonoros em equipamentos"
+    "Identificar padroes sonoros em equipamentos",
+    "Trabalhar no jardim ou cuidar de animais",
+    "Refletir sobre as grandes questões da vida"
   ],
   [
     "Adquirir habilidades pela pratica",
     "Analisar e descobrir formas e detalhes",
     "Ouvir e compartilhar ideias",
-    "Elaborar teorias:",
+    "Elaborar teorias",
     "Discutir informações",
     "Obter e classificar informações",
-    "Ler ouvindo música"
+    "Ler ouvindo música",
+    "Lidar com plantas ou animais",
+    "Conectar assuntos ao sentido da vida"
   ],
   [
-    "Não fico parado/A:",
+    "Não fico parado/a",
     "Conserto coisas",
     "Ajudo outros nas tarefas",
     "Fico em meu canto",
     "Falo sobre meu dia",
     "Organizo cada detalhe",
-    "Sempre escuto música"
+    "Sempre escuto música",
+    "Cuido das plantas ou animais",
+    "Busco momentos de reflexão ou quietude"
   ],
   [
     "Esportista",
     "Competente",
     "Perceptivo",
-    "Analitico",
+    "Analítico",
     "Teórico",
     "Lógico",
-    "Artista"
+    "Artista",
+    "Observador",
+    "Profundo"
   ],
   [
     "Demonstrações e experiências",
@@ -70,15 +94,19 @@ const List perguntas = [
     "Leitura de livros-textos",
     "Palestras formais",
     "Exercícios De Análise De Fatos, Dados e Números",
-    "Historias e músicas"
+    "Histórias e músicas",
+    "Contato direto com o meio ambiente e a natureza",
+    "Debates filosóficos e reflexões profundas"
   ],
   [
-    "Agil",
+    "Ágil",
     "Detalhista",
     "Amigo",
-    "Sensivel",
+    "Sensível",
     "Comunicativo",
     "Racional",
-    "Músical"
+    "Musical",
+    "Ecológico",
+    "Reflexivo"
   ]
 ];
