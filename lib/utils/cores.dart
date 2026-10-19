@@ -21,6 +21,8 @@ class Cores {
   static const kBorderColor = Color(0xFFEFEFEF);
   static const kWhiteColor = Color(0xFFFFFFFF);
   static const kcinzaColor = Color(0xFFD1D2D1);
+  static const kCinzaSairBotao = Color(0xFFF4F4F4);
+  static const kCinzaTextoIconeSair = Color(0xFF404040);
 
   static const statusBarColorQuat = SystemUiOverlayStyle(
       statusBarColor: Cores.kQuaternaryColor,

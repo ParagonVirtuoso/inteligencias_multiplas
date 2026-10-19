@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -27,6 +29,7 @@ class HomeController {
   }
 
   Future<void> avaliarApp({InAppReview? inAppReview, String? appStoreId}) async {
+    if (kIsWeb) return;
     final review = inAppReview ?? InAppReview.instance;
     try {
       await review.openStoreListing(appStoreId: appStoreId);
@@ -85,11 +88,112 @@ class HomeController {
     return fallback;
   }
 
+  Future<Object?> _lerProgressoVisitante(String? anonymousUid) async {
+    if (anonymousUid == null || anonymousUid.isEmpty) return null;
+    try {
+      final snapshot = await FirebaseDatabase.instance
+          .ref()
+          .child('usuarios')
+          .child(anonymousUid)
+          .get();
+      if (snapshot.exists && snapshot.value != null) {
+        return snapshot.value;
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  Future<void> _migrarProgressoVisitante({
+    required String? anonymousUid,
+    required String? targetUid,
+    required Object? dadosVisitante,
+  }) async {
+    if (dadosVisitante == null ||
+        anonymousUid == null ||
+        targetUid == null ||
+        anonymousUid == targetUid) {
+      return;
+    }
+    try {
+      final usuariosRef = FirebaseDatabase.instance.ref().child('usuarios');
+      await usuariosRef.child(targetUid).set(dadosVisitante);
+      await usuariosRef.child(anonymousUid).remove();
+    } catch (_) {}
+  }
+
   Future<bool?> vincularContaGoogle({
     FirebaseAuth? auth,
     GoogleSignIn? googleSignIn,
+    bool? isWebOverride,
   }) async {
     final firebaseAuth = auth ?? _auth;
+    final isWeb = isWebOverride ?? kIsWeb;
+
+    if (isWeb) {
+      try {
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        final currentUser = firebaseAuth.currentUser;
+        if (currentUser != null && currentUser.isAnonymous) {
+          final anonymousUid = currentUser.uid;
+          try {
+            final userCredential =
+                await currentUser.linkWithPopup(googleProvider);
+            await userCredential.user?.reload();
+            return true;
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'credential-already-in-use' ||
+                e.code == 'email-already-in-use' ||
+                e.code == 'account-exists-with-different-credential') {
+              AuthCredential? cred = e.credential;
+              if (cred is OAuthCredential &&
+                  cred is! GoogleAuthCredential &&
+                  (cred.idToken != null || cred.accessToken != null)) {
+                cred = GoogleAuthProvider.credential(
+                  accessToken: cred.accessToken,
+                  idToken: cred.idToken,
+                );
+              }
+              if (cred != null) {
+                final dadosVisitante =
+                    await _lerProgressoVisitante(anonymousUid);
+                final userCredential =
+                    await firebaseAuth.signInWithCredential(cred);
+                await _migrarProgressoVisitante(
+                  anonymousUid: anonymousUid,
+                  targetUid:
+                      userCredential.user?.uid ?? firebaseAuth.currentUser?.uid,
+                  dadosVisitante: dadosVisitante,
+                );
+                await userCredential.user?.reload();
+                return true;
+              }
+            }
+            if (e.code == 'popup-closed-by-user' ||
+                e.code == 'cancelled-popup-request') {
+              return null;
+            }
+            debugPrint('Erro ao vincular conta Google no Web: $e');
+            return false;
+          }
+        } else {
+          final userCredential =
+              await firebaseAuth.signInWithPopup(googleProvider);
+          await userCredential.user?.reload();
+          return true;
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'popup-closed-by-user' ||
+            e.code == 'cancelled-popup-request') {
+          return null;
+        }
+        debugPrint('Erro ao vincular conta Google no Web: $e');
+        return false;
+      } catch (e) {
+        debugPrint('Erro ao vincular conta Google no Web: $e');
+        return false;
+      }
+    }
+
     final google = googleSignIn ?? GoogleSignIn();
 
     try {
@@ -104,6 +208,7 @@ class HomeController {
 
       final currentUser = firebaseAuth.currentUser;
       if (currentUser != null && currentUser.isAnonymous) {
+        final anonymousUid = currentUser.uid;
         try {
           final userCredential =
               await currentUser.linkWithCredential(credential);
@@ -123,9 +228,18 @@ class HomeController {
           }
           return true;
         } on FirebaseAuthException catch (e) {
-          if (e.code == 'credential-already-in-use') {
+          if (e.code == 'credential-already-in-use' ||
+              e.code == 'email-already-in-use' ||
+              e.code == 'account-exists-with-different-credential') {
+            final dadosVisitante = await _lerProgressoVisitante(anonymousUid);
             final userCredential =
                 await firebaseAuth.signInWithCredential(credential);
+            await _migrarProgressoVisitante(
+              anonymousUid: anonymousUid,
+              targetUid:
+                  userCredential.user?.uid ?? firebaseAuth.currentUser?.uid,
+              dadosVisitante: dadosVisitante,
+            );
             await userCredential.user?.reload();
             return true;
           }
@@ -146,8 +260,73 @@ class HomeController {
   Future<bool?> vincularContaFacebook({
     FirebaseAuth? auth,
     FacebookAuth? facebookAuth,
+    bool? isWebOverride,
   }) async {
     final firebaseAuth = auth ?? _auth;
+    final isWeb = isWebOverride ?? kIsWeb;
+
+    if (isWeb) {
+      try {
+        final FacebookAuthProvider facebookProvider = FacebookAuthProvider();
+        final currentUser = firebaseAuth.currentUser;
+        if (currentUser != null && currentUser.isAnonymous) {
+          final anonymousUid = currentUser.uid;
+          try {
+            final userCredential =
+                await currentUser.linkWithPopup(facebookProvider);
+            await userCredential.user?.reload();
+            return true;
+          } on FirebaseAuthException catch (e) {
+            if (e.code == 'credential-already-in-use' ||
+                e.code == 'email-already-in-use' ||
+                e.code == 'account-exists-with-different-credential') {
+              AuthCredential? cred = e.credential;
+              if (cred is OAuthCredential &&
+                  cred is! FacebookAuthCredential &&
+                  cred.accessToken != null) {
+                cred = FacebookAuthProvider.credential(cred.accessToken!);
+              }
+              if (cred != null) {
+                final dadosVisitante =
+                    await _lerProgressoVisitante(anonymousUid);
+                final userCredential =
+                    await firebaseAuth.signInWithCredential(cred);
+                await _migrarProgressoVisitante(
+                  anonymousUid: anonymousUid,
+                  targetUid:
+                      userCredential.user?.uid ?? firebaseAuth.currentUser?.uid,
+                  dadosVisitante: dadosVisitante,
+                );
+                await userCredential.user?.reload();
+                return true;
+              }
+            }
+            if (e.code == 'popup-closed-by-user' ||
+                e.code == 'cancelled-popup-request') {
+              return null;
+            }
+            debugPrint('Erro ao vincular conta Facebook no Web: $e');
+            return false;
+          }
+        } else {
+          final userCredential =
+              await firebaseAuth.signInWithPopup(facebookProvider);
+          await userCredential.user?.reload();
+          return true;
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'popup-closed-by-user' ||
+            e.code == 'cancelled-popup-request') {
+          return null;
+        }
+        debugPrint('Erro ao vincular conta Facebook no Web: $e');
+        return false;
+      } catch (e) {
+        debugPrint('Erro ao vincular conta Facebook no Web: $e');
+        return false;
+      }
+    }
+
     final fb = facebookAuth ?? FacebookAuth.instance;
 
     try {
@@ -163,6 +342,7 @@ class HomeController {
 
       final currentUser = firebaseAuth.currentUser;
       if (currentUser != null && currentUser.isAnonymous) {
+        final anonymousUid = currentUser.uid;
         try {
           final userCredential =
               await currentUser.linkWithCredential(credential);
@@ -188,9 +368,18 @@ class HomeController {
           }
           return true;
         } on FirebaseAuthException catch (e) {
-          if (e.code == 'credential-already-in-use') {
+          if (e.code == 'credential-already-in-use' ||
+              e.code == 'email-already-in-use' ||
+              e.code == 'account-exists-with-different-credential') {
+            final dadosVisitante = await _lerProgressoVisitante(anonymousUid);
             final userCredential =
                 await firebaseAuth.signInWithCredential(credential);
+            await _migrarProgressoVisitante(
+              anonymousUid: anonymousUid,
+              targetUid:
+                  userCredential.user?.uid ?? firebaseAuth.currentUser?.uid,
+              dadosVisitante: dadosVisitante,
+            );
             await fb.getUserData();
             await userCredential.user?.reload();
             return true;

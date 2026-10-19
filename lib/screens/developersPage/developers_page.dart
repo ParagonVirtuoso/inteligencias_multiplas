@@ -17,17 +17,19 @@ class _DevelopersPageState extends State<DevelopersPage> {
   Widget build(BuildContext context) {
     return DesciptorContent(
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: (40.h).clamp(20.0, 32.0)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Container(
             alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(bottom: 50.h),
+            margin: EdgeInsets.only(bottom: (50.h).clamp(20.0, 36.0)),
             child: Text(
               Strings.desenvolvedores,
               style: TextStyle(
-                  fontSize: 65.sp,
-                  fontFamily: 'Roboto-Regular',
-                  fontWeight: FontWeight.w500),
-              textAlign: TextAlign.center,
+                fontSize: (65.sp).clamp(22.0, 28.0),
+                fontFamily: 'Roboto-Regular',
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.left,
             ),
           ),
           Column(
@@ -45,7 +47,7 @@ class _DevelopersPageState extends State<DevelopersPage> {
                   imageUrl: Strings.devDenysAsset,
                   cargo: 'Desenvolvedor',
                 ),
-                SizedBox(height: 40.h),
+                SizedBox(height: (40.h).clamp(16.0, 28.0)),
                 const DeveloperItem(
                   name: 'Elias Ribeiro',
                   email: 'Elliasribeiro99@gmail.com',
